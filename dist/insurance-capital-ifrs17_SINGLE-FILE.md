@@ -1,14 +1,14 @@
 ---
 name: insurance-capital-ifrs17
-description: Use for any question on how prudential solvency regulation and IFRS 17 affect an insurer or takaful operator, its capital position, its published accounts, or a reinsurance / structured-solution decision. Current coverage - UAE onshore (CBUAE). Other jurisdictions (KSA, Qatar, ...) are added as overlays.
-version: 1.0.1 (6 Nov 2026, fact-checked) - UAE layer built from the CBUAE Rulebook export of 20 Oct 2026, Decree-Law 6/2025, IA Decision 25/2014, IA eForms v1.7 and IFRS 17
+description: Use for any question on how prudential solvency regulation and IFRS 17 affect an insurer or takaful operator, its capital position, its published accounts, or a reinsurance / structured-solution decision. Current coverage - UAE onshore (CBUAE) and Qatar Financial Centre (QFCRA PINS, MCR/SRR risk-based capital, INS600/INS610 return). Other jurisdictions (KSA, onshore Qatar QCB, ...) are added as overlays.
+version: 1.1.0 (9 Nov 2026) - UAE layer built from the CBUAE Rulebook export of 20 Oct 2026, Decree-Law 6/2025, IA Decision 25/2014, IA eForms v1.7 and IFRS 17; QFC layer built from QFCRA PINS V20 (eff. 1 Oct 2025) and the QFCRA INS return workbook (taxonomy 2.0.0)
 ---
 
 # Insurance capital and IFRS 17 skill
 
 ## 1. What this skill is for
 You are supporting a life & health reinsurance broker / pricing actuary (FIA) who advises GCC insurers and takaful operators. Typical questions:
-- "What is binding for this insurer: MCR, SCR or MGF, and what moves it?"
+- "What is binding for this insurer: MCR, SCR or MGF (UAE), or MCR vs the 150% SRR (QFC), and what moves it?"
 - "What does a 50% medical quota share (or XoL, LPT, ADC, coinsurance, LoC) do to solvency and to IFRS 17 profit and equity?"
 - "Why is IFRS 17 equity so different from Basic Own Funds?"
 - "Is this structure allowed (finite ban, rating, transfer approval)?"
@@ -27,21 +27,26 @@ Load only what the question needs. Each file stands alone.
 | `references/uae/12-uae-reinsurance-rules.md` | UAE: Decision 23/2019, template credit by line, structured-solution screening, DIFC contrast |
 | `references/uae/13-uae-ifrs17-bridge.md` | UAE: how IFRS 17 accounts relate to the regulatory basis, reading published accounts, accounting vs capital effects of reinsurance |
 | `references/uae/19-uae-source-register.md` | To cite a source, check how current a rule is, or see the open points to verify |
+| `references/qa-qfc/30-qfc-legal-framework.md` | Qatar QFC: QFC vs onshore QCB routing, who PINS capital rules cover (LLC vs branch vs captive), PINS categories, takaful and long-term funds, investment limits, ORSA/actuary, breach ladder, reporting deadlines |
+| `references/qa-qfc/31-qfc-solvency-requirements.md` | Qatar QFC: MCR/SRR arithmetic, eligible capital tiers, all Schedule 3 RBC factors, INS600/INS610 template map, worked example, template-vs-rule differences |
+| `references/qa-qfc/32-qfc-reinsurance-rules.md` | Qatar QFC: reinsurer counterparty charges, capital credit by structure, screening checklist |
+| `references/qa-qfc/33-qfc-ifrs17-bridge.md` | Qatar QFC: IFRS 17 (or AAOIFI) as the prudential basis, equity-to-eligible-capital bridge, mapping RBC inputs to IFRS 17 balances, accounting vs capital effects |
+| `references/qa-qfc/39-qfc-source-register.md` | Qatar QFC: sources, dates and open VERIFY points |
 | `references/templates/jurisdiction-overlay-template.md` | Only when building a new country layer |
 
-Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If it is in DIFC or ADGM → the UAE files do NOT apply (different regulator, different rules); say so and only use the core files plus the DIFC contrast note in file 12. If the country has no overlay yet → answer from the core files, say clearly that no country layer is loaded, and list what local facts are needed.
+Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If it is in DIFC or ADGM → the UAE files do NOT apply (different regulator, different rules); say so and only use the core files plus the DIFC contrast note in file 12. If the insurer is authorised in the Qatar Financial Centre (QFCRA, has a QFC number) → `qa-qfc/` files. If it is licensed onshore in Qatar by the Qatar Central Bank → the QFC files do NOT apply; no QCB layer is loaded yet. QFC branches follow home-country capital rules: PINS Ch 3-4 do not apply to them. If the country has no overlay yet → answer from the core files, say clearly that no country layer is loaded, and list what local facts are needed.
 
 ## 3. How to answer (always)
-1. **State the basis.** Every number or statement is on one of three bases: **[REG]** prudential/regulatory basis (UAE: statutory technical provisions + eForms solvency template), **[IFRS]** IFRS 17 published accounts, **[ECON]** economic/best-estimate view. Never mix bases in one calculation without saying so. Most mistakes come from computing solvency from IFRS 17 balance-sheet numbers.
+1. **State the basis.** Every number or statement is on one of three bases: **[REG]** prudential/regulatory basis (UAE: statutory technical provisions + eForms solvency template; QFC: IFRS 17 or AAOIFI balance sheet + PINS Schedule 3 RBC via INS600/INS610), **[IFRS]** IFRS 17 published accounts, **[ECON]** economic/best-estimate view. Never mix bases in one calculation without saying so. Most mistakes come from computing solvency from IFRS 17 balance-sheet numbers.
 2. **Tag the authority of each point.**
    - **[RULE]** text of a law, regulation or standard (cite instrument and article/paragraph).
    - **[TEMPLATE]** how the regulator's calculation template implements it (cite form, e.g. SM-2).
    - **[INTERP]** your interpretation or market practice. Never present [INTERP] as [RULE].
 3. **Date-stamp.** Rules in this skill are as at the dates in the source register. If the user's date is later, or the question depends on a point marked VERIFY, say so.
-4. **Find the binding constraint first.** Before recommending any lever, establish which test binds (UAE: largest of MCR, SCR, MGF, and which own-funds tier can meet it). A lever that improves a non-binding test creates no headroom.
+4. **Find the binding constraint first.** Before recommending any lever, establish which test binds (UAE: largest of MCR, SCR, MGF, and which own-funds tier can meet it; QFC: max(QAR 36m, RBC) vs 150% × RBC, where the SRR binds once RBC > QAR 24m, and whether the ORR cap binds). A lever that improves a non-binding test creates no headroom.
 5. **Show the arithmetic.** Give the formula, the inputs used and the result. Label assumed inputs as assumptions. Where inputs come only from published IFRS 17 accounts, call the result an estimate.
 6. **Give both lenses for any reinsurance or capital action:** regulatory capital effect AND IFRS 17 P&L/equity effect (day 1 and over time). They frequently point in opposite directions.
-7. **Screen legality before economics** for anything structured (UAE: finite ban, rating floor, liability-transfer approval, approval of own-funds items).
+7. **Screen legality before economics** for anything structured (UAE: finite ban, rating floor, liability-transfer approval, approval of own-funds items; QFC: no finite-ban text in PINS, but run the risk-transfer tests and check Ch 10 intra-group and Ch 11 transfer rules).
 8. **Close with**: what binds, the best 1-3 levers and why, what each lever cannot do, data needed to firm it up, and items to pre-clear with the regulator, compliance or auditor.
 
 ## 4. Guardrails
@@ -327,6 +332,590 @@ Generic form: capital = volume (gross) × max(net/gross, floor) × factor.
 2. What it means for this company, with numbers.
 3. Decision options.
 4. Open points.
+
+
+<!-- ===== FILE: references/qa-qfc/30-qfc-legal-framework.md ===== -->
+
+# Qatar (QFC): legal framework, perimeter, governance and reporting
+
+**Sources.**
+- **[RULE]:** QFCRA Insurance Business Rules 2006 (PINS), Version 20, effective 1 Oct 2025 (includes QFCRA Rules 2024-4 and 2025-1). Rule numbers below are PINS unless stated.
+- **[TEMPLATE]:** QFCRA insurance prudential return (XBRL workbook, taxonomy `QFCRA_INS` 2.0.0, 2025 namespace), from a Q3 2026 specimen filing with no data. See file 31 §5.
+
+## 1. Perimeter: Qatar has two insurance regimes. Route first.
+| Where the entity is licensed | Regulator | Rules | Covered here? |
+|---|---|---|---|
+| **Qatar Financial Centre (QFC)**: has a QFC number, authorised by the QFC Regulatory Authority | QFCRA | Financial Services Regulations (FSR), PINS, GENE, CTRL, CAPI (captives) | **Yes**, this layer |
+| **Onshore State of Qatar**: listed and unlisted Qatari insurers, takaful operators, branches of foreign insurers licensed by the central bank | Qatar Central Bank (QCB), under Law 13/2012 | QCB Governor Decision 1/2016 (Executive Instructions for the Insurance Sector and Governance Principles), plus later QCB circulars | **No.** No QCB layer is loaded. Say so, use the core files only, and list the QCB facts needed |
+
+- **Do not apply PINS factors to an onshore QCB insurer.** Group parents of QFC entities are often QCB-regulated, so check the licence of the specific legal entity.
+- Public reporting (not verified here) says QCB onshore requires capital above QAR 100m for listed insurers, or risk-based capital if higher, and a QAR 35m deposit for branches. Treat this as background only, until the QCB text is loaded.
+
+## 2. Who PINS capital rules apply to [RULE]
+- **QFC insurer**: an authorised firm with an authorisation to conduct insurance business (1.2.3).
+- **QFC-incorporated insurers (LLCs)** must meet Chapter 3 (MCR, SRR) and Chapter 4 (eligible capital) (3.1.1, 4.1.1).
+- **Branches** are outside Chapters 3 and 4. They follow home-jurisdiction capital rules (3.1.1 note; 4.1 guidance 3).
+  - [TEMPLATE] base capital is 0 for a branch.
+  - Form INS50 asks for the home capital requirement and the excess over it, plus cash and liquid assets held in Qatar.
+- **Branches are also exempt from ORSA** (2.4.2 note). Run-off rules (Ch 12) do apply to a branch's QFC business.
+- **QFC captive insurers** are excluded from Chapters 3 and 4 (CAPI applies).
+- **Every insurer** must hold the financial resources PINS requires, plus whatever more is adequate for the nature, size and complexity of its business (1.2.2). The governing body judges whether the minimum is enough.
+
+## 3. Business classification [RULE]
+- **General and long-term business.** These are defined by the FSR, Schedule 3, Part 3: para 10.3 (general categories) and 10.4 (long-term) (1.2.5-1.2.6).
+- **Composite ban** (1.5.1): an insurer cannot carry on both long-term and general business in or from the QFC, unless the general business is restricted to **categories 1 (accident) and 2 (sickness)**. So a life insurer may also write medical and personal accident, but not other general lines.
+- **No non-insurance business** except activity directly connected with it (1.5.2). Managing investments for third parties is not "connected".
+- **PINS categories** (1.2.8) drive the premium and outstanding-claims factors:
+
+| PINS category | FSR general insurance categories | Meaning |
+|---|---|---|
+| 1 | 1, 2 | Accident, sickness (**medical, PA, group medical**) |
+| 2 | 3, 18 | 3 = land vehicles (motor own damage) [INTERP]; 18 = assistance [INTERP] |
+| 3 | 4-9, 16, 17 | Property, transport and miscellaneous classes [INTERP] |
+| 4 | 10-15 | Liability classes, credit and suretyship [INTERP] |
+
+- Only the names of categories 1 and 2 are confirmed by PINS text (1.5.1). The other names follow the usual EU-style class list. **VERIFY** them against FSR Schedule 3, Part 3, para 10.3.
+- **Mapping is the filer's job.** The PINS category is a classification input. The template does not map the premium lines of business (INS300) to PINS categories.
+
+## 4. Takaful [RULE]
+- **Takaful entity**: an Islamic financial institution doing takaful, or a QFC insurer operating an Islamic window (1.2.7).
+- **Chapter 6** applies (for a window, only to the Islamic business):
+  - takaful funds must be established and kept segregated, with separate books (6.2-6.4);
+  - asset allocations to funds must be fair (6.4.5);
+  - **no loans from a takaful fund** (6.5.1);
+  - surplus and deficit policies must be given to the Authority, and the surplus or deficit determined annually (6.6).
+- **Capital** (4.2.2):
+  - **owners' equity** counts as tier 1 only for a takaful entity, and only if surplus and loss participation is limited to policyholders (4.3.1(g));
+  - **zakah fund balances are deducted** from capital (4.6.5).
+- **Accounting basis:** AAOIFI (8.4.1(2)(a)). The PINS valuation rules in 8.4.6-8.4.7 and Parts 8.5-8.8 also apply (file 33).
+- Do not give Sharia rulings (SKILL.md §4).
+
+## 5. Long-term insurance funds [RULE]
+- Long-term business must sit in **long-term insurance funds**, with segregated assets, liabilities, revenue and expenses (Ch 5).
+- **Fund assets** may not be transferred, distributed or lent out of the fund, except as permitted (5.5.1-5.5.5).
+- **Internal reinsurance** between a long-term fund and the rest of the insurer, or between its own long-term funds, is **prohibited** (5.5.6).
+- Accident and sickness contracts may be attributed to a long-term fund (5.3.2).
+
+## 6. Investments [RULE]
+- **Prudent person** (8.1.4):
+  - invest only where the insurer can identify, measure, manage and report the risk;
+  - avoid concentration;
+  - keep unlisted assets at prudent levels;
+  - assets covering technical provisions must match the liabilities.
+  - Guidance expects liquid assets: cash, deposits, tradable securities, listed shares, liquid bonds.
+- **Derivatives** may be used for risk reduction and sound hedging only. Never for speculation (8.1.5).
+- **Concentration limit for LLCs** (8.1.6): exposure to a single counterparty or related counterparties (on- and off-balance sheet, including intra-group) must not exceed **the lower of 20% of applicable assets and eligible capital**.
+  - Applicable assets = total assets less reinsurance receivables, premium receivables, DAC, fixed assets, intangibles and other non-investment assets.
+  - So **reinsurance recoverables are outside this limit**.
+  - Assets already deducted from eligible capital are also outside it.
+  - Bank deposits count, so a deposit with a single bank is a typical breach risk.
+
+## 7. Governance hooks [RULE]
+- **ORSA** (2.4): annual for QFC-incorporated insurers.
+  - Covers own capital needs under adverse scenarios.
+  - Written report approved by the governing body; given to the Authority on request.
+  - Revised when a change of strategy or business plan materially changes capital adequacy.
+  - The SRR guidance says ORSA evidence can move the insurer's SRR (3.3.2A guidance 2).
+- **Actuary:**
+  - Insurers required to have an approved actuary (CTRL 6.5.2) get an annual **Financial Condition Report** (9.1.2-9.1.3).
+  - Others: the governing body considers an independent actuarial report annually, and **must commission one at least every 3 years** (9.2.2).
+  - The approved actuary must advise on the maximum event retention (MER) in the cases in A3.10.2(2).
+- **Groups** (Ch 10):
+  - **MCR and SRR also apply at financial-group level**, calculated as if the group were one insurer (10.3.3).
+  - Surplus capital of group members that is not freely transferable is excluded (10.3.2).
+  - The insurer must inquire into, and the Authority may direct on, intra-group transactions (10.1.7-10.1.9).
+- **Capital management:**
+  - **Tier 1** may not be reduced without prior approval, which needs a capital plan showing MCR is met for 2 years without new capital (4.8.1-4.8.2). Buybacks count as reductions, as do dividends exceeding the year's earnings.
+  - **Tier 2** reduction needs 6 months' notice (4.8.3).
+  - **Dividends and distributions** must be reported within 15 business days of declaration (4.9.1).
+- **Portfolio transfers** need a scheme report and notifications (Ch 11).
+- **Run-off** (Ch 12): a run-off plan is required, and QFC-incorporated insurers in run-off may not make distributions.
+
+## 8. Intervention ladder [RULE]
+| Event | Duty | Consequence |
+|---|---|---|
+| Possible breach of 1.2.2 or Ch 3 (MCR or SRR) | Tell the Authority orally within 1 business day; written confirmation and explanation by the next business day; set out avoiding action (**except for SRR**); **no distributions** without written permission (3.9.1) | Authority confers with the insurer |
+| Actual MCR breach (eligible capital < MCR) | Same notifications (3.3.2(1), 3.9.2) | **Stop writing new business** until permitted (3.3.2(2), 3.9.2(c)). Subordinated debt may not be serviced (4.4.2(1)(b)). Authority may require capital, suspend, place in run-off or withdraw authorisation (3.3.2 guidance) |
+| Actual or possible SRR breach (eligible capital < SRR) | Notify; **board-approved action plan with timescales** as soon as possible; the Authority may amend it (3.9.3) | **No stop-writing rule** (3.3.2A note). No distributions without permission |
+
+## 9. Prudential reporting [RULE + TEMPLATE]
+- **Which returns:** set by written notice on an approved website. The Authority can add returns or exempt an insurer (1.4.1).
+- **Deadlines:**
+  - annual return: within **3 months** of year end (1.4.2);
+  - biannual return: within **1 month** of 30 Jun or 31 Dec (1.4.3);
+  - quarterly return: within **1 month** of quarter end (1.4.4).
+- **Format:** XBRL workbook `QFCRA_INS`.
+  - A declaration form and a scope-of-filing questionnaire switch schedules on or off:
+    - Sharia, long-term, general;
+    - client money, captive manager;
+    - non-QAR currencies, derivatives;
+    - PAA / GMM / VFA in use.
+  - Amounts are in QAR '000.
+- **The governing body can be asked** to certify compliance or the accuracy of returns (1.3.1).
+
+
+<!-- ===== FILE: references/qa-qfc/31-qfc-solvency-requirements.md ===== -->
+
+# Qatar (QFC): MCR, SRR, eligible capital, risk-based capital and the INS600/INS610 template
+
+**Sources:**
+- **[RULE]:** PINS V20 Chapters 3-4 and Schedule 3.
+- **[TEMPLATE]:** the QFCRA INS prudential return workbook (taxonomy 2.0.0), forms INS600 and INS610.x.
+
+Factors below were checked in Nov 2026 against both the rule text and the template formulas. Where they differ, see §6.
+
+## 1. Architecture [RULE]
+Applies to QFC-incorporated insurers only; not branches or captives (file 30 §2).
+
+| Test | Requirement | Rule | Consequence of breach |
+|---|---|---|---|
+| **MCR** | Eligible capital ≥ **max(QAR 36m, risk-based capital requirement)** | 3.2.1, 3.3.1 | Stop writing new business |
+| **SRR** (from 1 Aug 2024) | Eligible capital ≥ **150% × risk-based capital requirement**. The Authority may set a different SRR, taking account of: retail or catastrophe volatility, market importance, investment geography, risk management, ORSA, strategy and rating | 3.3.2A | Board-approved action plan; no stop-writing |
+| Firm-specific | The Authority may impose a higher MCR as a licence condition (3.3.1 note 2) | | |
+
+**Which test binds [INTERP]:**
+- SRR binds whenever 1.5 × RBC > max(36m, RBC). That means whenever **RBC > QAR 24m**.
+- Below QAR 24m RBC the QAR 36m floor binds. There, reducing RBC creates **no** headroom.
+- From QAR 24m RBC upwards, each QAR 1 of RBC saved frees **QAR 1.5** of required capital.
+- Always state both covers: eligible ÷ MCR, and eligible ÷ (1.5 × RBC).
+
+**Risk-based capital requirement (RBC)** (3.4.1):
+- **RBC = IRR + InsRR + ORR**: investment risk + insurance risk + operational risk.
+- **Simple sum: no correlation or diversification credit.**
+- An internal model approved by the Authority can replace the whole RBC or individual components (3.8). The insurer's home or group regulator must also have approved it.
+- [TEMPLATE] INS610 L17 holds the internal-model figure. L18 MCR = MAX(base, RBC, internal model).
+
+## 2. Eligible capital (4.2.2 table) [RULE] = template INS600
+| Line | Item | Notes |
+|---|---|---|
+| A Tier 1 | Permanent share capital | Fully paid, undated, non-cumulative, first loss (4.3.1(a)) |
+| | Audited reserves | Retained profits after tax and dividends. Includes capital contributions meeting (a), notified 1 month ahead (4.3.1(b)-(c)) |
+| | Share premium | |
+| | Externally verified interim net profits | **Auditor-verified only** (4.3.1(e)). Unverified quarter profits do not count |
+| | Fund for future appropriations | |
+| | Owners' equity | **Takaful only** |
+| B Deductions from tier 1 | Own shares; **intangibles** (goodwill, capitalised development, brands, licences); interim net losses | Cumulative losses and negative reserves are deducted (4.3.1(i)) |
+| C | Tier 1 after deductions = A − B | |
+| D Upper tier 2 | Perpetual qualifying hybrids (unsecured, subordinated, perpetual, loss-absorbing); fixed-dividend ordinary shares | 4.4.1 |
+| E Lower tier 2 | Subordinated debt; fixed-term preference shares | Sub debt conditions in 4.4.2. **≥5-year original maturity**; no step-ups in the first 5 years; no payment while in MCR breach; 30-day no-objection notice. **Amortised 20% a year over the last 4 years** (4.4.3). External legal opinion needed (4.5.1) |
+| Limits | **Lower T2 ≤ 50% of C** (4.7.2); **total T2 ≤ 100% of C** (4.7.1) | [TEMPLATE] INS600 L18 = ROUND(MIN(L16+L17, L12/2)); L19 = MIN(L15+L18, L12) |
+| G Deductions from T1+T2 | Investments in subsidiaries and associates; connected lending of a capital nature; **inadmissible assets**; zakah fund (takaful) | 4.6 |
+| H | **Eligible capital = C + D + E − G** | INS600 L26 → INS610 L19 |
+
+**Inadmissible assets** (4.6.4), deducted in full:
+- tangible fixed assets, including inventories, plant, equipment and vehicles;
+- **deferred acquisition costs**;
+- **deferred tax assets**;
+- deficiencies of net assets in subsidiaries;
+- a subsidiary's holding of the insurer's own shares;
+- investments not readily realisable.
+
+Assets deducted here carry **no** asset risk charge (A3.2.4).
+
+**There is no ancillary-capital tier.** Letters of credit, guarantees and uncalled capital do not appear in the table. The Authority may recognise other instruments that meet international standards (4.2.1 guidance). **[INTERP]:** an LoC is not capital without specific QFCRA recognition. It can still reduce asset risk as collateral or guarantee (A3.2.2).
+
+## 3. Risk-based capital: module by module [RULE, Schedule 3]
+### 3.1 Counterparty grades (A3.1.1-A3.1.2)
+| Grade | S&P / Fitch | Moody's | AM Best |
+|---|---|---|---|
+| 1 | AAA | Aaa | A++ |
+| 2 | AA+ to AA- | Aa1-Aa3 | A+ |
+| 3 | A+ to A- | A1-A3 | A, A- |
+| 4 | BBB+ to BBB- | Baa1-Baa3 | B++, B+ |
+| 5 | BB+ and below | Ba1 and below | B and below |
+
+- **Unrated = grade 4.**
+- Use one agency consistently. If ratings differ, **use the one giving the highest charge**.
+- Only the four listed agencies may be used, unless the Authority permits another.
+
+### 3.2 Investment risk requirement (IRR) = asset + off-balance-sheet asset + off-balance-sheet liability components (3.5.1)
+**Asset risk** = Σ value × factor (A3.2.1). INS610.10 lines 1-43.
+
+| Factor | Non-reinsurance assets (Table A3.2.1A) |
+|---|---|
+| 0.5% | Cash, bank deposits and cash equivalents; grade 1 sovereign bonds |
+| 1% | Bonds < 1 yr (grade 1-2); cash management trusts (grade 1-2) |
+| 2% | Unpaid premiums ≤ 6 months due from grade 1-3 counterparties; bonds ≥ 1 yr (grade 1-2) |
+| 4% | Unpaid premiums ≤ 6 months (unrated or grade 4-5); bonds grade 3; cash management trusts grade 3; secured loans |
+| 6% | Unpaid premiums > 6 months (grade 1-3); bonds grade 4; cash management trusts grade 4 |
+| 8% | Unpaid premiums > 6 months (unrated or grade 4-5); bonds grade 5; cash management trusts grade 5; listed subordinated debt |
+| 10% | Unlisted subordinated debt; preference shares |
+| 16% | Listed equity (includes collective investment funds, joint ventures, mudaraba/musharaka certificates per the glossary); listed trusts |
+| 20% | Real estate (direct); unlisted equity; unlisted trusts; **any other non-reinsurance asset** |
+| 100% | Loans to directors (and their related parties or dependants); unsecured staff loans (except under QAR 3,600); assets under a fixed or floating charge |
+
+**Reinsurance assets** (Tables A3.2.1B/C):
+
+| Grade | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| Reinsurer supervised by a "subrule (2) regulator" | 1% | 2% | 4% | 6% | 8% |
+| Reinsurer not supervised by one | 1.2% | 2.4% | 4.8% | 7.2% | 9.6% |
+
+- **Subrule (2) regulators:** Qatar, EU member states, Australia, Canada, Hong Kong, Iceland, Japan, Norway, Singapore, Switzerland, USA, **or any signatory of the IAIS Multilateral MoU**.
+- **[INTERP]:** most GCC regulators that have signed the IAIS MMoU qualify. **VERIFY** the signatory list on the date of use.
+
+**Asset risk adjustments:**
+- **Guarantee** (A3.2.2(1)): explicit, unconditional and irrevocable for the full term, from an unrelated guarantor rated grade 1-3. The asset takes the guarantor's charge.
+- **Collateral** (A3.2.2(2)): cash or grade 1-3 debt. The covered part takes the collateral's charge.
+- **Charged or mortgaged assets** (A3.2.3): 100% charge to the extent of the secured debt. If the security backs insurance liabilities, only the excess of market value over the supported liabilities is charged.
+
+**Off-balance-sheet asset risk, derivatives** (A3.4):
+- Excluded: put options serving as guarantees; FX contracts with original maturity ≤ 14 days; exchange-traded contracts that are marked to market daily.
+- **Rule:** asset-equivalent value × the counterparty's asset-risk %, where asset-equivalent value = positive MTM + notional × add-on.
+
+| Add-on | IR | FX & gold | Equity | Precious metals (not gold) | Other |
+|---|---|---|---|---|---|
+| < 1 yr | 0 | 1% | 6% | 7% | 10% |
+| 1-5 yrs | 0.5% | 5% | 8% | 7% | 12% |
+| ≥ 5 yrs | 1.5% | 7.5% | 10% | 8% | 15% |
+
+**Off-balance-sheet liability risk** (A3.5):
+- Face value of credit substitutes issued (LoCs, guarantees, put options serving as guarantees) × the asset charge of the underlying obligation.
+- Collateral and guarantee relief applies.
+- Credit and surety **insurance** is not a credit substitute.
+
+### 3.3 Insurance risk requirement (InsRR) = premium + outstanding claims + long-term + concentration (3.6.1)
+**Premium risk** (A3.7, general business):
+- **Net premium liability** by PINS category × factor.
+- Net premium liability = premium liability (8.6.7: the value of future claims and settlement costs on in-force cover) less expected reinsurance and other recoveries.
+
+**Outstanding claims risk** (A3.8):
+- **Net outstanding claims liability** (8.6.8: reported claims, IBNR and loss adjustment expenses, less expected recoveries) × factor.
+
+| PINS cat | Premium: direct | Premium: prop. reins. | Premium: non-prop. reins. | Claims: direct | Claims: prop. | Claims: non-prop. |
+|---|---|---|---|---|---|---|
+| 1 (accident, sickness) | **16%** | 18% | 21% | **11%** | 12% | 14% |
+| 2 | 13% | 15% | 18% | 9% | 10% | 12% |
+| 3 | 16% | 18% | 21% | 11% | 12% | 14% |
+| 4 | 21% | 23% | 26% | 14% | 15% | 17% |
+
+- **The factors apply to NET liabilities, with no net/gross floor.** Contrast the UAE 50% floor.
+- **The "reinsurance" columns are for inward reinsurance written**, by type. They are not a credit for outward cover.
+- **Lower factors on application for medical business (lever):**
+  - **PINS 1 premium factors** can be reduced with written consent where mortality and morbidity data support actuarial reliance. Floor: **12%** (direct and proportional), **16%** (non-proportional) (A3.7.3).
+  - **Outstanding-claims factors** for any category can be reduced the same way, to a floor of **8%** (A3.8.3).
+- Long-term contracts in PINS 1 use the long-term component instead (A3.7.4, A3.8.4).
+
+**Long-term insurance risk** (A3.9) = Σ of:
+
+| Item | Factor |
+|---|---|
+| Provisions: investment-linked with capital guarantee | 1.25% |
+| Provisions: investment-linked without guarantee | 0.5% |
+| Provisions: all other long-term business | 3% |
+| Capital at risk (CAR) | **0.1%** |
+| Mortality-contingent policies | Claims cost of a **+0.5 per mille** increase in the death rate over the next year |
+
+- **CAR** = sums assured less mathematical reserves less **expected reinsurance recoveries**, floored at 0 per contract. For annuities, the sum assured is the PV of the annuity payments.
+- [TEMPLATE] INS610.60 implements the mortality item as **0.05% × CAR of mortality-contingent policies**.
+- **Whether "provisions" are gross or net of reinsurance is not stated.** VERIFY in the return instructions.
+
+**Insurance concentration risk** (A3.10, general business):
+- Charge = **MER + CoR − RP**.
+  - **MER**: the maximum event retention net of reinsurance, for a single extreme event, at a **≥ 1-in-250** return period. Take the largest MER across events. The approved actuary's advice is required for portfolios that are unlimited, multi-line or complex.
+  - **CoR**: the contractual (or estimated, but not below the original rate) cost of one reinstatement.
+  - **RP**: inward reinstatement premiums under binding netting arrangements, for insurers that write reinsurance.
+- Guidance names medical insurers: common-source claims (for example, a class action from one faulty procedure in a large scheme) are concentration risk even without a natural catastrophe.
+
+### 3.4 Operational risk requirement (ORR) (3.7.1)
+- **ORR = min[ 2% × max(GWP over the last 12 months, gross technical provisions), (IRR + InsRR) × 15/85 ]**.
+- **The basis is gross, but the cap moves with net risk.** For an insurer whose cap binds, cutting InsRR also cuts ORR.
+
+## 4. Worked example (QAR '000, illustrative; medical-focused QFC LLC)
+**Inputs and asset risk:**
+
+| Asset | Value | Factor | Charge |
+|---|---|---|---|
+| Cash and deposits | 150,000 | 0.5% | 750 |
+| Bonds, grade 2, ≥ 1 yr | 100,000 | 2% | 2,000 |
+| Listed equity | 30,000 | 16% | 4,800 |
+| Unpaid premiums ≤ 6 months, unrated | 40,000 | 4% | 1,600 |
+| Reinsurance assets, grade 3, supervised | 60,000 | 4% | 2,400 |
+| **IRR** | | | **11,550** |
+
+**Insurance risk:**
+- Net premium liability PINS 1, direct: 50,000 × 16% = 8,000.
+- Net outstanding claims PINS 1, direct: 70,000 × 11% = 7,700.
+- Concentration: MER 5,000 + CoR 1,000 = 6,000.
+- **InsRR = 21,700.**
+
+**Operational risk:**
+- 2% × max(GWP 300,000; gross technical provisions 220,000) = 6,000.
+- Cap = 33,250 × 15/85 = 5,868.
+- **ORR = 5,868** (the cap binds).
+
+**Result:**
+- **RBC** = 11,550 + 21,700 + 5,868 = **39,118**.
+- **MCR** = max(36,000; 39,118) = 39,118.
+- **SRR** = 1.5 × 39,118 = **58,677**.
+- **Eligible capital** = share capital 60,000 + audited reserves 20,000 − intangibles 2,000 − inadmissible assets (DTA 500, fixed assets 1,500) 2,000 = **76,000**.
+- **Cover:** MCR 194%; SRR 130% (= 194% / 150%). **SRR binds**, with headroom of 17,323.
+
+**Adding a 30% medical quota share** (reinsurer grade 3, supervised; premium and claims liabilities ceded pro rata):
+- Premium risk: 35,000 × 16% = 5,600.
+- Claims risk: 49,000 × 11% = 5,390.
+- InsRR = 16,990, assuming MER unchanged.
+- Reinsurance assets rise by 36,000, at 4% = +1,440. IRR = 12,990.
+- Cap = 29,980 × 15/85 = 5,291. **ORR = 5,291** (falls, because the cap binds).
+- **RBC = 35,271** (−3,847). **SRR = 52,907.** Required capital falls by **5,770**.
+
+Ignored here: cash ceded, commission, and IFRS 17 effects (file 33). Ceding to an unsupervised reinsurer would cost 4.8% instead of 4% on the recoverable.
+
+## 5. Template map (INS workbook) [TEMPLATE]
+Calculation order:
+
+INS610.10 → .20 → .30 → .40 → .50 → .60 → .70 → INS610 → (with INS600) result.
+
+| Form | Content | Feeds |
+|---|---|---|
+| INS600 | Eligible capital L1-L26 | INS610 L19 |
+| INS610.10 | Asset risk: 28 non-reinsurance lines + 10 reinsurance lines (supervised and unsupervised, by grade). H = ROUND(value × factor) | INS610 L3 |
+| INS610.20 | Derivative add-on grid (5 contract types × 3 maturities) | L4 |
+| INS610.30 | Credit substitutes: value × manually entered %, per row | L5 |
+| INS610.40 / .50 | Net premium liability / net outstanding claims, by PINS category 1-4 × direct / prop. / non-prop. | L7 / L8 |
+| INS610.60 | Long-term (hidden if no long-term business) | L9 |
+| INS610.70 | Concentration: cat cover yes/no | L10 |
+| INS610 | L1 type (LLC or branch, from DECLARATIONFORM), L2 base capital 36,000 (branch 0); L6 IRR, L11 InsRR, L12-L15 ORR with cap; L16 RBC; L17 internal model; **L18 MCR = MAX(L2, L16, L17)**; L19 eligible capital; **L20 = L19 − L18** | Result |
+| INS620 | Intermediary capital (base QAR 1.8m with client money / 0.9m without / 0.18m captive manager; paid-up capital test; adjusted net assets ≥ 50% of base) | Standalone, not the insurer test |
+
+**Related disclosure forms (no formula feed into RBC):**
+- INS100 balance sheet;
+- INS130 investment concentration and geography;
+- INS300 premiums by line of business, location, channel and fac/treaty;
+- INS320 claims by line of business;
+- INS340 reinsurance (10 largest reinsurers with rating and collateral; treaty limits and retentions by line);
+- INS350 largest clients;
+- INS700.10 intra-group.
+
+**Every capital input is keyed by hand.** No formula links INS300, INS320 or INS100 to INS610.x. The filer must reconcile them.
+
+## 6. Template vs rule: points to watch (VERIFY with the QFCRA return instructions)
+1. **SRR is not computed in the workbook.** L20 shows only the surplus over MCR. Compute **eligible − 1.5 × L16** separately. A positive L20 can coexist with an SRR breach.
+2. **INS610.70 has a fallback the rule does not contain.** If there is no cat reinsurance, the charge is **2 × largest per-risk retention**. This presumably comes from the return instructions. With cat cover: MER + CoR − RP, as in the rule.
+3. **INS610.20 applies the add-on % to notional as the charge.** The rule adds positive MTM and then applies the counterparty's asset-risk %. Follow the instructions of the version filed.
+4. **INS610.60 uses 0.1% CAR and 0.05% × mortality-contingent CAR.** This matches A3.9.2(d)-(e) as an approximation. Line 1 "annuity and pensions" uses 3%, matching (c).
+5. **Prior-period comparatives carry hard-coded dates.** Do not treat them as linked.
+6. **ORR GWP and gross technical provisions are entered by hand,** not pulled from INS200 or INS300.
+
+
+<!-- ===== FILE: references/qa-qfc/32-qfc-reinsurance-rules.md ===== -->
+
+# Qatar (QFC): reinsurance rules, capital credit by structure, and structured-solution screening
+
+**Sources:**
+- **[RULE]:** PINS V20, chiefly Schedule 3, 4.4-4.6, 5.5.6, 8.4.5-8.4.6, Ch 10-11.
+- **[TEMPLATE]:** INS340, INS610.x.
+
+**Scope caveat.** PINS has **no dedicated reinsurance chapter** comparable to UAE Decision 23/2019. The following are **not in PINS**:
+- a rating floor for reinsurers;
+- a finite-reinsurance ban;
+- a mandatory retention plan;
+- a ceded-premium provision.
+
+Reinsurance governance sits in risk-management requirements (Schedule 1 guidance, CTRL) and in the capital formula. **VERIFY** that no QFCRA notice or other module (GENE, CTRL, COND) adds cession rules before telling a client "there is no restriction".
+
+## 1. What the rules do say about reinsurance [RULE]
+| Rule | Content | Consequence |
+|---|---|---|
+| A3.2.1, Tables B/C | Reinsurance assets are charged **1-8% by grade** if the reinsurer is supervised by a subrule (2) regulator, and **1.2-9.6%** (+20%) if not | Domicile and supervision of each panel member change the capital cost. Get each reinsurer's rating, regulator and IAIS MMoU status |
+| A3.1.1(3), A3.1.2 | Unrated reinsurer = grade 4 (6% / 7.2%). Where ratings differ, use the worst-charge rating | Unrated retakaful or regional capacity costs 6-7.2% of the recoverable |
+| A3.2.2 | Collateral in cash or grade 1-3 debt, or an unconditional guarantee from an unrelated grade 1-3 guarantor, substitutes that charge for the covered part | **Funds withheld, trust or collateral accounts and parental guarantees cut the counterparty charge** |
+| A3.7.2(2), A3.8.2(2), A3.10.3 | Premium risk, claims risk and MER are measured **net of expected reinsurance recoveries** | Outward cover earns linear credit, with no floor |
+| A3.9.3 | Capital at risk is net of expected reinsurance recoveries | Risk-premium/YRT life cession reduces the 0.1% CAR and mortality charges |
+| 3.7.1 | ORR is on gross premiums and gross provisions, but capped at 15/85 × (IRR + InsRR) | Cession reduces ORR only where the cap binds |
+| 8.4.5 | A liability is not derecognised because reinsurance was bought, unless the obligation itself is discharged | Gross liabilities stay on the balance sheet. Novation or transfer (Ch 11) is different from reinsurance |
+| 8.4.6 (takaful) | Reinsurance is valued only for risks on policies **in force** at the reference date. Provisions for future policies are ignored | No credit today for cover on business not yet written |
+| 5.5.6 | No internal reinsurance between long-term funds, or between a long-term fund and the rest of the company | Internal capital-relief structures inside a life insurer are prohibited |
+| 6.5.1 (takaful) | No loans from a takaful fund | Qard-type funding cannot flow out of the fund |
+| Ch 10 (10.1.7-10.1.9) | Intra-group transactions must be inquired into by the governing body; the Authority may give directions | Captive or intra-group reinsurance is in scope |
+| Ch 11 | Transfer of insurance business needs a scheme report and notices to policyholders | A legal portfolio transfer (not an LPT reinsurance) is a scheme |
+| A3.10.2(1) RP | Inward reinstatement premiums count only with a **binding netting arrangement** with the cedant | Relevant to inward cat reinsurance written in the QFC |
+
+[TEMPLATE] INS340 asks for the 10 largest reinsurers by receivable, including:
+- domicile, rating grade, premium ceded and collateral held;
+- aged receivables and amounts written off;
+- treaty policy limits and net retention by line of business, with the two largest reinsurers.
+
+INS300 splits premium into direct, fac proportional, fac non-proportional, treaty proportional and treaty non-proportional.
+
+## 2. Capital credit by structure [RULE + INTERP]
+| Structure | InsRR | IRR | ORR | Eligible capital | Watch |
+|---|---|---|---|---|---|
+| Medical or general QS | Premium and claims risk fall **in proportion to the cession** (net basis, no floor). MER falls if the QS applies to the event | + reinsurance asset × 1-9.6% | Unchanged unless the cap binds; then it falls with IRR + InsRR | Commission effects follow IFRS 17 (file 33) | If RBC is below QAR 24m, the QAR 36m floor binds and there is **no headroom gain** |
+| Surplus / per-risk XoL | Small reduction in net claims and premium liabilities (expected recoveries only) | Small | Small | — | **Template fallback** (no cat cover): concentration = 2 × largest per-risk retention, so per-risk XoL retention matters directly |
+| Cat XoL | **Concentration = MER + CoR − RP**: lower retention and prepaid reinstatements reduce it directly | Recoverables only post-event | Via cap | — | MER at ≥ 1-in-250; the actuary's advice is needed for complex books. Prepaying reinstatement removes CoR |
+| Medical stop loss / aggregate XoL | Credit only to the extent of **expected** recoveries in net premium liability, which are usually small [INTERP] | — | — | — | Value lies in volatility and the ORSA view, plus a possible Authority SRR adjustment (3.3.2A guidance) |
+| LPT / ADC on general reserves | Net outstanding claims fall by the **expected** recoveries | + recoverable × grade factor (collateral relief available) | Via cap | IFRS 17 day-1 effect (core file 00) flows to audited reserves | Not a transfer unless done as a Ch 11 scheme. Reserves stay gross (8.4.5) |
+| Long-term QS / coinsurance | CAR charges fall (net). Provision charges (0.5-3%): net vs gross **VERIFY** | + reinsurance asset charge | Via cap | — | Internal fund-to-fund reinsurance is banned (5.5.6) |
+| Risk premium / YRT life | CAR 0.1% + mortality 0.05% fall | Small | — | — | Low capital value: the factors are small |
+| Fronting (≈100% ceded) | ≈ 0 | Full recoverable × grade factor | Gross basis ≥ 2% GWP, unless the cap binds (and with InsRR ≈ 0 the cap is low) | — | The QAR 36m MCR floor dominates. Concentration limit 8.1.6 excludes reinsurance receivables |
+| Subordinated loan from a reinsurer or parent | — | — | — | **Lower tier 2**, if 4.4.2 terms are met (≥ 5 yrs, no step-up in the first 5 yrs, payment blocked in MCR breach); capped at 50% of tier 1 after deductions; legal opinion; 30-day notice | Amortises 20% a year in the last 4 yrs. Not eligible if secured |
+| LoC / parental guarantee as capital | — | Can reduce asset risk as a guarantee (A3.2.2) | — | **Not eligible capital** (no ancillary tier) unless QFCRA recognises it | |
+| Capital injection | — | Cash 0.5% | Via cap | Tier 1 | Tier 1 reductions later need approval (4.8.1) |
+
+## 3. Screening checklist [INTERP]
+1. **Entity and perimeter.** QFC LLC, branch or captive? QFC or onshore QCB (file 30 §1)?
+   - Branches: the home regulator's rules decide the capital credit. PINS ORSA and Ch 3 do not apply.
+2. **Binding test.**
+   - Floor (RBC < QAR 24m) or SRR?
+   - Is the ORR cap binding? If so, cession also cuts ORR.
+3. **Counterparty cost.** For each panel member:
+   - grade, using the worst-charge rating;
+   - supervised-regulator status;
+   - collateral or guarantee available.
+   Price the A3.2.1 charge into the treaty economics.
+4. **Risk transfer.** PINS has no finite ban text. Still run the core risk-transfer tests (core file 01 §4), because:
+   - IFRS 17 measurement and the significant-risk test depend on substance;
+   - the Authority can treat a structure as not reducing risk (3.3.3, 8.2.4 directions);
+   - SRR setting takes risk management into account.
+5. **Valuation.** Expected recoveries feed the capital charges directly. Make sure they are on the same basis as the gross liability (IFRS 17 for conventional insurers; Part 8.6 for takaful) and justified by the approved actuary.
+6. **Group and related-party issues.** Intra-group reinsurance and loans raise:
+   - Ch 10 inquiry duties;
+   - connected lending of a capital nature (a deduction);
+   - investment concentration (8.1.6 includes intra-group exposures).
+7. **Notifications.** Material capital change → ORSA update and notification (2.4.3(2); GENE 4.1.3). Tier 2 changes → notices (4.4.2(1)(k), 4.8.3).
+
+
+<!-- ===== FILE: references/qa-qfc/33-qfc-ifrs17-bridge.md ===== -->
+
+# Qatar (QFC): IFRS 17 and the prudential basis
+
+**Sources:**
+- **[RULE]:** PINS V20 8.4.1, 8.4.3-8.4.5, Parts 8.5-8.8, 4.3.1, 4.6.4.
+- **[TEMPLATE]:** INS100, INS200, INS300, INS400-INS540 and SCOPEOFFILING.
+
+## 1. What the regulatory balance sheet is [RULE]
+**Prudential returns use a "permitted basis of accounting"** (8.4.1):
+- **IFRS** for conventional insurers, so **IFRS 17**;
+- **AAOIFI** for takaful entities.
+
+**PINS measurement rules for takaful only.** The PINS rules below are stated to apply to **takaful entities**. They override AAOIFI where they conflict (8.4.1(3)(b)):
+- reinsurance valuation (8.4.6);
+- discount rate (8.5.1: a prudent estimate of the expected asset yield);
+- premium liability and outstanding claims liability (Part 8.6);
+- long-term valuation (Part 8.7);
+- methods (Part 8.8).
+
+**For all insurers:**
+- the Authority can direct other valuation principles (8.2.4);
+- an insurer may value assets lower and liabilities higher (8.2.1-8.2.2);
+- assumption changes must hit values immediately (8.4.3);
+- buying reinsurance does not derecognise the liability (8.4.5).
+
+**Consequence [INTERP]:**
+- For a conventional QFC insurer, **the capital base starts from the IFRS 17 balance sheet**. This is unlike the UAE, where a statutory basis applies.
+- Eligible capital is IFRS 17 equity, re-tiered and with deductions. There is no separate statutory-reserve layer.
+- So IFRS 17 measurement choices move capital one-for-one, before the RBC factors:
+  - PAA vs GMM;
+  - discounting;
+  - RA confidence level;
+  - CSM;
+  - onerous-contract losses;
+  - OCI option.
+
+## 2. Equity-to-eligible-capital bridge [RULE + INTERP]
+| Step | Item | Source line (INS100 / INS600) | Notes |
+|---|---|---|---|
+| IFRS 17 total shareholders' equity | | INS100 L157 | Takaful: shareholders only. Participants' fund columns are shown separately |
+| − | **CSM and RA** | Inside insurance contract liabilities (L98) | **Not capital.** Under IFRS 17 they are liabilities. No add-back (contrast Solvency II, where future profits are own funds) |
+| − | Unverified interim profits; + interim losses already deducted | INS600 L4 / L10 | Only **auditor-verified** interim profits count (4.3.1(e)) |
+| − | Reserves not qualifying as "audited reserves" | INS600 L2 | FVOCI, insurance-finance OCI and hedging reserves: **VERIFY** treatment in the return instructions |
+| − | Own shares; **intangibles** (goodwill, software, other) | INS100 L75 → INS600 L9 | |
+| + | Qualifying tier 2 (hybrids, sub debt, fixed-term preference shares) within limits | INS100 L119 → INS600 L13-L19 | Sub debt is on the IFRS balance sheet as a liability |
+| − | Subsidiaries and associates; connected lending | INS100 L67-L70 → INS600 L21-L22 | |
+| − | **Inadmissible assets**: PP&E, DTA, DAC, non-realisable investments | INS100 L80, L83, L88 → INS600 L23 | Right-of-use assets as "tangible fixed assets": **VERIFY** |
+| − | Zakah fund (takaful) | INS100 L140 → INS600 L24 | |
+| = | **Eligible capital** | INS600 L26 | |
+
+**[INTERP] DAC under IFRS 17.** Insurance acquisition cash flows are mostly inside the LRC, not a separate DAC asset. So the DAC deduction mainly bites on:
+- deferred takaful acquisition costs (INS100 L88);
+- any separately recognised IACF asset (INS400.x column "Assets for IACF").
+
+**VERIFY** whether QFCRA expects IACF assets to be deducted.
+
+## 3. Mapping the RBC inputs to IFRS 17 balances [INTERP; VERIFY with the return instructions]
+| RBC input (Schedule 3) | Nearest IFRS 17 figure | Gap to watch |
+|---|---|---|
+| **Net premium liability** (8.6.7: value of future claims and settlement costs on in-force cover, net of expected recoveries) | LRC excluding loss component, plus loss component, less ARC | **Not the same concept.** PAA LRC = unearned premium less IACF; GMM LRC = PV future cash flows + RA + CSM. Premium liability is an expected-claims measure. Use the actuarial premium liability (UPR × expected loss and expense ratio, or GMM future outflows for remaining coverage), not the LRC carrying amount, unless the instructions say otherwise |
+| **Net outstanding claims** (8.6.8) | LIC (PV future cash flows + RA) less AIC on reinsurance held | Close match. Includes RA and discounting under IFRS 17 |
+| Reinsurance assets (asset risk) | Reinsurance contract assets (ARC + AIC), INS100 L55, by reinsurer | Split by reinsurer grade and supervision; INS340 lists the largest |
+| Unpaid premiums by age | Premium receivables inside the LRC (IFRS 17 nets them into contract balances) | Use the ageing in INS300 Layout 2 (not yet due-90 / 91-180 / 180+ days) to fill the ≤ 6 m / > 6 m buckets |
+| GWP over 12 months (ORR) | No GWP line in IFRS 17 revenue | Use INS300 (gross written by line of business, 4 quarters), not insurance revenue |
+| Gross technical provisions (ORR) | Insurance contract liabilities gross (LRC + LIC), INS100 L98 | Includes CSM and RA [INTERP] |
+| Long-term provisions | GMM/VFA LRC + LIC for long-term contracts | Whether CSM is included in the 3% base: **VERIFY** |
+| Capital at risk | Sums assured − reserves − reinsurance | Not an IFRS 17 figure; comes from policy data |
+
+[TEMPLATE] IFRS 17 disclosure forms. These are not linked to RBC; use them to cross-check:
+- **SCOPEOFFILING**: PAA / GMM / VFA in use;
+- **INS400.10-.50**: LRC/LIC roll-forwards, issued and held;
+- **INS410.x**: CSM roll-forwards;
+- **INS500/510**: by portfolio, with RA method and percentile, discount approach, coverage units, OCI option;
+- **INS520**: CSM run-off by bucket;
+- **INS530**: cash reconciliation to INS400;
+- **INS540**: new business at initial recognition.
+
+## 4. Accounting vs capital effects of common actions [INTERP]
+| Action | IFRS 17 (P&L / equity) | QFC capital |
+|---|---|---|
+| Medical QS (PAA) | Reinsurance held: allocation of premium vs recoveries in net expense from reinsurance. Ceding commission reduces the allocated premium. Equity changes only by the expected net cost | RBC falls with net liabilities (file 32 §2). Eligible capital is reduced by the expected net reinsurance cost, as reflected in IFRS equity |
+| Onerous group recognised | Loss component hits P&L at once and reduces equity | Eligible capital falls one-for-one. Premium risk is on net premium liability, which includes the deficiency |
+| Loss-recovery component on reinsurance held (66A-66B) | Offsets onerous losses on the underlying | Restores equity, so eligible capital is restored |
+| LPT / ADC with price above the ceded best estimate | Day-1 cost recognised immediately (retroactive cover; core file 00) | Eligible capital falls by the cost; outstanding-claims risk and ORR (via cap) fall |
+| Higher RA confidence level | Lower equity; RA releases later | Eligible capital falls now. Claims charge rises slightly (the base includes RA) |
+| GMM vs PAA choice | CSM defers profit | Deferred profit is not capital. GMM business typically shows lower eligible capital than PAA early in a cohort |
+| Discount-rate changes (OCI option) | P&L or OCI | Eligible capital moves, subject to how OCI reserves are tiered (VERIFY) |
+| Interim profit | In equity at the quarter end | Excluded until externally verified, so quarter-end SRR cover lags |
+| Dividend declared | Reduces equity | Reduces tier 1. Report within 15 business days. If it exceeds the year's earnings it is a tier 1 reduction needing approval (4.8.1 guidance) |
+
+
+<!-- ===== FILE: references/qa-qfc/39-qfc-source-register.md ===== -->
+
+# Qatar (QFC) layer: source register and open verification points
+
+QFC layer version 1.0, compiled 9 Nov 2026. It covers **QFCRA-authorised insurers only**. The onshore QCB regime is not loaded.
+
+## Primary sources used
+| # | Source | Date / version | Used for |
+|---|---|---|---|
+| Q1 | QFCRA Insurance Business Rules 2006 (PINS), Version 20 (file QFCRA_4538_VER20) | Effective 1 Oct 2025; includes QFCRA Rules 2024-4 and 2025-1 | Ch 1-6, 8-12; Schedule 3 (all RBC factors); glossary |
+| Q2 | QFCRA insurance prudential return workbook, structural and formula extraction (XBRL taxonomy `QFCRA_INS` 2.0.0, 2025 namespace; Q3 2026 specimen with no data) | Q3 2026 | INS600/INS610.x formulas, INS620, scope flags, disclosure-form layout, template vs rule differences (file 31 §6) |
+| Q3 | IFRS 17 Insurance Contracts, including the 2020 amendments | Effective 1 Jan 2023 | File 33 |
+| Q4 | Public reporting on QCB Governor Decision 1/2016 (Gulf Times, Peninsula, MEIR, Al Tamimi practice guide) | 2016-2026 | Perimeter note only (file 30 §1); not a rule source |
+
+## Open points to VERIFY before relying on them in client work
+1. **Return instructions.** Get the QFCRA completion guidance for the INS return. It is the likely source of:
+   - the 2 × largest-retention concentration fallback;
+   - the derivative add-on treatment;
+   - the definitions of the premium-liability and outstanding-claims inputs under IFRS 17;
+   - the treatment of OCI reserves.
+2. **FSR Schedule 3, Part 3, para 10.3.** Confirm the names of general insurance categories 3-18 behind PINS categories 2-4.
+3. **Long-term provisions.** Is the 0.5-3% charge applied gross or net of reinsurance, and does it include CSM?
+4. **Eligible capital.** How are reserves other than retained earnings treated: FVOCI, insurance finance, hedging, revaluation?
+5. **Inadmissible assets.** Are right-of-use assets "tangible fixed assets"? Are IACF assets deducted as DAC?
+6. **Reinsurance governance.** Do any QFCRA rules or notices outside PINS impose a rating floor, cession limits or finite-risk restrictions? Check CTRL, GENE, COND and the Islamic finance rules.
+7. **IAIS MMoU signatory list** on the date of use, for the supervised / unsupervised reinsurer factor.
+8. **Firm-specific SRR or MCR conditions.** Any insurer-specific SRR set under 3.3.2A(3), or an MCR imposed as a licence condition.
+9. **Which returns are in force** (annual, biannual, quarterly) per the current notice under 1.4.1.
+10. **Onshore Qatar.** Load QCB Decision 1/2016 and its solvency annexes and returns before answering for any QCB-licensed insurer.
+
+## Maintenance rule
+When a source is updated:
+- change the affected rows in files 30-33;
+- bump the layer version;
+- add the new source here with its date;
+- move resolved VERIFY items into the main text with their citation.
+
+## Load-test questions (expected answer in brackets)
+- **Q1.** A QFC LLC medical insurer has RBC of QAR 20m and eligible capital of QAR 38m. Is it compliant, and does a 30% QS help?
+  - [Yes: MCR = 36m (floor) and SRR = 30m, so the floor binds. A QS cuts RBC but creates no headroom, because the 36m floor still binds.]
+- **Q2.** What is the premium-risk factor for direct medical business, and can it be lowered?
+  - [PINS cat 1: 16% of net premium liability. Can be lowered on application with morbidity data to no less than 12% (A3.7.3).]
+- **Q3.** What does ceding to an A-rated reinsurer domiciled in a non-MMoU jurisdiction cost?
+  - [4.8% of the reinsurance asset vs 4% if supervised by a subrule (2) regulator.]
+- **Q4.** INS610 L20 is positive. Is the insurer necessarily compliant?
+  - [No. L20 is eligible − MCR. The SRR (eligible ≥ 150% × RBC) must be checked separately.]
+- **Q5.** A Qatari insurer licensed by QCB asks about its SRR.
+  - [The QFC layer does not apply; no QCB layer is loaded.]
 
 
 <!-- ===== FILE: references/templates/jurisdiction-overlay-template.md ===== -->
