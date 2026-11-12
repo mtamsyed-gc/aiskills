@@ -5,6 +5,7 @@ Skills deployed to GC's LenAI / LenWork (Customize > Skills), kept here as the s
 | Skill | Version | Coverage | LenAI status |
 |---|---|---|---|
 | `skills/insurance-capital-ifrs17` | 1.0.1 (6 Nov 2026) | Solvency regulation + IFRS 17 for insurers; UAE (CBUAE onshore) layer | Live, Private; triggers automatically (confirmed 9 Nov 2026) |
+| `skills/reinsurance-pricing-knowledge` | 1.0.0 (12 Nov 2026) | Pricing from portfolio data: what Merit extracts hold and how they feed QS / XoL pricing, projections and both parties' results; XoL pricing method and slip terms (MDP, swing, aggregate limits); KSA withholding tax and local cession. Companion to `insurance-capital-ifrs17` | Built, not yet uploaded |
 
 ## Layout
 - `skills/<name>/` – what gets uploaded: `SKILL.md` plus `references/`.
