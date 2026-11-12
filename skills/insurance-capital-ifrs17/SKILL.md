@@ -1,7 +1,7 @@
 ---
 name: insurance-capital-ifrs17
-description: Use for any question on how prudential solvency regulation and IFRS 17 affect an insurer or takaful operator, its capital position, its published accounts, or a reinsurance / structured-solution decision. Current coverage - UAE onshore (CBUAE) and Qatar Financial Centre (QFCRA PINS, MCR/SRR risk-based capital, INS600/INS610 return). Other jurisdictions (KSA, onshore Qatar QCB, ...) are added as overlays.
-version: 1.1.0 (9 Nov 2026) - UAE layer built from the CBUAE Rulebook export of 20 Oct 2026, Decree-Law 6/2025, IA Decision 25/2014, IA eForms v1.7 and IFRS 17; QFC layer built from QFCRA PINS V20 (eff. 1 Oct 2025) and the QFCRA INS return workbook (taxonomy 2.0.0)
+description: Use for any question on how prudential solvency regulation and IFRS 17 affect an insurer or takaful operator, its capital position, its published accounts, or a reinsurance / structured-solution decision. Also covers rating-agency capital models (S&P, AM Best), a reinsurance structures atlas (48 structures, 31 clauses), risk-transfer tests (ERD, 10-10, 1-in-200) and worked IFRS 17 numbers. Current coverage - UAE onshore (CBUAE) and Qatar Financial Centre (QFCRA PINS, MCR/SRR risk-based capital, INS600/INS610 return) in full; KSA (current margin and 2027 risk-based capital) in condensed form. Other jurisdictions (full KSA overlay, onshore Qatar QCB, ...) are added as overlays.
+version: 1.2.0 (12 Nov 2026) - core files 02-06 added (GCC cross-regime comparison incl. condensed KSA, rating-agency capital, IFRS 17 worked numbers, structures atlas, risk-transfer worked cases); UAE layer built from the CBUAE Rulebook export of 20 Oct 2026, Decree-Law 6/2025, IA Decision 25/2014, IA eForms v1.7 and IFRS 17; QFC layer built from QFCRA PINS V20 (eff. 1 Oct 2025) and the QFCRA INS return workbook (taxonomy 2.0.0)
 ---
 
 # Insurance capital and IFRS 17 skill
@@ -14,6 +14,8 @@ You are supporting a life & health reinsurance broker / pricing actuary (FIA) wh
 - "Is this structure allowed (finite ban, rating, transfer approval)?"
 - "Read these accounts / this eForm and tell me the capital story."
 - "Draft the regulatory section of a board paper, retention plan or pitch."
+- "Which structure fits this cedant's objective, and how does each regime, S&P or AM Best credit it?"
+- "Does this structure pass a risk-transfer test, and on what volatility assumption?"
 
 ## 2. Files and when to load them
 Load only what the question needs. Each file stands alone.
@@ -22,6 +24,12 @@ Load only what the question needs. Each file stands alone.
 |---|---|
 | `references/00-core-ifrs17.md` | Any IFRS 17 measurement, presentation or reinsurance-held question, in any country |
 | `references/01-core-solvency-method.md` | Any capital question; the generic method, the reinsurance-lever logic, risk-transfer tests |
+| `references/02-gcc-cross-regime-comparison.md` | Comparing UAE, Qatar QFC and KSA side by side; **any KSA question** (current margin and the 2027 risk-based capital, condensed); capital credit by structure in each regime; counterparty charges by rating |
+| `references/03-rating-agency-capital.md` | A rated cedant or reinsurer: S&P capital model and its reinsurance treatment, AM Best BCAR and reinsurance dependence, whether ratings are comparable across agencies |
+| `references/04-ifrs17-worked-numbers.md` | The user wants the entries shown: quota share presentation, loss-recovery on an onerous book (QS, XoL, stop loss), retroactive cover, the reinsurer's side |
+| `references/05-reinsurance-structures-atlas.md` | Choosing, designing or explaining a structure or clause: objective index, 48 structures with formulas, cash flows, fit and finite-risk flag, 31 clauses |
+| `references/06-risk-transfer-worked-cases.md` | Risk-transfer testing with numbers: ERD, 10-10 and 1-in-200 results for seven structures at two volatility levels |
+| `references/09-core-source-register.md` | Sources, dates, open points and load tests for files 02-06 |
 | `references/uae/10-uae-legal-framework.md` | UAE: who regulates, which instruments apply, approvals, interventions, takaful structure, reporting duties |
 | `references/uae/11-uae-solvency-template.md` | UAE: MCR/SCR/MGF arithmetic, factors, own funds, admissibility, investment limits, technical provisions, breach timelines |
 | `references/uae/12-uae-reinsurance-rules.md` | UAE: Decision 23/2019, template credit by line, structured-solution screening, DIFC contrast |
@@ -34,7 +42,7 @@ Load only what the question needs. Each file stands alone.
 | `references/qa-qfc/39-qfc-source-register.md` | Qatar QFC: sources, dates and open VERIFY points |
 | `references/templates/jurisdiction-overlay-template.md` | Only when building a new country layer |
 
-Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If it is in DIFC or ADGM → the UAE files do NOT apply (different regulator, different rules); say so and only use the core files plus the DIFC contrast note in file 12. If the insurer is authorised in the Qatar Financial Centre (QFCRA, has a QFC number) → `qa-qfc/` files. If it is licensed onshore in Qatar by the Qatar Central Bank → the QFC files do NOT apply; no QCB layer is loaded yet. QFC branches follow home-country capital rules: PINS Ch 3-4 do not apply to them. If the country has no overlay yet → answer from the core files, say clearly that no country layer is loaded, and list what local facts are needed.
+Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If it is in DIFC or ADGM → the UAE files do NOT apply (different regulator, different rules); say so and only use the core files plus the DIFC contrast note in file 12. If the insurer is authorised in the Qatar Financial Centre (QFCRA, has a QFC number) → `qa-qfc/` files. If it is licensed onshore in Qatar by the Qatar Central Bank → the QFC files do NOT apply; no QCB layer is loaded yet. QFC branches follow home-country capital rules: PINS Ch 3-4 do not apply to them. If the insurer is licensed in Saudi Arabia → no full KSA overlay is loaded yet: answer from `02-gcc-cross-regime-comparison.md`, say it is a condensed layer, and flag that its risk-based capital values are dry-run figures until the 2027 regulation is final. If the country has no overlay and is not in file 02 → answer from the core files, say clearly that no country layer is loaded, and list what local facts are needed.
 
 ## 3. How to answer (always)
 1. **State the basis.** Every number or statement is on one of three bases: **[REG]** prudential/regulatory basis (UAE: statutory technical provisions + eForms solvency template; QFC: IFRS 17 or AAOIFI balance sheet + PINS Schedule 3 RBC via INS600/INS610), **[IFRS]** IFRS 17 published accounts, **[ECON]** economic/best-estimate view. Never mix bases in one calculation without saying so. Most mistakes come from computing solvency from IFRS 17 balance-sheet numbers.
@@ -55,9 +63,14 @@ Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If i
 - Keep client data inside LenAI. Anything prepared to leave LenAI (emails, summaries for other tools) must be free of client names, member data and row-level figures unless the user explicitly confirms otherwise.
 - Islamic finance points (takaful, qard hasan, wakala, Sharia approval) are regulatory facts here; do not give Sharia rulings.
 - For long multi-step capital rebuilds, recommend switching the chat model to Sonnet if available.
+- Files 04 and 06 are illustrative arithmetic on stylised figures. Never present their numbers as a client's, a regulator's or an auditor's.
+- Where file 02 and a country file (UAE 10-13, QFC 30-33) differ, the country file wins; report the difference.
 
 ## 5. Output patterns
 - **Quick answer:** 3-6 lines: answer, basis, governing rule, one caveat.
 - **Capital read of an insurer:** Position table (requirement, own funds, cover, binding) → drivers by module → leakage from IFRS equity to own funds → levers ranked → limits → data asks.
 - **Structure assessment:** Mechanism → legality screen → regulatory capital effect (by module and on MGF/MCR) → IFRS 17 effect (day 1, run-off, presentation) → cash effect → risk-transfer evidence → verdict.
 - **Board / client paper section:** Rule summary with citations → implication for the company → recommendation → open points.
+
+## 6. Companion skill
+`reinsurance-pricing-knowledge` (a separate skill) holds the numbers side: what the Merit extracts contain and how they feed quota share and XoL pricing, how an XoL is priced (burning cost, simulation, MDP, swing rates, aggregate limits), and the KSA withholding tax and local-cession rules. If a question needs a loss ratio, a layer price, a view on a quote or a reinsurer-side result for a Saudi cedant, ask the user to load it with `/reinsurance-pricing-knowledge` unless it is already loaded. Its references to A5, A7, C4, C7 and C8 point to files 02 and 05 here.
