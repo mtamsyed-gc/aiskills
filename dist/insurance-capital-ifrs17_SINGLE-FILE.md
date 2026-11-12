@@ -1,7 +1,7 @@
 ---
 name: insurance-capital-ifrs17
-description: Use for any question on how prudential solvency regulation and IFRS 17 affect an insurer or takaful operator, its capital position, its published accounts, or a reinsurance / structured-solution decision. Current coverage - UAE onshore (CBUAE) and Qatar Financial Centre (QFCRA PINS, MCR/SRR risk-based capital, INS600/INS610 return). Other jurisdictions (KSA, onshore Qatar QCB, ...) are added as overlays.
-version: 1.1.0 (9 Nov 2026) - UAE layer built from the CBUAE Rulebook export of 20 Oct 2026, Decree-Law 6/2025, IA Decision 25/2014, IA eForms v1.7 and IFRS 17; QFC layer built from QFCRA PINS V20 (eff. 1 Oct 2025) and the QFCRA INS return workbook (taxonomy 2.0.0)
+description: Use for any question on how prudential solvency regulation and IFRS 17 affect an insurer or takaful operator, its capital position, its published accounts, or a reinsurance / structured-solution decision. Also covers rating-agency capital models (S&P, AM Best), a reinsurance structures atlas (48 structures, 31 clauses), risk-transfer tests (ERD, 10-10, 1-in-200) and worked IFRS 17 numbers. Current coverage - UAE onshore (CBUAE) and Qatar Financial Centre (QFCRA PINS, MCR/SRR risk-based capital, INS600/INS610 return) in full; KSA (current margin and 2027 risk-based capital) in condensed form. Other jurisdictions (full KSA overlay, onshore Qatar QCB, ...) are added as overlays.
+version: 1.2.0 (12 Nov 2026) - core files 02-06 added (GCC cross-regime comparison incl. condensed KSA, rating-agency capital, IFRS 17 worked numbers, structures atlas, risk-transfer worked cases); UAE layer built from the CBUAE Rulebook export of 20 Oct 2026, Decree-Law 6/2025, IA Decision 25/2014, IA eForms v1.7 and IFRS 17; QFC layer built from QFCRA PINS V20 (eff. 1 Oct 2025) and the QFCRA INS return workbook (taxonomy 2.0.0)
 ---
 
 # Insurance capital and IFRS 17 skill
@@ -14,6 +14,8 @@ You are supporting a life & health reinsurance broker / pricing actuary (FIA) wh
 - "Is this structure allowed (finite ban, rating, transfer approval)?"
 - "Read these accounts / this eForm and tell me the capital story."
 - "Draft the regulatory section of a board paper, retention plan or pitch."
+- "Which structure fits this cedant's objective, and how does each regime, S&P or AM Best credit it?"
+- "Does this structure pass a risk-transfer test, and on what volatility assumption?"
 
 ## 2. Files and when to load them
 Load only what the question needs. Each file stands alone.
@@ -22,6 +24,12 @@ Load only what the question needs. Each file stands alone.
 |---|---|
 | `references/00-core-ifrs17.md` | Any IFRS 17 measurement, presentation or reinsurance-held question, in any country |
 | `references/01-core-solvency-method.md` | Any capital question; the generic method, the reinsurance-lever logic, risk-transfer tests |
+| `references/02-gcc-cross-regime-comparison.md` | Comparing UAE, Qatar QFC and KSA side by side; **any KSA question** (current margin and the 2027 risk-based capital, condensed); capital credit by structure in each regime; counterparty charges by rating |
+| `references/03-rating-agency-capital.md` | A rated cedant or reinsurer: S&P capital model and its reinsurance treatment, AM Best BCAR and reinsurance dependence, whether ratings are comparable across agencies |
+| `references/04-ifrs17-worked-numbers.md` | The user wants the entries shown: quota share presentation, loss-recovery on an onerous book (QS, XoL, stop loss), retroactive cover, the reinsurer's side |
+| `references/05-reinsurance-structures-atlas.md` | Choosing, designing or explaining a structure or clause: objective index, 48 structures with formulas, cash flows, fit and finite-risk flag, 31 clauses |
+| `references/06-risk-transfer-worked-cases.md` | Risk-transfer testing with numbers: ERD, 10-10 and 1-in-200 results for seven structures at two volatility levels |
+| `references/09-core-source-register.md` | Sources, dates, open points and load tests for files 02-06 |
 | `references/uae/10-uae-legal-framework.md` | UAE: who regulates, which instruments apply, approvals, interventions, takaful structure, reporting duties |
 | `references/uae/11-uae-solvency-template.md` | UAE: MCR/SCR/MGF arithmetic, factors, own funds, admissibility, investment limits, technical provisions, breach timelines |
 | `references/uae/12-uae-reinsurance-rules.md` | UAE: Decision 23/2019, template credit by line, structured-solution screening, DIFC contrast |
@@ -34,7 +42,7 @@ Load only what the question needs. Each file stands alone.
 | `references/qa-qfc/39-qfc-source-register.md` | Qatar QFC: sources, dates and open VERIFY points |
 | `references/templates/jurisdiction-overlay-template.md` | Only when building a new country layer |
 
-Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If it is in DIFC or ADGM → the UAE files do NOT apply (different regulator, different rules); say so and only use the core files plus the DIFC contrast note in file 12. If the insurer is authorised in the Qatar Financial Centre (QFCRA, has a QFC number) → `qa-qfc/` files. If it is licensed onshore in Qatar by the Qatar Central Bank → the QFC files do NOT apply; no QCB layer is loaded yet. QFC branches follow home-country capital rules: PINS Ch 3-4 do not apply to them. If the country has no overlay yet → answer from the core files, say clearly that no country layer is loaded, and list what local facts are needed.
+Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If it is in DIFC or ADGM → the UAE files do NOT apply (different regulator, different rules); say so and only use the core files plus the DIFC contrast note in file 12. If the insurer is authorised in the Qatar Financial Centre (QFCRA, has a QFC number) → `qa-qfc/` files. If it is licensed onshore in Qatar by the Qatar Central Bank → the QFC files do NOT apply; no QCB layer is loaded yet. QFC branches follow home-country capital rules: PINS Ch 3-4 do not apply to them. If the insurer is licensed in Saudi Arabia → no full KSA overlay is loaded yet: answer from `02-gcc-cross-regime-comparison.md`, say it is a condensed layer, and flag that its risk-based capital values are dry-run figures until the 2027 regulation is final. If the country has no overlay and is not in file 02 → answer from the core files, say clearly that no country layer is loaded, and list what local facts are needed.
 
 ## 3. How to answer (always)
 1. **State the basis.** Every number or statement is on one of three bases: **[REG]** prudential/regulatory basis (UAE: statutory technical provisions + eForms solvency template; QFC: IFRS 17 or AAOIFI balance sheet + PINS Schedule 3 RBC via INS600/INS610), **[IFRS]** IFRS 17 published accounts, **[ECON]** economic/best-estimate view. Never mix bases in one calculation without saying so. Most mistakes come from computing solvency from IFRS 17 balance-sheet numbers.
@@ -55,12 +63,17 @@ Jurisdiction routing: if the insurer is licensed onshore UAE → UAE files. If i
 - Keep client data inside LenAI. Anything prepared to leave LenAI (emails, summaries for other tools) must be free of client names, member data and row-level figures unless the user explicitly confirms otherwise.
 - Islamic finance points (takaful, qard hasan, wakala, Sharia approval) are regulatory facts here; do not give Sharia rulings.
 - For long multi-step capital rebuilds, recommend switching the chat model to Sonnet if available.
+- Files 04 and 06 are illustrative arithmetic on stylised figures. Never present their numbers as a client's, a regulator's or an auditor's.
+- Where file 02 and a country file (UAE 10-13, QFC 30-33) differ, the country file wins; report the difference.
 
 ## 5. Output patterns
 - **Quick answer:** 3-6 lines: answer, basis, governing rule, one caveat.
 - **Capital read of an insurer:** Position table (requirement, own funds, cover, binding) → drivers by module → leakage from IFRS equity to own funds → levers ranked → limits → data asks.
 - **Structure assessment:** Mechanism → legality screen → regulatory capital effect (by module and on MGF/MCR) → IFRS 17 effect (day 1, run-off, presentation) → cash effect → risk-transfer evidence → verdict.
 - **Board / client paper section:** Rule summary with citations → implication for the company → recommendation → open points.
+
+## 6. Companion skill
+`reinsurance-pricing-knowledge` (a separate skill) holds the numbers side: what the Merit extracts contain and how they feed quota share and XoL pricing, how an XoL is priced (burning cost, simulation, MDP, swing rates, aggregate limits), and the KSA withholding tax and local-cession rules. If a question needs a loss ratio, a layer price, a view on a quote or a reinsurer-side result for a Saudi cedant, ask the user to load it with `/reinsurance-pricing-knowledge` unless it is already loaded. Its references to A5, A7, C4, C7 and C8 point to files 02 and 05 here.
 
 
 <!-- ===== FILE: references/00-core-ifrs17.md ===== -->
@@ -332,6 +345,539 @@ Generic form: capital = volume (gross) × max(net/gross, floor) × factor.
 2. What it means for this company, with numbers.
 3. Decision options.
 4. Open points.
+
+
+<!-- ===== FILE: references/02-gcc-cross-regime-comparison.md ===== -->
+
+# Core: GCC regimes side by side - UAE, Qatar QFC, KSA today and KSA risk-based capital (condensed)
+
+Use this file to compare regimes, to answer a KSA question (no full KSA overlay is loaded yet: this file is the only KSA content, and it is condensed), and to see how each regime credits each reinsurance structure. For UAE or QFC detail, the country files (10-13, 30-33) are the authority; where this file and a country file differ, the country file wins and the difference should be reported.
+
+Section codes A0-A9 are used by the other files of this skill.
+
+Source: the owner's working file "GCC Solvency Master File: KSA, Qatar (QFC) and UAE" (12 Nov 2026), condensed. The master file itself is not part of this skill: where a table is needed in full, ask for it. Tags: [RULE] law or rulebook; [TEMPLATE] regulator workbook; [DRY RUN] KSA-RBC SCA.04 (YE2025, 5th dry run), parameters can still change; [INTERP] interpretation; VERIFY = check the primary document. This is analysis, not legal advice.
+Not covered: DIFC, ADGM, and onshore Qatar under QCB. Never apply QFC rules to a QCB-licensed insurer.
+Factor levels are not comparable across regimes because each uses a different base: UAE gross premium x net/gross floor; QFC net liabilities; KSA-now NWP or 3-year average claims; KSA-RBC NEP and net reserves.
+
+### A0 Regimes and what binds
+| | UAE | QFC | KSA-now | KSA-RBC |
+|---|---|---|---|---|
+| Instrument | IA Decision 25/2014 S2 (takaful 26/2014); eForms v1.7; Decree-Law 6/2025 | PINS v20 (1 Oct 2025), Sch 3 | Implementing Regs Arts 63-68; ends 31 Dec 2026 | SCA.04 template; mandatory 1 Jan 2027 |
+| Type | Modular, correlated, factor-based; 99.5% VaR | Factor sum, no diversification | Solvency I volume margin | Modular, 17 correlation matrices, stress and scenarios; 99.5% |
+| Floor | MCR AED 100m (reinsurer AED 250m), met from BOF only | QAR 36m (LLC); nil for branches | SAR 100m / 200m; SAR 300m in practice | Planned, amount not published |
+| Tests | max(MCR, MGF, SCR) | Capital >= max(QAR 36m, RBC) and >= 150% RBC | max(min capital, premium or claims margin) | RBC; ratio not yet prescribed |
+| Liability basis | Statutory provisions | IFRS 17 (AAOIFI for takaful) | Statutory forms | IFRS 17; RA and CSM stripped from exposures and added to capital |
+| Reinsurance credit | Net/gross with floors (50 / 25 / 85%) | Net, no floor | Net, floored at 50% of gross | Net, no floor |
+
+What binds [INTERP]:
+- **UAE:**
+  - MCR binds for small or loss-making companies; reinsurance and LoCs do not help.
+  - MGF (26% of NEP) binds for high-retention health and motor writers.
+  - SCR binds where asset risk is heavy or cession is already high.
+- **QFC:** the QAR 36m floor binds until RBC exceeds QAR 24m. Above that the 150% test binds, so each 1 of RBC removed frees 1.5. Breaching the minimum stops new business; breaching 150% needs a board plan.
+- **KSA-now:** the claims margin binds above a net loss ratio of health 67%, motor 80%, fire 80%, liability 86%, other 53% (premium/claims factors: health 16/24, motor 20/25, fire 16/20, liability 30/35, EMAE 30/30, other 16/30, inward 30/30). Only the premium method applies in the first 3 years.
+- **KSA-RBC:** sector RBC is about 30-41% of NEP, with premium risk the top risk. YE2024 ratio was 182% under RBC against 206% under the current rules.
+
+### A1 Capital resources
+- **UAE:**
+  - BOF = admissible assets less liabilities. Approved subordinated items count in BOF up to the MCR shortfall; the excess goes to AOF at 50%.
+  - **Only UAE:** AOF (LoCs, guarantees, uncalled capital) count 50% toward SCR and MGF, 0% toward MCR.
+  - DAC is nil (except first-year long-term life). Negative IBNR is never admissible.
+  - Reinsurance receivables age from invoice date: UAE reinsurers 100% to 180 days, then 75 / 50 / 0%; foreign reinsurers 100% to 90 days, then 75 / 50 / 25 / 0%.
+  - Dividends need CBUAE no-objection.
+- **QFC:**
+  - Tiers: T1, UT2 (perpetual hybrids), LT2 (sub debt of at least 5 years, no step-up in the first 5, amortised 20% a year over the last 4; LT2 <= 50% of net T1; total T2 <= 100%).
+  - CSM and RA are liabilities, not capital. LoCs are not capital. DAC, DTA, fixed assets and subsidiaries are deducted. Interim profits count only once auditor-verified.
+- **KSA-now:** net admissible assets by fund; Table 2 admission limits.
+- **KSA-RBC:**
+  - Available capital = Own Funds + net RA + net CSM.
+  - Admissibility has no effect on RBC.
+  - Sub debt expected to be eligible (IA, Apr 2026).
+  - Tiering not published.
+- **Instruments [INTERP]:** a reinsurer LoC helps only in the UAE (SCR and MGF). A sub loan works today only in QFC (LT2) and is expected in KSA from 2027.
+
+### A2 Health and non-life underwriting (premium % / reserve %)
+Methods:
+- UAE: gross x max(net/gross, floor). Premium and reserve combined at 0.5, health segments at 0.5.
+- QFC: net premium liability / net OS claims, simple sum.
+- KSA-now: NWP / 3-year average net incurred claims, higher of the two.
+- KSA-RBC: NEP / net discounted reserves at 0.75; geographic factor 0.75 + 0.25 x concentration.
+
+| Line | UAE (floor) | QFC | KSA-now | KSA-RBC |
+|---|---|---|---|---|
+| Medical | 5 / 5 (50%) | 16 / 11 (12 / 8 on application) | 16 / 24 | 13 / 15 |
+| Personal accident | 5 / 5 | 16 / 11 | 16 / 30 | 31 / 26 |
+| Motor own damage / comprehensive | 8 / 8 | 13 / 9 | 20 / 25 | 18 / 19 (mixed book) |
+| Motor TPL / compulsory | 10 / 9 | 21 / 14 | 20 / 25 | 31 / 23 |
+| Property / fire | 8-10 / 10-12 (50%) | 16 / 11 | 16 / 20 | 29.5 / 22.5 |
+| Engineering, energy | 17 / 16 (25%) | 16 / 11 | 30 / 30 | 27 / 20; energy 29.5 / 22.5 |
+| Marine, aviation | 15 / 11 (25%) | 16 / 11 (hull), 21 / 14 (liability) | 30 / 30 | 45 / 24 |
+| Liability | 8-10 / 11 (50%) | 21 / 14 | 30 / 35 | 31 / 26 |
+| Group life / credit life, 1 year | 2 / 1 (85%), life module | long-term component (VERIFY) | Art 67 | **43 / 24**, non-life module |
+| Inward non-proportional | 15-17 / 20 | 18-26 / 12-17 | 30 / 30 | 51 / 60 |
+
+Other line features:
+- **Only UAE:** lapse risk on short-term business = 40% x expected future profit (profit ratio capped at 25%).
+- **Only KSA-RBC:** reinstatement premiums and sliding-scale commission are added to the loss.
+- **UAE MGF (SM-6)** is on NEP:
+  - 26% (min AED 3m): personal lines, medical, PA
+  - 31% (AED 5m): commercial fire, marine, commercial motor, inward non-proportional
+  - 36% (AED 7m): aviation, engineering, energy
+  - life on net sum at risk: 0.2% (group life <= 1 year), 0.25%, 0.4%
+  - Build: the lower of (sum by line with minimums) and (total NEP x weighted factor of the top 5 lines). MGF = max(non-life + life, SCR/3). VERIFY the units of the minimums.
+  - MGF rewards cession with no floor.
+
+### A3 Life
+- **Short-term group life:**
+  - UAE: credit stops after 15% ceded (85% floor); cat 2% of NWP; MGF 0.2% of net sum at risk.
+  - QFC: 3% of provisions + 0.1% CaR + 0.05% mortality CaR; full credit.
+  - KSA-now: 4% of provisions + 0.1% group CaR; credit capped at 50% of CaR.
+  - KSA-RBC: 43% NEP, 24% reserves; pandemic 0.06% x life-years x average SaR; full credit.
+  - [INTERP] Group life QS is worth far more in KSA from 2027.
+- **Long-term life:**
+  - UAE: seven shocks on net provisions (mortality +15%, longevity -20%, morbidity +35% then +25%, lapse +/-50% or 40% mass, expense +10% and +1 pt inflation, revision +3%, cat +0.15 pts); full credit.
+  - QFC: 3% of provisions + 0.15% CaR; unit-linked 0.5% (1.25% with guarantee).
+  - KSA-now: 4% of provisions + 0.3% individual CaR; credit capped at 50%. Art 20 bars reinsuring the investment element of savings contracts.
+  - KSA-RBC: mortality +15%, morbidity +20%, lapse +/-5 pts or 40% mass, expense +1 pt; **no longevity stress**.
+
+### A4 Catastrophe
+- **UAE:** factor x NWP by location of risk; cat XoL barely counts.
+  - Health: UAE 4%, GCC 4.6%, MENA 6.2%, rest of world 8%.
+  - Group life: UAE 2% up to 4%.
+  - Non-life: UAE 4%, GCC 3.8%, MENA 4.7%, rest of world 6.5%.
+- **QFC:** maximum event retention at 1-in-250 or longer + one reinstatement. With no cat cover, the template charges 2 x the largest per-risk retention. Cat XoL gets direct credit.
+- **KSA-RBC:** named scenarios on sums insured, combined by root sum of squares. Recoveries are deducted scenario by scenario, reinstatement premiums added back, and the reinsurer default charge applies at half the rating factor on cat recoveries.
+  - Medical pandemic is about SAR 2 per life (negligible).
+  - Property fire takes 100% of the largest treaty risk; flood uses ground-floor sums insured.
+- **KSA-now:** no cat charge.
+
+### A5 Counterparty (charge per 100 of reinsurance exposure)
+| Rating | UAE | QFC (recognised regulator / other) | KSA-now | KSA-RBC |
+|---|---|---|---|---|
+| AAA | 0.001 | 1.0 / 1.2 | 0 | 1.5 |
+| AA | 0.005 | 2.0 / 2.4 | 0 | 1.5 |
+| A | 0.025 | 4.0 / 4.8 | 0 | 5.0 |
+| BBB | 0.12 | 6.0 / 7.2 | 0 | 5.0 |
+| BB or below / unrated | 0.6-2.09 | 8 / 9.6 (unrated 6 / 7.2) | 0 | 50 |
+
+- **UAE:** exposure is 50% of recoverables; 80% of collateral is deducted. Premium receivables are charged 15% under 3 months, 90% beyond.
+- **QFC:** +20% surcharge where the reinsurer's regulator is not recognised. A split rating takes the highest charge.
+- **KSA-RBC:**
+  - exposure = ceded provisions net of RA + pipeline claims + commission - ECL
+  - collateral is deducted from the loss
+  - counterparties correlated at 0.25
+  - cliff at BBB (5) vs BB or unrated (50)
+  - broker receivables charged 15 / 45 / 90% against 3.75 / 7.5 / 15% for policyholders and TPAs
+- [INTERP] In QFC and KSA-RBC, ceding 100 to an A-rated reinsurer adds back about 4-5. In the UAE the rating barely matters above BBB. Unrated regional capacity is about 10x costlier in KSA-RBC.
+
+### A6 Operational and market (headline only)
+- **Operational:**
+  - UAE: max(5% GEP, 3% TP non-life and health / 0.5% life), capped at 30% BSCR; growth load above 20%.
+  - QFC: max(2% GWP, 2% TP), capped at 15/85 of other risks.
+  - KSA-RBC: max(3% GEP, 3% TP) non-life; 4% / 0.45% life; capped at 30% BRSCR; x0.95-1.05 cyber score.
+  - All are on gross volumes. Cession only cuts operational risk once the cap binds.
+- **Market:**
+  - Listed equity: UAE 20%, QFC 16%, KSA TASI 27%, OECD 46.9%.
+  - Currency: UAE RoW 10%; QFC none; KSA non-pegged 25%.
+  - QFC has no interest-rate, FX or concentration charge.
+- **UAE localisation:** assets matching reserves held in the UAE; at least 5% in UAE banks.
+
+### A7 Reinsurance rules and capital credit by structure
+Cession rules:
+- **Rating:** UAE S&P BBB on a full rating (Decision 23/2019). KSA BBB / AM Best B+, approval if lower. QFC: no rule, rating drives the charge.
+- **Finite reinsurance:** prohibited in UAE (Art 25) and KSA (2010 Reinsurance Regulation Art 19; carry-over into the 2027 regulations not confirmed). Not addressed in QFC PINS (VERIFY other modules).
+- **Retention:** KSA retain >= 30% of total premium (Art 40).
+- **Local cession:** KSA 30% first refusal to local reinsurers (from 1 Jan 2025). Mechanics and WHT: skill `reinsurance-pricing-knowledge`, Part F.
+- **Registration:** KSA foreign reinsurers on the IA platform. KSA gearing: approval if GWP > 10x capital and reserves (Art 48).
+- **UAE only:** 0.5% provision on ceded premium each year, accumulating (Art 34); inward <= 49% of premium; 3-year board reinsurance plan; prior approval for liability transfers (CB Law Art 125).
+- **KSA reporting:** profit and loss sharing, caps, swing rates and reinstatements reported; annual strategy filed by 30 April.
+
+| Structure | UAE | QFC | KSA-now | KSA-RBC |
+|---|---|---|---|---|
+| Medical / general QS | SCR to 50% retained (25% MAEE); MGF keeps falling | Full; asset charge 1-9.6% | Premium margin to 50% floor; claims margin lags | Full; default charge 1.5-50% |
+| Group life QS | First 15% only | Full | Up to 50% of CaR | Full |
+| Per-risk / cat XoL | About nil | Via MER (or 2 x retention) | Nil | Direct, by scenario |
+| Stop loss / aggregate | About nil | Expected recoveries only | Nil | No explicit credit (VERIFY guidance manual) |
+| Sliding-scale commission | No effect | Via IFRS 17 | No effect | **Increases** the charge |
+| LPT / ADC | Net reserve with floor; Art 125 approval | Net claims fall | Slow (3-year average) | Net reserves fall; counterparty rises |
+| Long-term coinsurance | Full (net shocks) | CaR falls | Capped at 50% | Net BEL |
+| Fronting | As if 50% retained | Near nil plus floor and recoverable charge | As if 50% retained; breaches 30% retention | Near nil plus full counterparty charge |
+| Collateral / funds withheld | 80% off exposure | Collateral's own factor | n/a | Off the loss |
+| LoC | 50% for SCR and MGF | Not capital | Not capital | Not published |
+
+Screening order [INTERP]:
+1. Legality: finite ban, rating, registration, approvals.
+2. The binding test.
+3. Floors and caps.
+4. Counterparty cost.
+5. The IFRS 17 effect (QFC and KSA-RBC start from IFRS 17).
+
+### A8 Governance and takaful
+- **Breach:**
+  - UAE: plan in 30 days; SCR/MCR compliance in 6 months, MGF in 3; reports every 30 days.
+  - QFC: below the minimum, stop new business; below 150%, an action plan.
+  - KSA-now ladder: 75-100% restore by next quarter; 50-75% corrective plan; 25-50% regulator measures; below 25% adviser or cease. KSA-RBC ladder not published.
+  - KSA also has Companies Law triggers at 50% accumulated losses.
+- **Reporting:** UAE quarterly within 45 days. QFC within 1 month. KSA monthly within 15 working days, with 4-year RBC projections.
+- **Takaful:**
+  - UAE: qard hasan up to shareholders' equity within 15 days; reinsurance commission belongs to the fund; retakaful first.
+  - QFC: no loans from a takaful fund.
+  - KSA: all insurers are cooperative; VERIFY the Art 70 surplus split.
+
+### A9 Illustrative medical book (per 100 GWP, A-rated reinsurer)
+At nil cession:
+- UAE MGF 26
+- KSA-now / KSA-RBC 18-19
+- QFC (x150%) about 15
+- UAE SCR (underwriting only) about 12
+
+UAE SCR and KSA-now flatten at 50% ceded. MGF, QFC and KSA-RBC keep falling (KSA-RBC 7.9 at 70% ceded against 9.6 under KSA-now). For each unit ceded, QFC gives back over a quarter of the relief through the reinsurance asset charge.
+
+Open items: KSA-RBC tiering, ratio, ladder and MCR; KSA-RBC treatment of stop loss; whether eForms v1.7 is the version currently filed; QFC category mapping and group life classification. Re-date on any source change. On 1 Jan 2027, retire the KSA-now columns and replace [DRY RUN] values with the final regulation.
+
+
+<!-- ===== FILE: references/03-rating-agency-capital.md ===== -->
+
+# Core: rating-agency capital view - S&P, AM Best, and rating comparability
+
+Use when the cedant is rated or wants a rating, when a reinsurer's rating matters to credit or to a regulatory minimum, or when a structure's value depends on the agency's model and not the regulator's.
+
+### A10 Rating-agency capital view (S&P, AM Best)
+Sources, read 12 Nov 2026: S&P Global Ratings, "Insurer Risk-Based Capital Adequacy: Methodology And Assumptions" (15 Nov 2023, republished 22 Jan 2025); AM Best, "Best's Credit Rating Methodology" (29 Aug 2024); Fitch Ratings white paper "Not All Insurer Financial Strength Ratings Are Created Equal" (July 2016). Condensed: open the documents for the full tables. Not covered: Moody's and Fitch's own insurance methodologies; AM Best's separate BCAR criteria (risk factors by line); the S&P insurer rating methodology that turns the capital result into a score.
+
+Why it belongs here: a rated cedant, or one seeking a rating, can be bound by the agency's capital model before the regulator's. Reinsurer ratings also set the regulatory minimums (file 02, A7) and counterparty charges (file 02, A5).
+
+**S&P capital model**
+- Compares total adjusted capital (TAC) with risk-based requirements at four one-year VaR levels: 99.5% (moderate stress), 99.8% (substantial), 99.95% (severe), 99.99% (extreme).
+- TAC starts from common equity on IFRS or GAAP accounts (statutory where those are all there is): less intangibles, treasury shares and unaccrued dividends; adjusted for unrealised gains and for reserve surpluses or deficits against S&P's best-estimate view; plus hybrid and debt-funded capital within tolerance limits; less non-insurance and unconsolidated insurance subsidiaries.
+- Requirement = sum of risk charges less explicit diversification (variance-covariance at three levels). The diversification amount is cut by 10 / 20 / 30% at the three higher stress levels. No credit for geographic spread.
+- **Reinsurance is recognised by charging exposures net of reinsurance, with no floor** (contrast the UAE and KSA-now 50% floors).
+
+| Item | Base | Charge |
+|---|---|---|
+| Premium risk, health and medical expense, EMEA risks | Net written premium (net unearned premium if higher) | 10% at 99.5%; 12 / 14 / 16.5% at the higher levels |
+| Reserve risk, health and medical expense, EMEA risks | Adjusted net loss reserves | 10% at 99.5%; 12 / 14 / 16.5% |
+| Other levels, premium and reserve risk generally | | 1.2x, 1.4x, 1.65x the 99.5% charge |
+| Non-proportional reinsurance written (a reinsurer's inward book) | Same bases | 1.25x the premium and reserve charges |
+| Reinsurer counterparty | Reinsurers' share of outstanding loss reserves, and reinsurance receivables | At 99.5%: AAA 0.28, AA 0.73, A 0.99, BBB 2.03, BB 4.84, B 7.48, CCC 35.18. At 99.99%: 0.52, 1.38, 1.89, 3.86, 9.19, 14.21, 58.0 |
+| Unrated reinsurer | | Treated as 'B'; 'CCC' if payment looks vulnerable |
+| Collateral | Letters of credit from a secure institution, reinsurance deposits, trust assets | Offsets the counterparty charge, up to 100% |
+| Natural catastrophe | Net aggregate 1-in-200 loss at 99.5%, after reinsurance and cat bonds, with reinstatement premiums | Plus a contingent credit charge on the recoveries |
+| Pandemic (life) | Net amount at risk | 0.058% at 99.5% to 0.084% at 99.99% |
+
+- Per-person XoL, stop loss and other non-proportional covers outside natural catastrophe are not in the standard charges. They count through lower net premium and reserves, or through a company-specific adjustment, which S&P makes only when material (for example a change of more than 5% in the total requirement) and sustainable.
+- Reading for structures [INTERP]:
+  - A QS cuts the S&P requirement in line with the cession, at a counterparty cost of about 1-2% of ceded reserves for A to BBB reinsurers.
+  - Unrated local capacity is charged as 'B' (7.48% at 99.5%) unless collateralised: milder than the KSA-RBC cliff (file 02, A5) but still several times an A-rated line.
+  - A stop loss or corridor needs a case put to the analyst; it does not flow through the factors.
+
+**AM Best**
+- Building blocks, in order: balance sheet strength sets a baseline; then operating performance (+2 to -3 notches), business profile (+2 to -2), enterprise risk management (+1 to -3 or -4), a comprehensive adjustment (up to 1 notch either way), and lift or drag from the wider group (typically 1 to 4 notches).
+- BCAR = (available capital - net required capital) / available capital x 100, run at VaR 95, 99, 99.5 and 99.6.
+
+| BCAR | Assessment |
+|---|---|
+| Above 25 at 99.6 | Strongest |
+| Above 10 at 99.6 | Very strong |
+| Above 0 at 99.5 | Strong |
+| Above 0 at 99 | Adequate |
+| Above 0 at 95 | Weak |
+| 0 or below at 95 | Very weak |
+
+- BCAR is not tied directly to a rating; a stable BCAR over time is viewed better than a volatile one.
+- The baseline comes from balance sheet strength and the country risk tier (CRT-1 least risk to CRT-5). In CRT-1 and CRT-2: Strongest a+/a, Very strong a/a-, Strong a-/bbb+, Adequate bbb+ to bbb-. CRT-3 to CRT-5 pull each row down, by about one notch per tier. The tier of each GCC country is not in this document: check AM Best's country risk reports.
+- Reinsurance is judged beyond its effect on BCAR, on three points: quality of the reinsurers, appropriateness of the programme, and dependence.
+  - Relying on reinsurance for losses at high return periods is viewed less favourably than holding capital for them; AM Best likens heavy dependence to short-term debt, exposed to price and availability.
+  - Ceded probable maximum loss relative to surplus is the dependence measure; above an acceptable level the balance sheet assessment is lowered.
+  - Concentration of recoverables in a few reinsurers is weighed qualitatively. The ERM review also covers counterparty, dispute, programme-design and collateral risk.
+- Reading for structures [INTERP]: a large QS can lift BCAR and still draw a dependence mark-down. For an AM Best-rated cedant, present the cession with panel quality, spread and permanence (multi-year terms, long relationships), not as replacement capital.
+- AM Best financial strength rating to its own issuer credit scale: A++ = aaa, aa+; A+ = aa, aa-; A = a+, a; A- = a-; B++ = bbb+, bbb; B+ = bbb-; B = bb+, bb; B- = bb-. So a rule that accepts "AM Best B+" (KSA: file 02, A7) accepts bbb- on AM Best's own scale.
+
+**Are ratings equal across agencies? (Fitch white paper, July 2016)**
+- Fitch's claim: an AM Best A- is most comparable with BBB from Fitch, Moody's or S&P. It points to newly formed companies, insurers in high-country-risk states, captives and small insurers.
+- Its evidence: AM Best reports a 10-year cumulative impairment rate of 5-6% for A and A- combined (Fitch extrapolates about 7% for A- alone), against about 2% 10-year default for Fitch's own A-.
+- Caveats: this is one agency's view of a competitor and is dated; impairment is a wider event than default, as Fitch itself says; AM Best's reply is not in the file.
+- Use [INTERP]: do not treat the same letter from different agencies as the same security. Where a treaty, a security list or a regulation names a minimum rating, state which agency's rating each reinsurer on the panel holds.
+
+
+<!-- ===== FILE: references/04-ifrs17-worked-numbers.md ===== -->
+
+# Core: IFRS 17 worked numbers for reinsurance held and issued
+
+Use with `00-core-ifrs17.md` when a user wants to see the entries: where each line goes, the loss-recovery offset on an onerous book, retroactive cover, and the reinsurer's side of the same treaty.
+
+### B5 Worked numbers
+Source: the IFRS 17 rules in `00-core-ifrs17.md` (paragraphs cited), applied 12 Nov 2026 to stylised figures. Illustrative arithmetic, not a client and not an accounting opinion. Per 100 of gross premium, one-year medical cover under the PAA unless stated, experience as expected, no discounting, RA ignored. QS = 50% with a 10% ceding commission that does not depend on claims, unless stated.
+
+**Case 1. Profitable book with a QS: where each line goes (82, 86).** Claims 80, expenses 12.
+| Line | Amount | Rule |
+|---|---|---|
+| Insurance revenue | 100 | Ceded premium is never netted against it (86) |
+| Insurance service expenses | -92 | Claims 80 + expenses 12 |
+| Insurance service result | 8 | |
+| Allocation of reinsurance premium | -45 | Ceded 50 less commission 5: non-contingent commission reduces the premium (86) |
+| Recoveries | +40 | 50% x 80 |
+| Net result from reinsurance held | -5 | Shown separately (82) |
+| Net | 3 | Check: retained margin 10 + commission 5 - expenses 12 |
+- Same book with a sliding scale paying 15% in total, of which 5% is a guaranteed minimum: the minimum (2.5) reduces the premium to 47.5; the claim-dependent part (5.0) sits with recoveries, 45. Net reinsurance result -2.5, net 5.5. The split changes the two lines, not the total.
+- Upfront commission on ceded unearned premium (surplus relief): statutory own funds rise on day 1 where DAC is nil; under IFRS 17 it is part of the reinsurance premium allocated over the cover, so day-1 equity moves by nil.
+
+**Case 2. Onerous book with a QS: the loss-recovery offset (57-58, 66A, 70A, B119C-F).** Claims 98, expenses 10. Fulfilment cash flows for remaining cover 108 exceed the PAA liability 100, so a loss of 8 is booked when the group is recognised.
+| | Day 1 | Rest of year | Year |
+|---|---|---|---|
+| Underlying | -8 | 0 (revenue 100; claims and expenses 108 less loss component released 8) | -8 |
+| Reinsurance held | +4 loss-recovery income = 8 x 50% | 0 (recoveries 49 - premium 45 - reversal of the loss-recovery component 4) | +4 |
+| Net | -4 | 0 | -4 |
+- The income is the underlying loss x the share of underlying claims expected to be recovered (B119D). It is a timing item: it reverses as the loss component runs off.
+- No commission instead: day 1 still -4, rest of year -5, year -9. The formula does not look at whether the treaty itself is priced at a cost.
+- Treaty signed after the underlying group was recognised: no day-1 income (B119C). Day 1 -8, rest of year +4, same year total. Signing order moves the loss between reporting periods.
+- Under the PAA the asset for remaining coverage is adjusted, not a CSM (70A).
+- Regime link: KSA-RBC adds the loss component to premium-risk exposure (file 02, source master file section 5), so an onerous book costs equity and capital requirement together; the QS offset helps equity only.
+
+**Case 3. Onerous book with an XoL or stop loss: the recovery share is small (B119D).** Same book, per-person XoL: premium 4, expected recoveries 3.
+- Recovery share = 3 / 98 = 3.1%. Loss-recovery income = 8 x 3.1% = 0.24.
+- Day 1 -7.76, rest of year -1.24, year -9.
+- A stop loss attaching above the expected loss ratio has an even smaller expected recovery share, so almost no day-1 offset, although it protects against exactly the deterioration that made the book onerous. The share comes from the pricing model: document it and keep it consistent with the quote.
+
+**Case 4. Corridor QS with stop loss (C4 corrsl): two held groups (61, 65).**
+- The QS and the stop loss are measured separately. Recovery share for each: QS = q x E[min(L, A)] / E[L]; stop loss = E[max(L - B, 0)] / E[L].
+- Stop-loss premium 1.5 against expected recoveries 0.4: net cost 1.1 is spread over the cover, not expensed on day 1 (65).
+- Stop loss bought below expected recoveries: the net gain is deferred as well. There is no day-1 gain from buying reinsurance.
+- The corridor is the cedant's own retained loss: it appears as lower recoveries, with no separate line.
+
+**Case 5. Retroactive cover (65A).** Incurred claims of 100 ceded in a loss portfolio transfer.
+| Price paid | IFRS 17 | Statutory, where reserves are prudent |
+|---|---|---|
+| 104 | Net cost 4 relates to past events: expensed at once | Loss of 4 |
+| 96 | Net gain 4 deferred and released over the settlement period | Gain of 4 on day 1 (C4 lpt) |
+
+**Case 6. Long-term treaty under the general model (63-65).** Coinsurance: PV of premiums ceded 100, PV of recoveries 90, risk adjustment transferred 6.
+- Net cost = 100 - 90 - 6 = 4: held as the reinsurance CSM and released over the cover.
+- PV of recoveries 97: net gain 3, deferred the same way.
+- A change in the reinsurer's non-performance risk goes to profit or loss, never to the CSM (67).
+
+**Case 7. The reinsurer's side of case 2 (section 7 of the summary; 25, 47).** Its 50% share: premium 50 less commission 5 = revenue 45 over the year; expected claims 49; brokerage and own expenses 1.5.
+- Outflows 50.5 against inflows 45: the inward treaty is onerous. Loss of 5.5 on day 1, recognised when the treaty becomes onerous, which can be before cover starts.
+- So at signing the cedant books +4 and the reinsurer -5.5 on the same treaty. This is the accounting reason a reinsurer asks for a loading, a corridor or a lower commission on a loss-making book.
+- A 12-month risks-attaching treaty over annual policies has about two years of cover: test PAA eligibility on the treaty itself, for cedant and reinsurer alike (69-70).
+
+
+<!-- ===== FILE: references/05-reinsurance-structures-atlas.md ===== -->
+
+# Core: reinsurance and capital structures atlas (48 structures, 31 clauses)
+
+Use to choose or design a structure: start from the cedant's objective (C0), read the candidate entries (C1-C6), add clauses (C8), then test capital credit (file 02 and the country files), IFRS 17 (files 00 and 04) and risk transfer (files 01 and 06). Lines: H health, L life, P property and casualty. Finite-risk flag: low / watch / high.
+
+Notation: P premium; L gross loss ratio; q cession share; c commission rate; R retention; [P] premium flow, [R] recovery, [C] commission back, [S] structural flow, [F] friction (tax, brokerage, fees). Finite-risk flag: low / watch / high.
+Risk-transfer tests: ERD = E[max(-RI result, 0)] / premium >= 1%; 10-10 = >= 10% chance the reinsurer loses >= 10% of premium; T1 = reinsurer result at its own 99.5th percentile; T2 = reinsurer result in the cedant's 1-in-200 years; T3 = cut in the cedant's 1-in-200 loss after the structure's cost (Solvency II risk-mitigating-effect reading). Finite definitions: EU Directive 2005/68/EC Art 2(1)(q), Solvency II Art 210(3), IAIS 2006.
+
+### C0 Objective index (primary; secondary in brackets)
+- Risk-based capital relief (SCR / RBC): qs, qsxol, xol_cat, coins, longevity, masslapse, lifecoins, bpa, corrsl, capreliefqs, lpt, adc, contcap, subloan, sidecar, catbond, portfolio (surplus, stoploss, yrt, modco, reservefin, corridorqs, aggqs, multiyear, grossbasis, retakaful)
+- Premium-based test relief (MGF / Art. 66): qs, corridorqs, capqs, slidingqs, marginlocked, capreliefqs (corrsl, grossbasis)
+- Day-1 own funds / surplus: vif, reservefin, lifecoins, surplusrelief, prudenceadc, subloan, retakaful (lpt, contcap)
+- Earnings volatility: qsxol, xol_risk, stoploss, aggxol, corrsl, aggqs, spreadloss, multiyear (qs, xol_cat, umbrella, topdrop, longevity, adc)
+- Large single claims: surplus, fac, pool, qsxol, xol_risk, yrt (facoblig, aggxol)
+- Catastrophe / accumulation: pool, xol_cat, umbrella, catbond, ilw, parametric (topdrop)
+- Capacity and growth: qs, surplus, facoblig, fac, coins, bpa, sidecar (pool, fronting, yrt)
+- New-business strain: coins, modco, cofw, vif (qs)
+- Reserve release / exit: lpt, adc, portfolio (coins, reservefin, bpa, prudenceadc, commutation)
+- Liquidity and cash: cofw, vif, parametric (surplusrelief, subloan, commutation)
+- Counterparty risk: modco, cofw, commutation (catbond)
+- Pricing support / know-how: yrt (qs, fac, captive)
+- Market access / regulation: pool, fronting, retakaful (captive)
+- Low cost of reinsurance: corridorqs, slidingqs, aggqs (xol_risk, corrsl, capqs, marginlocked, spreadloss, grossbasis, captive)
+Reinsurer aims: margin / return on capital (xol_risk, xol_cat, yrt, longevity, vif, reservefin, bpa, corridorqs, slidingqs, marginlocked, adc); low-volatility income (corrsl, corridorqs, capqs, marginlocked, spreadloss); diversification (xol_risk, longevity); access / relationship (qs, surplus, fronting, yrt, capreliefqs, captive, retakaful, portfolio); investment assets (coins, bpa, lpt); fee income (contcap, sidecar); control and alignment (slidingqs, commutation).
+
+### C1 Proportional
+**qs - Quota share** (H/L/P, finite low). Reinsurer takes q of every premium and claim; pays commission for acquisition costs. Ceded = qP; recoveries = q x claims; commission = c x qP; RI result = qP(1-c) - q x claims - brokerage - tax. Flows: Cedant->RI q x premium [P] quarterly; RI->Cedant q x claims [R] quarterly or cash call; RI->Cedant commission [C]; RI->Broker brokerage [F]. Cedant: cuts net premium (MGF, Art. 66 premium margin) and net reserves one-for-one, funds acquisition, capacity, imports know-how. RI: access at cedant's pricing, relationship anchor. Works: growing or new books, adequately priced books, premium-based tests. Weak: profitable mature books (gives away margin); loss-making books (needs loading or negative commission); retention floors (UAE 50% health/non-life, 85% group life; KSA Art. 66 50% net floor) cap credit. Treatment: UAE credit to floor, Art 34 0.5% provision on ceded premium, reinsurer >= BBB (Art 26), 3-year retention plan (Art 27); KSA 30% first refusal to Saudi reinsurers, 5% WHT on non-residents; IFRS 17 para 86, 66A/70A; SII volume measures + counterparty. Add-ons: c_comm, c_slide, c_pc, c_corr, c_cap, c_fw, c_cashcall, c_basis, c_standby, c_tranche, c_portfolio, c_term. Variants: variable QS; standby tranche; NRP+loading vs gross+commission; QS + XoL on retention.
+**surplus - Surplus treaty** (L/P, low). Cedant keeps one line per risk; RI takes surplus up to n lines; share_i = min(max(SI_i - line,0), n x line)/SI_i. Flows as QS by risk. Cedant keeps small-risk margin, caps net per risk. RI: large risks, admin and selection burden. Works: individual life, heterogeneous property. Weak: medical (claim size unknown up front; use per-person XoL).
+**facoblig - Facultative-obligatory** (L/P, low). Cedant may cede, RI must accept. Capacity on demand; RI prices selection risk; for trusted cedants.
+**fac - Facultative** (H/L/P, low). One risk negotiated (proportional share or XoL). Capacity and price discovery for large or unusual risks (corporate medical schemes, jumbo life). Costly for volumes of small risks. UAE inward business <= 49% (Art 37).
+**pool - Pool / co-reinsurance** (H/P, low). Members share a class (high-cost medical cases, terror): member result = s_k x (pool premium - claims - expenses); pool buys its own XoL. Removes rare high-cost tail, stabilises community-rated pricing. Weak where claims controls differ (moral hazard). KSA regulator-designed pools possible.
+**fronting - Fronting** (H/L/P, watch). Licensed insurer issues and cedes 90-100%, keeps fee f; credit risk on reinsurer; collateral to fronter [S]. Market access for captives, MGAs, multinationals. Gross-based charges (op risk, floors) make it capital-hungry; UAE Art 37.
+**qsxol - QS with XoL on retention** (H/P, low). QS for capital, per-person XoL for large claims on (1-q) or inuring on 100%. Define inuring order or risk double counting / gaps.
+
+### C2 Non-proportional
+**xol_risk - Per-risk / per-person XoL** (H/L/P, low). Recovery per claim = min(max(X-R,0), Limit) x (1-co-participation), less AAD, capped by AAL; premium = rate x subject premium, M&D in instalments (e.g. Q1, Q3), swing or burning-cost adjustment after year-end. Flows: Cedant->RI M&D and adjustment [P]; RI->Cedant recoveries [R]; brokerage, WHT [F]. Cedant: stable net LR, cheap vs QS, high benefit limits. RI: defined-limit severity, experience rating. Weak: frequency or price-adequacy problems; little credit under premium/volume formulas (UAE none for non-prop health premium risk; KSA Art. 66 claims margin falls with expected recoveries). Add-ons: c_aad, c_aal, c_reinst, c_swing, c_md, c_coins, c_index, c_cashcall, c_sunset, c_layers.
+**xol_cat - Cat / per-event XoL** (H/L/P, low). Recovery = min(max(sum of event losses - R,0), Limit); event and hours clause; reinstatement premium. Group life / PA accumulation, pandemic cover. Medical events spread over months are hard to define. SII cat module credits directly; check local templates.
+**stoploss - Aggregate stop loss** (H/P, low). Recovery = beta x min(max(L-A,0), U) x P; premium rP priced on E[recovery] + capital load; paid after the year on incurred incl. IBNR. Caps worst-year net LR; economic (1-in-200) relief. RI: tail and parameter uncertainty, moral hazard. Weak: volume/premium-based formulas give almost no credit; unlimited medical stop loss hard to place. Add-ons: c_coins, c_aal, c_sunset, c_commute, c_claimsco, c_multi.
+**aggxol - Aggregate XoL** (H/P, low). Recovery on annual sum of claims above a per-claim deductible, above an aggregate retention. Fills the gap between per-claim XoL and stop loss (growing numbers of 50k-150k claims).
+**umbrella - Umbrella / clash** (H/L/P, low). One event hitting several lines above underlying retentions. Composites with life, PA and medical.
+**topdrop - Top-and-drop** (P, low). Unused top limit drops down for second events. Property towers.
+
+### C3 Life and longevity
+**yrt - Risk-premium basis (YRT)** (L, low). RI premium = q_x x ceded sum at risk; recovery = ceded sum at risk. Pure mortality/morbidity transfer, underwriting support. Does not fund strain. UAE group life 85% floor; long-term life credit on ceded reserves.
+**coins - Coinsurance** (L, low). Share of premium, benefits, reserves and backing assets; allowance reimburses acquisition. Relieves reserve and capital strain; RI gets assets and spread. UAE long-term life full credit (no floor).
+**modco - Modified coinsurance** (L, watch). Cedant keeps reserves and assets; modco adjustment = change in ceded reserve - interest on it [S]. No counterparty risk on reserves; credit depends on regime; Art 25 test.
+**cofw - Coinsurance with funds withheld** (L, watch). FW balance = ceded reserves credited at rate i; net settlement. Keeps assets and cuts credit risk; finite if credited rate fixed and RI cannot lose.
+**longevity - Longevity swap** (L, low). Cedant pays fixed leg (expected benefits x (1+fee)), RI pays actual benefits; two-way collateral. Large capital release in longevity regimes.
+**masslapse - Mass lapse cover** (L, low). Recovery = min(max(lapse - threshold,0), limit) x amount per lapse. Cuts the mass-lapse shock (unit-linked, savings).
+**vif - VIF monetisation / NB financing** (L, high). RI pays advance A day 1 [C], recovered from future profits of the block [P]; written off if experience is bad. Funds strain, converts VIF to own funds where admitted. Guaranteed repayment = loan: UAE Art 25, KSA Art. 19; IFRS 17 may be a deposit.
+**reservefin - Reserve financing** (L, high). RI takes statutory reserve above best estimate, funded by LoC/trust [S]; fee [F]. Only in prudent-reserve regimes and only with genuine risk; nil effect under IFRS 17 / SII.
+**lifecoins - Long-term life coinsurance releasing prudence** (L, watch). Ceded = share x statutory reserve, priced at best estimate + margin; release ~ ceded x (1 - 1/(1+prudence)) - margin. Needs genuine mortality/lapse transfer; not for group life (85% floor).
+**bpa - Asset-intensive / bulk annuity (funded) reinsurance** (L, low). Single premium in assets; RI reimburses annuities; collateral for recapture. Capacity for buy-ins; regulators watch funded-reinsurance concentration.
+
+### C4 Structured and finite
+**corrsl - Corridor QS with unlimited aggregate stop loss** (H, low). q% QS subject to a (B-A)% xs A% corridor, QS liability ceases at B%, unlimited stop loss xs B%. R_QS = q x min(L,A); corridor K = min(max(L-A,0), W), W = B-A (cedant 100%); R_SL = min(max(L-B,0), U). Net N(L): L<=A (1-q)L; A<L<=B (1-q)A + (L-A); L>B constant B - qA. Cedant net premium P[(1-q) - r + cq]; RI QS result q(1-c) - q min(L,A); RI SL result r - max(L-B,0). Crossover vs straight QS L* = (B-qA)/(1-q); better at the 1-in-200 iff q < (L200-B)/(L200-A). At 1-in-200 (L200 >= B): QS transfers qA, SL transfers L200-B; residual capital = corridor W + retained QS share + SL counterparty charge; SL limit irrelevant to 1-in-200 capital if U >= L200-B. Base case A 95%, B 115%, L200 135%: threshold q 50%; q 30/40/50/60/70% gives cap 86.5/77.0/67.5/58.0/48.5% vs straight QS net at L200 94.5/81.0/67.5/54.0/40.5%, L* 123.6/128.3/135.0/145.0/161.7%. Flows: Cedant->QS RI qP [P]; QS RI->Cedant cqP [C] and q min(L,A)P [R]; Cedant->SL RI rP [P]; SL RI->Cedant max(L-B,0)P [R] after the year. Pricing: SL r = E[max(L-B,0)](1+loadings) + cost of capital on the tail; unlimited SL priced on the whole tail beyond L200; QS reinsurer can pay higher c because its LR is capped at A. Placement: expect counter-offers of limit U, LR cap, co-participation beta, or M&D with adjustable rate; moral hazard (net flat above B) needs co-participation, claims control, profit commission; SL counterparty rating and collateral drive credit; same definitions (UW year, premium base, IBNR, LAE) in both contracts; keep any sliding scale below A. UAE/KSA: QS credited to floors; corridor and SL give little template credit; value visible on 1-in-200 basis; Art 25 / Art. 19 substance requires QS reinsurer exposure below A.
+**corridorqs - Loss-corridor QS** (H/P, watch). Kept = s x min(max(L-A,0), B-A) x ceded premium; recoveries reduced by it. Lowers QS price, keeps premium credit. Sizing for transfer: width <= L200 - (1 - brokerage - tax) - X, X = loss RI must still suffer at 1-in-200. A corridor starting well below expected LR is pre-funding (finite). Art. 18 KSA reporting.
+**capqs - QS with LR cap** (H/P, high). Recoveries = q x min(L, cap) x P. Caps near the 1-in-200 fail tail tests and remove economic benefit; caps far above rarely bite.
+**slidingqs - QS with sliding-scale commission** (H/P, watch). c(L) = c_max for L <= L1, c_min for L >= L2, linear between; provisional then trued up. UAE Art 27 permits sliding and profit commissions; contingent commission sits with recoveries under IFRS 17.
+**aggqs - Aggregate (LR-triggered) QS** (H, low). No cession below trigger x; RI pays q x min(max(L-x,0), w) x P; fixed premium = E[recovery]/(1 - brokerage - tax - margin) plus capital load in practice. Cheapest cut in the 1-in-200 per unit of cost; passes every risk-transfer test; almost no credit under volume formulas; reject the switch-on variant (whole year ceded once triggered: cliff and disputes).
+**marginlocked - Margin-locked QS** (H, high). F = 1 - brokerage - tax - m; U = alpha-quantile of L; L0 = (1-alpha)-quantile; corridor F to U, or sliding commission F - L0 at L0 to F - U at U. RI earns m in alpha of years; ERD ~ 0 so finite under ERD; a 99.5% design fails T1 by construction. Corridor and sliding versions cost the cedant the same.
+**surplusrelief - Surplus-relief QS (UPR commission)** (H/P, high). Day-1 gain = UPR ceded x commission rate (own funds where DAC is nil); year-end true-up final commission = UPR x max(0, 1 - LR - margin). Bridge for thin own funds; unwinds as UPR earns; guaranteed return = loan; IFRS 17 spreads commission (nil day-1 equity).
+**capreliefqs - Capital-relief QS with standby / automatic tranche** (H, low). Base cession at the floor plus a tranche switched on (or automatic: e.g. +2 pts cession per 1 pt of cover below trigger) at lower commission. Dial on MGF / Art. 66 premium margin; no effect if MCR binds.
+**lpt - Loss portfolio transfer** (H/P, watch). RI takes existing reserves for a price; statutory gain = ceded x (1 - price) where reserves are prudent; IFRS 17 para 65A expenses net cost (a gain is deferred in the CSM). Needs prior approval (UAE Decree-Law 6/2025 Art 125(1)); finite if price far below reserves without risk.
+**adc - Adverse development cover** (H/P, low). Recovery = min(max(ultimate - attachment,0), limit) for past years. Caps reserve deterioration, pre-sale certainty; approval needed.
+**prudenceadc - Prudence-layer ADC** (H/P, watch). Attaches at best estimate, exhausts at statutory reserve; own funds + layer - premium where the recoverable is valued on the prudent basis; genuine but limited risk.
+**spreadloss - Spread-loss / experience account** (H/P, high). Account_t = Account_t-1 (1+i) + premium - margin - losses; balance returned at expiry, deficit borne up to a limit. Usually finite: prohibited in UAE and KSA unless RI has real chance of significant loss.
+**multiyear - Multi-year aggregate** (H/P, watch). One aggregate limit over years/lines; cheaper via time diversification; one-year capital regimes may credit only the current year.
+**grossbasis - NRP + loading vs gross + commission** (H, low). Equivalence GWP(1-c) ~ NRP(1+loading) at break-even; WHT and brokerage apply to the larger gross ceded premium (confirm WHT base); premium-risk volume = GWP - ceded premium (commission not deducted) so gross gives more volume credit; IFRS 17 para 86 nets non-contingent commission; gross exposes the cedant's loading and passes its pricing changes to reinsurers; commission above actual acquisition cost reads as financing.
+
+### C5 Capital and ILS
+**contcap - Contingent capital / LoC** (H/L/P, low). Commitment fee [F]; capital on draw [S]. UAE ancillary own funds count 50% for SCR and MGF with approval, 0% for MCR (Decision 25/2014).
+**subloan - Subordinated loan / surplus note** (H/L/P, low). Principal in, coupon out; counts as own funds with approval (possibly MCR if Tier 1-like); UAE Art 142(2)(e) CBUAE may stop coupons. The external fix for MCR / BOF gaps; can be packaged with a QS by the same reinsurer.
+**sidecar - Sidecar** (P/L, low). Investor-funded SPV takes a QS, fully collateralised; sponsor earns override and profit share.
+**catbond - Cat / mortality bond** (P/L, low). SPV notes; principal pays on indemnity, index or parametric trigger; multi-year, no counterparty risk, basis risk with index triggers.
+**ilw - Industry loss warranty** (P, low). Fixed pay-out if industry loss >= trigger (and own loss).
+**parametric - Parametric cover** (H/L/P, low). Pay-out = f(index), cash within days; basis risk; may not count as reinsurance without indemnity.
+
+### C6 Vehicles and transfers
+**captive - Captive / protected cell** (H/L/P, low). Parent's employee medical fronted locally, ceded to captive, captive buys XoL/stop loss.
+**retakaful - Retakaful and qard hasan** (H/L, low). Participants' fund cedes to retakaful [P], receives recoveries and commission [R]; deficits funded by qard hasan from shareholders [S], repaid from later surpluses. UAE Decision 26/2014: commissions land in the participants' fund.
+**portfolio - Portfolio transfer / novation** (H/L/P, low). Policies move to an acquirer with approval; full release.
+**commutation - Commutation** (H/L/P, low). Single payment = PV of outstanding recoverables - discount; removes counterparty, releases RI capital.
+
+### C7 Placement realities common to all structures
+Reinsurers need about a 3% margin on premium; brokerage QS ~2.5%, XoL 5-10%, stop loss ~10%; KSA 5% WHT on non-resident reinsurers and 30% first refusal to local reinsurers (`reinsurance-pricing-knowledge`, Part F); UAE reinsurer >= BBB, Art 34 0.5% provision, Art 37 inward <= 49%; remote tail layers are priced on capital and can quote several times expected loss.
+
+### C8 Clauses and components (combine with C1-C6)
+- c_comm flat ceding commission: c x ceded premium; above acquisition cost with repayment = finite.
+- c_slide sliding-scale commission: c(L) between c_max at L1 and c_min at L2; provisional then true-up; UAE Art 27 permits; KSA Art. 18 reporting.
+- c_pc profit commission: s x max(0, ceded premium(1-e) - commission - recoveries - deficit b/f); unlimited carry-forward traps the cedant.
+- c_corr loss corridor: kept = s x min(max(L-A,0), B-A) x ceded premium; keep it above expected LR.
+- c_cap LR cap / aggregate limit on a QS: recoveries <= cap x ceded premium; low caps fail tail tests.
+- c_coins co-participation beta in a layer: mitigates moral hazard above a retention.
+- c_aad annual aggregate deductible; c_aal annual aggregate limit; c_reinst reinstatements (paid pro rata to amount); c_md minimum and deposit premium.
+- c_swing swing rate / burning cost: final rate = min(max(layer losses / subject premium x loading (e.g. 100/90), min), max); KSA reports swing rates (Art. 18).
+- c_fw funds withheld / premium deposit: cedant keeps premium, credits interest, settles net; liquidity and counterparty benefit; guaranteed deposit return with interest = loan; UAE Art 28.
+- c_coll collateral (trust, LoC): exposure = max(recoverables - collateral credit, 0) (UAE stylised template 80% credit).
+- c_cashcall cash call / simultaneous settlement; settlement days affect UAE recoverable admissibility (REINS-2: 100% to 180 days, 75% to 270, 50% to 360, nil after).
+- c_sunset reporting deadline (e.g. 30 months); c_hours event definition; c_claimsco claims cooperation / control; c_index stability clause (R_t = R_0 x index_t / index_0).
+- c_multi multi-year term; c_commute commutation clause; c_rateguar rate guarantee; c_interest interest credit on FW / modco; c_expacc experience account (usually finite).
+- c_basis premium basis (NRP / GWP / GEP / NEP): same definition in every contract; c_frictions brokerage and WHT.
+- c_standby standby tranche (elected at quarter-end); c_tranche coverage-linked automatic tranche; c_portfolio portfolio entry / withdrawal (clean cut vs run-off); c_term special termination (downgrade, change of control); c_layers layering; c_inure inuring order (for the cedant's account vs inures to the benefit of); c_trigger trigger design (indemnity, index, parametric, solvency).
+
+
+<!-- ===== FILE: references/06-risk-transfer-worked-cases.md ===== -->
+
+# Core: risk-transfer tests worked on a stylised book
+
+Use with `01-core-solvency-method.md` section 4 when a structure has loss-sensitive terms (corridor, cap, sliding scale, swing rate, aggregate limit) or when someone quotes ERD or 10-10 without saying on what volatility.
+
+### C9 Risk-transfer tests: worked cases
+Source: metric definitions and test selector of the Structured Solutions Lab and Treaty Structure Metrics tools, applied 12 Nov 2026 to a stylised book. Illustrative only: not a client, not a regulatory number. Use it to see how each test reacts to a feature, then run the real case in the Treaty Structure Metrics kit.
+
+**Set-up.** Per 100 of subject premium. Gross loss ratio lognormal with mean 90%, at two volatilities:
+- sd 3 points: process risk only, i.e. a large stable medical book with next year's mean treated as known. 1-in-200 LR 98.0%.
+- sd 10 points: with a year-wide swing (pricing, medical inflation, mix move the whole book). 1-in-200 LR 118.8%.
+
+200,000 simulated years. QS share 50%. Brokerage 2.5% on a QS, 10% on aggregate covers. Resident panel, so no WHT (a non-resident panel takes 5 more points: skill `reinsurance-pricing-knowledge`, Part F). In each case one term is solved so that reinsurers expect a 3% margin on premium.
+
+**Measures.** RI result = premium - brokerage - WHT - recoveries - commission.
+- ERD = E[max(-RI result, 0)] / E[premium]. Pass at 1% or more.
+- 10-10: pass if the chance of the reinsurer losing 10% of premium or more is at least 10%.
+- T1 = RI result at its own 1-in-200, as % of premium.
+- T2 = mean RI result in the cedant's worst 0.5% of gross years, as % of premium.
+- T3 = improvement in the cedant's 1-in-200 result from the structure, after its cost, in points of subject premium. Negative = the structure makes the cedant's tail worse.
+
+**With the year-wide swing (sd 10 points)**
+| Structure (solved term) | P(RI loss) | ERD | 10-10 | T1 | T2 | T3 |
+|---|---|---|---|---|---|---|
+| 1 Plain QS (flat commission 4.5%) | 36% | 2.7% pass | 10.2% pass | -26% | -30% | +11.7 |
+| 2 QS capped at 105% LR (commission 4.9%) | 38% | 2.5% pass | 10.8% pass | -12% | -12% | +5.0 |
+| 3 QS, corridor 95-110% kept by cedant (commission 6.4%) | 43% | 1.6% pass | 0.9% fail | -13% | -17% | +5.1 |
+| 4 QS, sliding commission 10.7% at LR 80% or below to 0% at 95% or above | 22% | 1.4% pass | 4.8% fail | -21% | -26% | +9.4 |
+| 5 Margin-locked QS (3% margin at 95%: band 74.6-107.3%) | 2.9% | 0.14% fail | 0.4% fail | -9% | -13% | +3.0 |
+| 6 Aggregate QS, 50% of unlimited xs 105% LR (premium 0.23) | 6.8% | 81% pass | 6.8% fail | about -30x | about -39x | +6.7 |
+| 7 Stop loss 20 points xs 105% LR (premium 0.45) | 6.8% | 81% pass | 6.8% fail | about -30x | about -37x | +13.4 |
+
+**Process risk only (sd 3 points)**
+| Structure (solved term) | P(RI loss) | ERD | 10-10 | T1 | T3 |
+|---|---|---|---|---|---|
+| 1 Plain QS (flat commission 4.5%) | 16% | 0.26% fail | 0% fail | -5.0% | +1.2 |
+| 3 QS, corridor 95-110% (commission 4.6%) | 16% | 0.21% fail | 0% fail | -2.1% | -0.2 |
+| 4 QS, sliding commission 13.3% to 0% | 0.8% | 0.01% fail | 0% fail | -0.5% | -1.0 |
+| 5 Margin-locked QS (band 85.2-95.0%) | 0.5% | 0.01% fail | 0% fail | 0.0% | -1.3 |
+
+The 105% cap never bites at this volatility (1-in-200 LR is 98%), and covers attaching at 105% have no measurable expected loss.
+
+**What the cases show**
+1. **The volatility basis decides the answer.** The same break-even QS has ERD 0.26% without parameter risk and 2.7% with it. Always state the basis: process risk only, or with a year-wide swing and large-claim clustering. A test result quoted without it means little.
+2. **A plain QS on a stable book fails strict ERD and 10-10.** That is why the usual reading treats a plain proportional QS as transferring risk pro rata (a switch in the tools). Say which reading was applied; the exemption does not extend to a QS with loss-sensitive terms.
+3. **Every loss-sensitive feature takes risk back.** The corridor and the sliding scale buy a higher commission (6.4% and up to 10.7% against 4.5%) and roughly halve the ERD; both fail 10-10 here while still passing ERD.
+4. **A cap hides from ERD and 10-10.** Capping at 105% leaves ERD at 2.5% and 10-10 passing, but halves the reinsurer's tail loss (T1 -12% against -26%) and cuts the cedant's 1-in-200 benefit from 11.7 to 5.0. Check T1, T2 and T3 whenever there is a cap or an aggregate limit.
+5. **Margin-locked designs fail ERD at both volatilities** (0.14% and 0.01%): inside the band the reinsurer earns its margin whatever happens. Finite by construction (UAE Art 25, KSA Art 19).
+6. **10-10 is the wrong screen for remote covers.** The stop loss and aggregate QS have ERD of 81% but lose money in only 6.8% of years, so they fail 10-10. Use ERD or T3 for low-frequency, high-severity covers.
+7. **T3 can be negative.** On the stable book the corridor, sliding-scale and margin-locked QS leave the cedant's own 1-in-200 result worse than no reinsurance, because the expected cost exceeds the tail benefit. A structure can earn credit in a volume formula and still weaken the cedant economically.
+8. **Expected cost is the same, 2.75, for every QS variant at break-even** (50% x (3 margin + 2.5 brokerage)). The features move who carries the volatility, not the expected cost.
+9. **Aggregate covers look cheap only at expected-loss pricing.** Here 0.45 buys a 13.4-point cut at the 1-in-200. Reinsurers price remote layers on capital, so real quotes can be several times that (C7).
+
+**Running a real case**
+1. Build the cedant's loss-ratio distribution from its claims ladder (skill `reinsurance-pricing-knowledge`, Part D) in the Treaty Structure Metrics kit; record the uncertainty settings.
+2. Evaluate the treaty terms year by year, with the actual brokerage, WHT by reinsurer residency, commission, corridor, cap, profit commission and funds withheld.
+3. Report margin, P(RI loss), ERD, 10-10, T1, T2 and T3 together, with the test the regulator's text supports named, and the cedant and reinsurer results side by side.
+4. A structure that fails the chosen test gets no capital credit in the comparison.
+
+
+<!-- ===== FILE: references/09-core-source-register.md ===== -->
+
+# Core files 02-06: source register, open points and load tests
+
+As at 12 Nov 2026 (skill v1.2.0). Files 00 and 01 are unchanged from v1.0.1; the UAE and QFC layers keep their own registers (19, 39).
+
+## Sources
+| File | Built from | Date of source | Notes |
+|---|---|---|---|
+| 02 GCC cross-regime comparison | Owner's "GCC Solvency Master File: KSA, Qatar (QFC) and UAE" | 12 Nov 2026 | Condensed. KSA-RBC values are the YE2025 5th dry run of template SCA.04 and can still change before the regulation is final |
+| 03 Rating-agency capital | S&P "Insurer Risk-Based Capital Adequacy: Methodology And Assumptions"; AM Best "Best's Credit Rating Methodology"; Fitch white paper "Not All Insurer Financial Strength Ratings Are Created Equal" | 15 Nov 2023 (republished 22 Jan 2025); 29 Aug 2024; July 2016 | Capital and reinsurance passages read; not the full documents |
+| 04 IFRS 17 worked numbers | Rules in file 00 (IFRS 17 as amended June 2020), applied to stylised figures | 12 Nov 2026 | Illustrative arithmetic; RA and discounting ignored |
+| 05 Structures atlas | Owner's Reinsurance Structures Atlas (48 structures, 31 clauses) | Nov 2026 | Regulatory references inside entries are as at the UAE and KSA sources of files 02 and 12 |
+| 06 Risk-transfer worked cases | Metric definitions of the owner's Structured Solutions Lab and Treaty Structure Metrics tools, on a stylised lognormal book | 12 Nov 2026 | 200,000 simulated years; one loss-ratio distribution, so no per-person XoL case |
+
+## Open points (VERIFY)
+1. **KSA-RBC final rules:** own-funds tiering, minimum ratio, intervention ladder, minimum capital amount, treatment of stop loss. Replace every [DRY RUN] value when the final regulation is published; retire the KSA-now columns from 1 Jan 2027.
+2. **KSA finite ban:** whether Art 19 of the 2010 Reinsurance Regulation carries into the 2027 regulations.
+3. **KSA cooperative surplus split** (Implementing Regulations Art 70).
+4. **UAE:** whether eForms v1.7 is the version currently filed; units of the MGF minimum amounts.
+5. **QFC:** category mapping and whether one-year group life is long-term business (the QFC layer's own register, file 39, has the full list).
+6. **Rating agencies:** Moody's and Fitch insurance methodologies are not covered; AM Best's risk factors by line are in separate BCAR criteria; the AM Best country risk tier of each GCC state is not in the document read; check for later versions of all three before quoting a factor.
+7. **File 04:** have the insurer's auditor confirm the reading before a number goes into advice. The split of a sliding-scale commission between premium and recoveries is this skill's reading of paragraph 86.
+8. **File 06:** illustrative only. A real case needs the cedant's own claims ladder and uncertainty settings.
+
+## Maintenance rule
+- Files 02-06 mirror parts of the owner's Claude-side reference `reinsurance-capital-knowledge`. When that reference changes, regenerate the affected file, bump the skill version and add a line here.
+- A full KSA overlay (`references/ksa/`, files 20-29, built from the primary texts on the overlay template) supersedes the KSA content of file 02 when it is added.
+- The companion skill `reinsurance-pricing-knowledge` cites this skill by section code (A5, A7, C4 grossbasis, C7, C8 c_inure). If a code is renumbered here, update it there.
+
+## Load-test questions (expected answer in brackets)
+- **T1.** A Saudi medical insurer under today's rules: above what net loss ratio does the claims margin bind?
+  - [About 67%: premium margin 16% of net written premium against 24% of three-year average net incurred claims. File 02, A0.]
+- **T2.** It cedes 70% of medical. How much credit today, and under the 2027 RBC?
+  - [Today: credit stops at the 50% net floor; cession cannot exceed 70% of total premium (Art 40). Under KSA-RBC: full credit, no floor, less a counterparty charge. Illustration: 7.9 per 100 GWP at 70% ceded under RBC against 9.6 today. Must say file 02 is condensed and RBC values are dry-run.]
+- **T3.** Under S&P's model, what is charged on recoverables from an unrated reinsurer, and on EMEA medical premium?
+  - [Unrated is treated as 'B': 7.48% at the 99.5% level, unless collateralised. Health and medical expense: 10% of net written premium at 99.5%. File 03.]
+- **T4.** An insurer has BCAR of 12 at VaR 99.6. What is the BCAR assessment, and what does AM Best B+ equal on its issuer scale?
+  - [Very strong (above 10 and not above 25 at 99.6). B+ = bbb-. File 03.]
+- **T5.** A one-year medical book is onerous by 8 per 100 of premium. A 50% quota share is in force. What is the day-1 net effect?
+  - [-8 on the underlying, +4 loss-recovery income, net -4; the 4 reverses over the cover. If the treaty was signed after the group was recognised: -8 on day 1, +4 later. File 04, case 2.]
+- **T6.** Which structures relieve a premium-based test such as the UAE MGF?
+  - [qs, corridorqs, capqs, slidingqs, marginlocked, capreliefqs; secondary corrsl, grossbasis. File 05, C0. Should add the finite-risk flags: capqs, marginlocked high.]
+- **T7.** Does a break-even quota share on a stable medical book pass a 1% ERD test?
+  - [Not on process risk alone: 0.26% in the stylised case, against 2.7% with a year-wide swing. The answer must state the volatility basis and the pro-rata reading for plain proportional cover. File 06.]
+- **T8.** Does a medical stop loss reduce the S&P capital requirement?
+  - [Not through the standard charges: only through lower net premium, or a company-specific adjustment S&P makes when material (about 5% of the requirement) and sustainable. File 03.]
+- **T9.** A question about Oman's solvency rules.
+  - [No layer loaded: answer from the core method (file 01), say so, list the local facts needed.]
 
 
 <!-- ===== FILE: references/qa-qfc/30-qfc-legal-framework.md ===== -->

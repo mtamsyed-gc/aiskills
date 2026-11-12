@@ -4,7 +4,7 @@ Skills deployed to GC's LenAI / LenWork (Customize > Skills), kept here as the s
 
 | Skill | Version | Coverage | LenAI status |
 |---|---|---|---|
-| `skills/insurance-capital-ifrs17` | 1.1.0 (9 Nov 2026) | Solvency regulation + IFRS 17 for insurers; UAE (CBUAE onshore) layer; Qatar QFC (QFCRA) layer | 1.0.1 live, Private; triggers automatically (confirmed 9 Nov 2026). 1.1.0 to upload |
+| `skills/insurance-capital-ifrs17` | 1.2.0 (12 Nov 2026) | Solvency regulation + IFRS 17 for insurers; UAE (CBUAE onshore) layer; Qatar QFC (QFCRA) layer; core files 02-06: GCC cross-regime comparison (condensed KSA), rating-agency capital, IFRS 17 worked numbers, structures atlas, risk-transfer cases | 1.0.1 live, Private; triggers automatically (confirmed 9 Nov 2026). 1.2.0 to upload (includes 1.1.0) |
 
 ## Layout
 - `skills/<name>/` – what gets uploaded: `SKILL.md` plus `references/`.
