@@ -1,7 +1,7 @@
 ---
 name: reinsurance-pricing-knowledge
 description: Use for any question on pricing a medical or life reinsurance treaty from portfolio data - what the Merit dashboard and extracts contain (loss ratio on gross and net bases, cuts by policy type, TPA, age, gender, network, group size, the large-claimant ladder, the projected net loss ratio) and how they feed quota share and excess-of-loss pricing, projections, capital and profitability for insurer and reinsurer; how an XoL is priced (burning cost, simulation and 1-in-N views, MDP, minimum and maximum swing rates, loading factors such as 100/80, AAD, aggregate limits); reading a reinsurer's quote; KSA 5% withholding tax and 30% local cession.
-version: 1.0.0 (12 Nov 2026) - built from Merit v9.2.1 (output contract IP4-13), the XoL pricing tool 0.9.1 and KSA sources checked 12 Nov 2026
+version: 1.0.1 (13 Nov 2026) - KSA capital pointers moved to the new skill ksa-rbc-capital; 1.0.0 (12 Nov 2026) built from Merit v9.2.1 (output contract IP4-13), the XoL pricing tool 0.9.1 and KSA sources checked 12 Nov 2026
 ---
 
 # Reinsurance pricing knowledge skill
@@ -54,4 +54,4 @@ Part letters D, E, F continue from the companion skill (section 6), so a referen
 - **Data pack check:** bases stated? years matched? grain right? immature years flagged? exclusions three-sided? what reinsurers will ask next.
 
 ## 6. Companion skill
-`insurance-capital-ifrs17` (a separate skill) holds the capital side: solvency rules for UAE, Qatar QFC and KSA, rating-agency capital models, IFRS 17, the reinsurance structures atlas and risk-transfer tests. If a question needs the capital credit of a structure, which test binds, IFRS 17 treatment, or the choice of structure, ask the user to load it with `/insurance-capital-ifrs17` unless it is already loaded. References here to sections A5, A7, C4, C7 and C8 point to its files 02 (A) and 05 (C). For column-level definitions of Merit's tables, the `merit-outputs` skill is the authority where it is installed.
+`insurance-capital-ifrs17` (a separate skill) holds the capital side: solvency rules for UAE and Qatar QFC, rating-agency capital models, IFRS 17, the reinsurance structures atlas and risk-transfer tests. If a question needs the capital credit of a structure, which test binds, IFRS 17 treatment, or the choice of structure, ask the user to load it with `/insurance-capital-ifrs17` unless it is already loaded. References here to sections A5, A7, C4, C7 and C8 point to its files 02 (A) and 05 (C). For any Saudi capital point (RBC counterparty charge, rating rule, finite ban, retention), `ksa-rbc-capital` is the authority: ask the user to load it with `/ksa-rbc-capital`. For column-level definitions of Merit's tables, the `merit-outputs` skill is the authority where it is installed.

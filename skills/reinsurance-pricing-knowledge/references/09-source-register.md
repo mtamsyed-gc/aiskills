@@ -1,6 +1,6 @@
 # Source register, open points and load tests
 
-As at 12 Nov 2026 (skill v1.0.0).
+As at 13 Nov 2026 (skill v1.0.1). v1.0.1: KSA capital references (counterparty charge, rating rule) now point to the separate skill `ksa-rbc-capital`, because `insurance-capital-ifrs17` 1.3.0 no longer carries KSA.
 
 ## Sources
 | File | Built from | Version / date | Notes |
@@ -20,6 +20,7 @@ As at 12 Nov 2026 (skill v1.0.0).
 - Update file 01 when Merit's output contract, page list or ladder levels change; file 02 when the XoL tool's method or released features change; file 03 when a ZATCA or Insurance Authority rule changes or a VERIFY point is settled.
 - No client names, engagement notes or deal terms. Lessons from client work go in as general rules (file 01 section D9, file 02 section E7).
 - This skill cites `insurance-capital-ifrs17` by section code (A5, A7, C4 grossbasis, C7, C8 c_inure). If a code changes there, update it here.
+- For KSA capital it cites `ksa-rbc-capital` by file (22 counterparty, 28 K3 rules). If those files are renumbered, update it here.
 
 ## Load-test questions (expected answer in brackets)
 - **T1.** The claimant ladder for one underwriting year shows excess removed of 3.0m above 250k and 0.8m above 500k; earned premium is 200m. What is the burn of a 250k xs 250k per-person layer?

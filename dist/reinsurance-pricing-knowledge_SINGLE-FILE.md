@@ -1,7 +1,7 @@
 ---
 name: reinsurance-pricing-knowledge
 description: Use for any question on pricing a medical or life reinsurance treaty from portfolio data - what the Merit dashboard and extracts contain (loss ratio on gross and net bases, cuts by policy type, TPA, age, gender, network, group size, the large-claimant ladder, the projected net loss ratio) and how they feed quota share and excess-of-loss pricing, projections, capital and profitability for insurer and reinsurer; how an XoL is priced (burning cost, simulation and 1-in-N views, MDP, minimum and maximum swing rates, loading factors such as 100/80, AAD, aggregate limits); reading a reinsurer's quote; KSA 5% withholding tax and 30% local cession.
-version: 1.0.0 (12 Nov 2026) - built from Merit v9.2.1 (output contract IP4-13), the XoL pricing tool 0.9.1 and KSA sources checked 12 Nov 2026
+version: 1.0.1 (13 Nov 2026) - KSA capital pointers moved to the new skill ksa-rbc-capital; 1.0.0 (12 Nov 2026) built from Merit v9.2.1 (output contract IP4-13), the XoL pricing tool 0.9.1 and KSA sources checked 12 Nov 2026
 ---
 
 # Reinsurance pricing knowledge skill
@@ -54,7 +54,7 @@ Part letters D, E, F continue from the companion skill (section 6), so a referen
 - **Data pack check:** bases stated? years matched? grain right? immature years flagged? exclusions three-sided? what reinsurers will ask next.
 
 ## 6. Companion skill
-`insurance-capital-ifrs17` (a separate skill) holds the capital side: solvency rules for UAE, Qatar QFC and KSA, rating-agency capital models, IFRS 17, the reinsurance structures atlas and risk-transfer tests. If a question needs the capital credit of a structure, which test binds, IFRS 17 treatment, or the choice of structure, ask the user to load it with `/insurance-capital-ifrs17` unless it is already loaded. References here to sections A5, A7, C4, C7 and C8 point to its files 02 (A) and 05 (C). For column-level definitions of Merit's tables, the `merit-outputs` skill is the authority where it is installed.
+`insurance-capital-ifrs17` (a separate skill) holds the capital side: solvency rules for UAE and Qatar QFC, rating-agency capital models, IFRS 17, the reinsurance structures atlas and risk-transfer tests. If a question needs the capital credit of a structure, which test binds, IFRS 17 treatment, or the choice of structure, ask the user to load it with `/insurance-capital-ifrs17` unless it is already loaded. References here to sections A5, A7, C4, C7 and C8 point to its files 02 (A) and 05 (C). For any Saudi capital point (RBC counterparty charge, rating rule, finite ban, retention), `ksa-rbc-capital` is the authority: ask the user to load it with `/ksa-rbc-capital`. For column-level definitions of Merit's tables, the `merit-outputs` skill is the authority where it is installed.
 
 
 <!-- ===== FILE: references/01-merit-extracts-to-pricing.md ===== -->
@@ -254,7 +254,7 @@ Source: XoL pricing tool 0.9.1, repo `mtamsyed-gc/xolpricing` (`docs/XOL_MECHANI
 <!-- ===== FILE: references/03-ksa-placement-constraints.md ===== -->
 
 # Part F - KSA placement constraints: withholding tax and local cession
-As at 12 Nov 2026. Checked against ZATCA's WHT circular and published summaries of the Insurance Authority (IA) circulars, not against the full Arabic texts: VERIFY the primary document and take tax advice before a client relies on it. Analysis, not legal or tax advice. The one-line versions of these rules sit in `insurance-capital-ifrs17` (file 02 section A7, file 05 section C7).
+As at 12 Nov 2026. Checked against ZATCA's WHT circular and published summaries of the Insurance Authority (IA) circulars, not against the full Arabic texts: VERIFY the primary document and take tax advice before a client relies on it. Analysis, not legal or tax advice. The one-line versions of these rules sit in `ksa-rbc-capital` (file 28, K3) and `insurance-capital-ifrs17` (file 05 section C7).
 
 ### F1 Withholding tax: 5% on reinsurance premium to non-residents
 - [RULE] A Saudi-resident insurer paying reinsurance premium to a non-resident reinsurer withholds 5% of the premium and remits it to ZATCA (Income Tax Implementing Regulations Art 63(1) rate, Art 5(2) source rule; VERIFY article numbers). The premium is Saudi-source because the cedant is Saudi-resident.
@@ -274,7 +274,7 @@ As at 12 Nov 2026. Checked against ZATCA's WHT circular and published summaries 
 - Consequences for a placement [INTERP]:
   - Sequence: local market approached first and documented, before or alongside the lead.
   - A local line carries no WHT (F1), so the same gross terms are worth about 5 points more to it than to a non-resident.
-  - Counterparty charge follows the local reinsurer's rating; note the KSA-RBC cliff between BBB and below (`insurance-capital-ifrs17` file 02, A5). Few local reinsurers means concentration: check the IA's current list of licensed reinsurers.
+  - Counterparty charge follows the local reinsurer's rating; note the KSA-RBC cliff between BBB (5%) and BB or unrated (50%) (`ksa-rbc-capital`, file 22). Few local reinsurers means concentration: check the IA's current list of licensed reinsurers.
   - Model the panel as shares by residency and rating (TSM does this per layer): results, WHT and credit charge all move with the split.
   - A structure the local market will not write (unlimited stop loss, novel structured terms) still has to be offered; allow time for a documented decline.
 
@@ -282,7 +282,7 @@ As at 12 Nov 2026. Checked against ZATCA's WHT circular and published summaries 
 1. Art 40 retention met (cession no more than 70% of total premium).
 2. 30% offered locally first; evidence kept; broker's process documented.
 3. Each reinsurer: resident or not, treaty relief or not, WHT borne by whom, stated in the wording.
-4. Rating at or above the regime minimum and the counterparty charge (`insurance-capital-ifrs17` file 02, A7 and A5).
+4. Rating at or above the regime minimum and the counterparty charge (`ksa-rbc-capital`, file 28 K3 and file 22).
 5. Finite-risk test (Art 19) on any corridor, cap, sliding scale or swing terms; reportable features (Art 18).
 6. Reinsurer-side results shown net of brokerage and WHT; cedant-side cost shown gross of any gross-up.
 
@@ -291,7 +291,7 @@ As at 12 Nov 2026. Checked against ZATCA's WHT circular and published summaries 
 
 # Source register, open points and load tests
 
-As at 12 Nov 2026 (skill v1.0.0).
+As at 13 Nov 2026 (skill v1.0.1). v1.0.1: KSA capital references (counterparty charge, rating rule) now point to the separate skill `ksa-rbc-capital`, because `insurance-capital-ifrs17` 1.3.0 no longer carries KSA.
 
 ## Sources
 | File | Built from | Version / date | Notes |
@@ -311,6 +311,7 @@ As at 12 Nov 2026 (skill v1.0.0).
 - Update file 01 when Merit's output contract, page list or ladder levels change; file 02 when the XoL tool's method or released features change; file 03 when a ZATCA or Insurance Authority rule changes or a VERIFY point is settled.
 - No client names, engagement notes or deal terms. Lessons from client work go in as general rules (file 01 section D9, file 02 section E7).
 - This skill cites `insurance-capital-ifrs17` by section code (A5, A7, C4 grossbasis, C7, C8 c_inure). If a code changes there, update it here.
+- For KSA capital it cites `ksa-rbc-capital` by file (22 counterparty, 28 K3 rules). If those files are renumbered, update it here.
 
 ## Load-test questions (expected answer in brackets)
 - **T1.** The claimant ladder for one underwriting year shows excess removed of 3.0m above 250k and 0.8m above 500k; earned premium is 200m. What is the burn of a 250k xs 250k per-person layer?
