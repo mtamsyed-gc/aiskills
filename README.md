@@ -4,7 +4,8 @@ Skills deployed to GC's LenAI / LenWork (Customize > Skills), kept here as the s
 
 | Skill | Version | Coverage | LenAI status |
 |---|---|---|---|
-| `skills/insurance-capital-ifrs17` | 1.2.0 (12 Nov 2026) | Solvency regulation + IFRS 17 for insurers; UAE (CBUAE onshore) layer; Qatar QFC (QFCRA) layer; core files 02-06: GCC cross-regime comparison (condensed KSA), rating-agency capital, IFRS 17 worked numbers, structures atlas, risk-transfer cases | 1.0.1 live, Private; triggers automatically (confirmed 9 Nov 2026). 1.2.0 to upload (includes 1.1.0) |
+| `skills/insurance-capital-ifrs17` | 1.3.0 (13 Nov 2026) | Solvency regulation + IFRS 17 for insurers; UAE (CBUAE onshore) layer; Qatar QFC (QFCRA) layer; core files 02-06: UAE / QFC comparison, rating-agency capital, IFRS 17 worked numbers, structures atlas, risk-transfer cases. No KSA content (see `ksa-rbc-capital`) | 1.0.1 live, Private; triggers automatically (confirmed 9 Nov 2026). 1.3.0 to upload (includes 1.1.0 and 1.2.0) |
+| `skills/ksa-rbc-capital` | 1.0.0 (13 Nov 2026) | Saudi Arabia: IA RBC template SCA.04 in full (all modules, factors, 17 matrices, scenarios, operational risk, ratio, template behaviours, validations, worked examples); current margin rules to 31 Dec 2026; KSA reinsurance rules; capital credit by structure | Not yet in LenWork |
 
 ## Layout
 - `skills/<name>/` – what gets uploaded: `SKILL.md` plus `references/`.
@@ -17,4 +18,4 @@ Skills deployed to GC's LenAI / LenWork (Customize > Skills), kept here as the s
 
 ## Rules
 - No client names, engagement notes or deal terms in any skill (LenAI interim rule for Skills).
-- Country overlays for `insurance-capital-ifrs17` follow `references/templates/jurisdiction-overlay-template.md` (KSA and onshore Qatar QCB next). Folder numbering: uae 10-19, ksa 20-29, qa-qfc 30-39.
+- Country overlays for `insurance-capital-ifrs17` follow `references/templates/jurisdiction-overlay-template.md` (onshore Qatar QCB next). Folder numbering: uae 10-19, qa-qfc 30-39. KSA is a separate skill, `ksa-rbc-capital`, whose files keep the numbers 20-29.

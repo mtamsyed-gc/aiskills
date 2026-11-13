@@ -28,7 +28,7 @@ Source: the IFRS 17 rules in `00-core-ifrs17.md` (paragraphs cited), applied 12 
 - No commission instead: day 1 still -4, rest of year -5, year -9. The formula does not look at whether the treaty itself is priced at a cost.
 - Treaty signed after the underlying group was recognised: no day-1 income (B119C). Day 1 -8, rest of year +4, same year total. Signing order moves the loss between reporting periods.
 - Under the PAA the asset for remaining coverage is adjusted, not a CSM (70A).
-- Regime link: KSA-RBC adds the loss component to premium-risk exposure (file 02, source master file section 5), so an onerous book costs equity and capital requirement together; the QS offset helps equity only.
+- Regime link (KSA): the Saudi RBC adds the loss component to premium-risk exposure (skill `ksa-rbc-capital`, file 24), so an onerous book costs equity and capital requirement together; the QS offset helps equity only.
 
 **Case 3. Onerous book with an XoL or stop loss: the recovery share is small (B119D).** Same book, per-person XoL: premium 4, expected recoveries 3.
 - Recovery share = 3 / 98 = 3.1%. Loss-recovery income = 8 x 3.1% = 0.24.
