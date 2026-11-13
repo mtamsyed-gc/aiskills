@@ -11,7 +11,7 @@ Why it belongs here: a rated cedant, or one seeking a rating, can be bound by th
 - Compares total adjusted capital (TAC) with risk-based requirements at four one-year VaR levels: 99.5% (moderate stress), 99.8% (substantial), 99.95% (severe), 99.99% (extreme).
 - TAC starts from common equity on IFRS or GAAP accounts (statutory where those are all there is): less intangibles, treasury shares and unaccrued dividends; adjusted for unrealised gains and for reserve surpluses or deficits against S&P's best-estimate view; plus hybrid and debt-funded capital within tolerance limits; less non-insurance and unconsolidated insurance subsidiaries.
 - Requirement = sum of risk charges less explicit diversification (variance-covariance at three levels). The diversification amount is cut by 10 / 20 / 30% at the three higher stress levels. No credit for geographic spread.
-- **Reinsurance is recognised by charging exposures net of reinsurance, with no floor** (contrast the UAE and KSA-now 50% floors).
+- **Reinsurance is recognised by charging exposures net of reinsurance, with no floor** (contrast the UAE 50% floors; KSA: skill `ksa-rbc-capital`).
 
 | Item | Base | Charge |
 |---|---|---|
@@ -28,7 +28,7 @@ Why it belongs here: a rated cedant, or one seeking a rating, can be bound by th
 - Per-person XoL, stop loss and other non-proportional covers outside natural catastrophe are not in the standard charges. They count through lower net premium and reserves, or through a company-specific adjustment, which S&P makes only when material (for example a change of more than 5% in the total requirement) and sustainable.
 - Reading for structures [INTERP]:
   - A QS cuts the S&P requirement in line with the cession, at a counterparty cost of about 1-2% of ceded reserves for A to BBB reinsurers.
-  - Unrated local capacity is charged as 'B' (7.48% at 99.5%) unless collateralised: milder than the KSA-RBC cliff (file 02, A5) but still several times an A-rated line.
+  - Unrated local capacity is charged as 'B' (7.48% at 99.5%) unless collateralised: milder than the KSA-RBC cliff between BBB and BB (skill `ksa-rbc-capital`, file 22) but still several times an A-rated line.
   - A stop loss or corridor needs a case put to the analyst; it does not flow through the factors.
 
 **AM Best**
@@ -51,7 +51,7 @@ Why it belongs here: a rated cedant, or one seeking a rating, can be bound by th
   - Ceded probable maximum loss relative to surplus is the dependence measure; above an acceptable level the balance sheet assessment is lowered.
   - Concentration of recoverables in a few reinsurers is weighed qualitatively. The ERM review also covers counterparty, dispute, programme-design and collateral risk.
 - Reading for structures [INTERP]: a large QS can lift BCAR and still draw a dependence mark-down. For an AM Best-rated cedant, present the cession with panel quality, spread and permanence (multi-year terms, long relationships), not as replacement capital.
-- AM Best financial strength rating to its own issuer credit scale: A++ = aaa, aa+; A+ = aa, aa-; A = a+, a; A- = a-; B++ = bbb+, bbb; B+ = bbb-; B = bb+, bb; B- = bb-. So a rule that accepts "AM Best B+" (KSA: file 02, A7) accepts bbb- on AM Best's own scale.
+- AM Best financial strength rating to its own issuer credit scale: A++ = aaa, aa+; A+ = aa, aa-; A = a+, a; A- = a-; B++ = bbb+, bbb; B+ = bbb-; B = bb+, bb; B- = bb-. So a rule that accepts "AM Best B+" (KSA: skill `ksa-rbc-capital`, file 28) accepts bbb- on AM Best's own scale.
 
 **Are ratings equal across agencies? (Fitch white paper, July 2016)**
 - Fitch's claim: an AM Best A- is most comparable with BBB from Fitch, Moody's or S&P. It points to newly formed companies, insurers in high-country-risk states, captives and small insurers.
