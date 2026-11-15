@@ -1,10 +1,10 @@
 ---
 name: merit-draft-run
 description: Use only when the user asks for an unattended Merit draft run (also "draft run", "auto run", "run Merit end to end without me") on a client folder whose raw files are in place - copies the folder, runs intake profile, values, apply and the workflows without stopping for review, fills the Mapping workbook itself and reports every judgement it made. Needs the client folder path, payer code, the client's constants and the run dates at the start. Not for a reviewed production run, not for mapping help inside a normal run, not for questions about Merit results.
-version: 0.1.0 (15 Nov 2026) - UD-0.1; run end to end on a synthetic client outside LenAI; not yet run in LenAI
+version: 0.2.0 (15 Nov 2026) - UD-0.2, row sample for speed (10,000 rows per sheet by default); run end to end on a synthetic client outside LenAI; not yet run in LenAI
 ---
 
-# Merit unattended draft run (UD-0.1)
+# Merit unattended draft run (UD-0.2)
 
 ## 1. What this skill does
 Given a Merit client folder with the raw files in `01_Info_Supplied` and the inputs of section 2, you take it from
@@ -15,6 +15,10 @@ every judgement you made.
 **The result is an UNREVIEWED DRAFT**, a first look at the numbers, never a run to quote from. Two things follow:
 - You work in a **copy** of the client folder (the draft folder, WORK). Merit's apply teaches the library inside the
   folder it runs in, so unreviewed mappings must never reach the real folder. The original is not written to.
+- By default the draft copy keeps only the first **10,000 data rows of each sheet** (Sample rows), so the run is
+  fast. It proves the mapping and the chain end to end; its figures are on the sample, not the portfolio:
+  exposure, claims, match rates and loss ratios are not representative (claims of members past the cut in the
+  premium file will not link). Sample rows = 0 runs on every row.
 - Every cell you fill is logged with its basis (user input, data, Merit's proposal, an assist, or a guess). Guesses
   are allowed, because this is a draft, and each one is listed in the report.
 
@@ -43,6 +47,7 @@ TPA by folder          = {"folder name": "TPA code"} where a folder name is not 
 Development factors    = INPUTS or DERIVED [INPUTS: the inputs workbook's factors; a new client has none, so no IBNR]
                          DERIVED = workflow 03b's factors from the data, applied without the review gate
 Workflows              = default or all [default: every workflow but the extract]
+Sample rows            = data rows kept per sheet in the draft copy [10000; 0 = every row]
 Draft root             = folder to make the draft copy in [beside CLIENT]
 ```
 If a REQUIRED input is missing, ask ONCE for all the missing ones together. After that, ask nothing: decide, log,
@@ -81,7 +86,8 @@ R10 The code of the pack outranks this skill: where they differ, follow the code
 
 ## 4. The script
 ```text
-RUN setup   "<inputs.json>"            checks the inputs, makes the draft copy, snapshots the original; prints WORK
+RUN setup   "<inputs.json>"            checks the inputs, makes the draft copy, cuts its raw files to the sample
+                                       (header + Sample rows per sheet; DR\sample.json), snapshots the original
 RUN show    "WORK" <tab> [--where Col=Value] [--blank Col] [--cols A,B] [--limit 60]
                                        rows of a Mapping workbook tab; tab _lists = the allowed fields and classes
 RUN set     "WORK" "<edits.json>"      writes cells; refuses anything but the columns a user fills; logs every cell
@@ -113,8 +119,8 @@ without rows of its own). A Mapped field is the Merit field name exactly as in l
 P0  Inputs. Write them as JSON to "$env:TEMP\merit_draft_inputs.json" (keys: CLIENT, PAYER, payer_name, risk_carrier,
     master_cedant_name, currency, country, valuation_date, premium_extract_date, claims_extract_date,
     large_claim_threshold, default_premium_basis; optional ri_name_by_tpa, sme_max_lives, dev_factors, workflows,
-    draft_root), then  RUN setup "<that file>".  E-UD01 lists every problem: if it is a missing or malformed
-    REQUIRED input, that is the one question you may ask. Note WORK.
+    draft_root, sample_rows), then  RUN setup "<that file>".  E-UD01 lists every problem: if it is a missing or malformed
+    REQUIRED input, that is the one question you may ask. Note WORK and the SAMPLE line (which files were cut).
 P1  Profile.  RUN step "WORK" profile   then   RUN show "WORK" Files
 P2  Files tab, one row per file x sheet. Decide and set:
     TPA where blank (the user's "TPA by folder", else the folder name in capitals without spaces); Role; Header row;
@@ -147,7 +153,8 @@ P7  Apply.  RUN step "WORK" apply.  Exit 4 = a crash, not a mapping problem: E-U
 P8  Development factors.  RUN dev "WORK"
 P9  Workflows.  RUN step "WORK" workflows --bg , poll (R8). If the launcher cannot be run from here, use
     RUN step "WORK" workflows --bg --direct  and add a NOTE line. A failed workflow does not end your job: go on
-    to P10 and report where it stopped.
+    to P10 and report where it stopped. On a sample, exit 1 with E-CL-MATCHRATE is expected (members past the cut):
+    report it, do not try to fix it.
 P10 Results.  RUN results "WORK".  Write DR\DRAFT_RUN_REPORT.md (section 7), tell the user, end with the Run Digest.
 ```
 
@@ -175,11 +182,12 @@ On E-UD31 to E-UD34 you still run `RUN results "WORK"`, write the report as far 
 ## 7. Report and Run Digest
 `DR\DRAFT_RUN_REPORT.md` (here-string, Set-Content -Encoding UTF8), in this order:
 ```text
-0  First line: "UNREVIEWED DRAFT RUN, UD-0.1. Made without review in a copy of the client folder. Not for quotation."
-1  Outcome in 5 lines: how far it got; the checks (premium ties out, claims tie out, match rate per TPA against the
+0  First line: "UNREVIEWED DRAFT RUN, UD-0.2. Made without review in a copy of the client folder. Not for quotation."
+1  Outcome in 5 lines: first, if Sample rows > 0, "Run on a sample of <n> rows per sheet: the figures are not the
+   portfolio's"; how far it got; the checks (premium ties out, claims tie out, match rate per TPA against the
    gate); what makes the numbers unreliable, biggest first.
 2  Inputs used (section 2 as given) and the draft folder.
-3  Headline by UW year, as  RUN results  printed it, and the basis: premium basis, development factors INPUTS
+3  Headline by UW year, as  RUN results  printed it (marked SAMPLE when cut), and the basis: premium basis, development factors INPUTS
    (no IBNR for a new client) or DERIVED (03b, unreviewed), experience to the valuation date.
 4  Judgements: cells by basis; every "guess" in full (tab, row, what, why); what the two assists filled (their own
    digest counts); sheets excluded and why.
@@ -193,12 +201,12 @@ On E-UD31 to E-UD34 you still run `RUN results "WORK"`, write the report as far 
 Tell the user the same in at most 15 lines, then the RUN DIGEST (at most 12 lines; no client, file, sheet or person
 names and no figures from the data; TPA and payer codes are fine):
 ```text
-RUN <yyyymmdd-HHMM> UD-0.1 h<4 chars from the script's version line> merit=<pack version>
+RUN <yyyymmdd-HHMM> UD-0.2 h<4 chars from the script's version line> merit=<pack version>
 PHASE 10 OK            (or: STOPPED at <phase> <code>)
 CTRL tpas=<n> sheets=<n> include_y=<n> known=<n> drifted=<n> novel=<n> dry_runs=<n>
 <the APPLY line RUN results printed>
 <the WORKFLOWS line>
-CTRL fandiff_ok=<Y/N> tieout_ok=<Y/N> match_min=<lowest match rate> tpa=<its code>
+CTRL sample_rows=<n> files_cut=<n> fandiff_ok=<Y/N> tieout_ok=<Y/N> match_min=<lowest match rate> tpa=<its code>
 <the DECISIONS line>
 <the GUARD line>
 PATCH <one line per self-repair>     NOTE <skill vs code>     NEWLIM <a LenAI limitation met>

@@ -3,10 +3,10 @@
 ## Source
 | Item | Value |
 | --- | --- |
-| Skill version | 0.1.0 (15 Nov 2026), prompt and script version UD-0.1 |
+| Skill version | 0.2.0 (15 Nov 2026), prompt and script version UD-0.2 |
 | Purpose | An unattended DRAFT run of Merit for a first look at a client's numbers. It works in a copy of the client folder; the result is unreviewed and not for quotation |
 | Written against | Merit v10.5.0 (ete-dashboard main 9830ee9): `tools/intake.py` IN-3.10 (commands, stop codes, the editable columns of the Mapping workbook), `lenai/mapping_assist.py`, `lenai/endo_assist.py` EA-1.0, `tools/run_menu.py` RM-1.1, `tools/dev_review.py` DR-1.0, the workflows launcher in `pack.py`, `test/catalogue_run.py` (the chain run tool by tool) |
-| Script | `scripts/ud_run.py`; prints `UD-0.1 ud_run h<4 chars>` (first 4 hex characters of the file's SHA-256) |
+| Script | `scripts/ud_run.py`; prints `UD-0.2 ud_run h<4 chars>` (first 4 hex characters of the file's SHA-256) |
 | Runs on | Native Python on the laptop through LenAI's PowerShell tool (`py -B`), the Merit pack's pinned packages. Standard library + openpyxl in the script itself. No network, no installs |
 | Writes | Only the draft folder `<client folder>_DRAFT` that `setup` makes (marker `02_Inputs\Draft_run\DRAFT_RUN.json`); every other command refuses a folder without the marker |
 | Data | The skill holds no client data. The run's files stay in the draft folder; the Run Digest carries no names or figures |
@@ -37,6 +37,7 @@ v10.5.0 pack build.
 | S7 | `step ma-extract`, `step ea-extract` | Context files written by Merit's own assists |
 | S8 | `step apply`, `dev` (DERIVED) | Apply OK, 10 sources, 5 new layouts; development workbook set |
 | S9 | `step workflows --bg --direct`, `status` | Preflight, premium, claims, 03b, review gate, claims second pass, rate exposure, diagnostics, headline, checks guide: all exit 0 in 22 s |
+| S11 | `setup` with Sample rows 150 (and an invalid value) | Invalid value refused (E-UD01). 6 of 7 raw files cut to the header + 150 data rows (title line above a header kept; a file shorter than the sample unchanged); profile read 150 rows per sheet with the right header rows; the whole chain ran; workflows exit 1 with E-CL-MATCHRATE on one TPA (0.93, members past the cut) and the results marked SAMPLE |
 | S10 | `results` | No Stop exception; premium and claims tie out; match rate 0.999 or better per TPA; headline by UW year with IBNR from the derived factors; GUARD original unchanged |
 
 **Not tested** (no Windows or LenAI here): the launcher route (`cmd /c 05_Run_workflows.cmd nopause diag`), a
@@ -56,4 +57,7 @@ judgement (the test fed the demo client's answer key through `set`).
 | T8 | Report | `DRAFT_RUN_REPORT.md` opens with the UNREVIEWED DRAFT line and lists every guess; the Run Digest has no names or figures |
 
 ## Change log
+- 0.2.0 / UD-0.2 (15 Nov 2026): Sample rows (default 10,000 data rows per sheet, 0 = every row): setup cuts the
+  draft copy's raw files (.xlsx every sheet, .csv, .parquet) to the detected header + N rows; results, report and
+  digest say the figures are on the sample. Owner's request: speed.
 - 0.1.0 / UD-0.1 (15 Nov 2026): first build.

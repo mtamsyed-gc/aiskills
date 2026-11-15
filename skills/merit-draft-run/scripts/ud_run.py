@@ -1,6 +1,8 @@
-# UD-0.1 ud_run.py - unattended DRAFT run of Merit in a COPY of a client folder (LenAI skill merit-draft-run)
+# UD-0.2 ud_run.py - unattended DRAFT run of Merit in a COPY of a client folder (LenAI skill merit-draft-run)
 """Commands (py -B ud_run.py <command> ...):
-  setup   <inputs.json>          check the inputs, copy the client folder to a draft folder, snapshot the original
+  setup   <inputs.json>          check the inputs, copy the client folder to a draft folder, snapshot the original;
+                                 the draft's raw files keep only the first sample_rows data rows of each sheet
+                                 (inputs key sample_rows, default 10000; 0 = every row)
   payer   <WORK>                 write the user's constants and run dates to the Payer tab (after profile)
   set     <WORK> <edits.json>    write judgement cells into the draft's Merit_MAPPING.xlsx; every cell is logged
   show    <WORK> <tab> [--where Col=Value ...] [--blank Col] [--cols A,B,C] [--limit 60]
@@ -23,7 +25,7 @@ import sys
 import time
 from pathlib import Path
 
-VERSION = "UD-0.1"
+VERSION = "UD-0.2"
 SUB = Path("02_Inputs") / "Draft_run"
 MARK = "DRAFT_RUN.json"
 TOOLS = Path("03_Workflows") / "_Build_tools"
@@ -34,6 +36,8 @@ EDITABLE = {"Files": ("TPA", "Role", "Header row", "Priority", "Claims status", 
             "Columns": ("Mapped field", "Type check: accept"), "Fields": ("Constant / rule",),
             "Values": ("Standard value",), "Endorsements": ("Class",), "Claim status": ("Class",),
             "Date rules": ("If type", "Value 1", "Value 2", "Null if"), "Payer": ("Value",)}
+DEFAULT_SAMPLE = 10000
+HEAD_ROOM = 50                       # rows searched for the header (title lines may sit above it)
 BASES = ("user input", "data", "merit proposal", "assist", "guess")
 REQUIRED = ("CLIENT", "PAYER", "payer_name", "risk_carrier", "master_cedant_name", "currency", "country",
             "valuation_date", "premium_extract_date", "claims_extract_date", "large_claim_threshold",
@@ -105,6 +109,12 @@ def setup(inputs_path):
         bad.append("'large_claim_threshold' must be a number")
     if txt(inp.get("dev_factors", "INPUTS")) not in ("INPUTS", "DERIVED"):
         bad.append("'dev_factors' must be INPUTS or DERIVED")
+    try:
+        inp["sample_rows"] = int(str(inp.get("sample_rows", DEFAULT_SAMPLE)).replace(",", "").strip() or DEFAULT_SAMPLE)
+        if inp["sample_rows"] < 0:
+            raise ValueError
+    except ValueError:
+        bad.append("'sample_rows' must be a whole number of rows (0 = every row)")
     if txt(inp.get("workflows", "default")) not in ("default", "all"):
         bad.append("'workflows' must be default or all")
     if not isinstance(inp.get("ri_name_by_tpa", {}), dict):
@@ -136,6 +146,8 @@ def setup(inputs_path):
     shutil.copytree(src, dst, ignore=lambda d, names: [x for x in names if x in SKIP_DIRS])
     sub = dst / SUB
     (sub / "logs").mkdir(parents=True)
+    samp = sample_raw(dst / "01_Info_Supplied", inp["sample_rows"])
+    (sub / "sample.json").write_text(json.dumps(samp, indent=1), encoding="utf-8")
     (sub / "backups").mkdir()
     (sub / "source_snapshot.json").write_text(json.dumps(before), encoding="utf-8")
     inp["CLIENT"] = str(src)
@@ -146,8 +158,112 @@ def setup(inputs_path):
         csv.writer(fh).writerow(["time", "step", "tab", "row", "column", "old", "new", "basis", "why"])
     mb = sum(before[r][0] for r in keep) / 2 ** 20
     print(f"SETUP ok: {len(keep)} files, {mb:,.1f} MB copied in {time.time() - t0:.0f} s")
+    cut = [f for f in samp["files"] if f["cut"]]
+    if inp["sample_rows"]:
+        print(f"SAMPLE {inp['sample_rows']:,} data rows per sheet: {len(cut)} of {len(samp['files'])} raw file(s) cut; "
+              f"{sum(1 for f in samp['files'] if f['how'] == 'copied whole')} copied whole"
+              + (f"; NOT cut (kept whole): {', '.join(f['file'] for f in samp['files'] if f['how'].startswith('not cut'))}"
+                 if any(f['how'].startswith('not cut') for f in samp['files']) else ""))
+    else:
+        print("SAMPLE off: every row of every file")
     print(f"WORK={dst}")
     print("Every later command takes WORK. The original client folder is not written to again.")
+
+
+# ------------------------------------------------------------------------------------------------------ the sample
+def sample_raw(raw, n):
+    """Cut every raw file of the DRAFT copy to its first n data rows (+ HEAD_ROOM rows for title lines and the
+    header). The original folder is never touched. .xlsx: values only, every sheet; .csv: the same encoding, records
+    read with the csv module; .parquet: the first n rows. Other formats are copied whole (profile lists them)."""
+    out = {"sample_rows": n, "files": []}
+    if not n:
+        return out
+    for p in sorted(x for x in Path(raw).rglob("*") if x.is_file() and not x.name.startswith("_")):
+        rec = {"file": str(p.relative_to(raw)), "cut": False, "how": "copied whole"}
+        try:
+            ext = p.suffix.lower()
+            if ext == ".xlsx":
+                rec.update(cut_xlsx(p, n))
+            elif ext == ".csv":
+                rec.update(cut_csv(p, n))
+            elif ext == ".parquet":
+                rec.update(cut_parquet(p, n))
+        except Exception as e:  # noqa: BLE001  a file that cannot be cut stays whole and is reported
+            rec["how"] = f"not cut ({type(e).__name__}): kept whole"
+        out["files"].append(rec)
+    return out
+
+
+def header_index(first):
+    """Index of the header among the first rows: the first row with at least half the cells of the fullest row
+    (a title line above the header has one or two cells). Profile finds the header again on the cut file."""
+    fill = [sum(1 for v in r if txt(v)) for r in first]
+    top = max(fill or [0])
+    return next((i for i, f in enumerate(fill) if top and f >= max(2, top / 2)), 0)
+
+
+def take(rows, n):
+    """The rows up to the header and n data rows after it; cut = True when the source had more."""
+    out, it = [], iter(rows)
+    for r in it:
+        out.append(r)
+        if len(out) == HEAD_ROOM:
+            break
+    h = header_index(out)
+    out = out[:h + 1 + n] if len(out) > h + 1 + n else out
+    for r in it:
+        if len(out) == h + 1 + n:
+            return out, True
+        out.append(r)
+    return out, False
+
+
+def cut_xlsx(p, n):
+    from openpyxl import Workbook, load_workbook
+    src = load_workbook(p, read_only=True, data_only=True)
+    dst, cut, sheets = Workbook(write_only=True), False, {}
+    for ws in src.worksheets:
+        w = dst.create_sheet(ws.title)
+        rows, c = take(ws.iter_rows(values_only=True), n)
+        for row in rows:
+            w.append(list(row))
+        cut = cut or c
+        sheets[ws.title] = len(rows)
+    src.close()
+    tmp = p.with_name(p.stem + "._cut.xlsx")
+    dst.save(tmp)
+    os.replace(tmp, p)
+    return {"cut": cut, "how": "xlsx values, first rows of every sheet", "rows_kept": sheets}
+
+
+def cut_csv(p, n):
+    raw = p.read_bytes()
+    for enc in ("utf-8-sig", "cp1256", "latin-1"):
+        try:
+            text = raw.decode(enc)
+            break
+        except UnicodeDecodeError:
+            continue
+    import io
+    rows, cut = take(csv.reader(io.StringIO(text, newline="")), n)
+    if not cut:
+        return {"cut": False, "how": "csv shorter than the sample: unchanged"}
+    with open(p, "w", newline="", encoding=enc) as fh:
+        csv.writer(fh).writerows(rows)
+    return {"cut": True, "how": f"csv first records ({enc})", "rows_kept": len(rows)}
+
+
+def cut_parquet(p, n):
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    f = pq.ParquetFile(p)
+    if f.metadata.num_rows <= n:
+        return {"cut": False, "how": "parquet shorter than the sample: unchanged"}
+    batch = next(f.iter_batches(batch_size=n))
+    tmp = p.with_name(p.stem + "._cut.parquet")
+    pq.write_table(pa.Table.from_batches([batch]), tmp)
+    os.replace(tmp, p)
+    return {"cut": True, "how": "parquet first rows", "rows_kept": n}
 
 
 # -------------------------------------------------------------------------------------------- the Mapping workbook
@@ -490,6 +606,10 @@ def results(work, mark):
         by[r["basis"]] = by.get(r["basis"], 0) + 1
     res["decisions"] = {"cells": len(dec), "by_basis": by}
     res["guard"] = guard(mark)
+    sp = work / SUB / "sample.json"
+    sm = json.loads(sp.read_text(encoding="utf-8")) if sp.exists() else {"sample_rows": 0, "files": []}
+    res["sample"] = {"rows_per_sheet": sm["sample_rows"], "files_cut": sum(1 for f in sm["files"] if f["cut"]),
+                     "files": len(sm["files"])}
     head = o / "xlsx" / "Merit_Headline.xlsx"
     table = []
     if head.exists():
@@ -506,6 +626,10 @@ def results(work, mark):
     print(f"WORKFLOWS ran={res['workflows_ran']} stop_codes={res['stop_codes'] or 'none'} flag_codes={res['flag_codes']}")
     print(f"CHECKS premium_fandiff_max={res['premium_fandiff_max']:.4f} claims_tieout_max={res['claims_tieout_max']:.4f} "
           f"match_rate_min={round(min(mr.values()), 4) if mr else 'n/a'} (gate 0.95) by_tpa={res['match_rate_by_tpa']}")
+    if sm["sample_rows"]:
+        print(f"SAMPLE rows_per_sheet={sm['sample_rows']} files_cut={res['sample']['files_cut']} of "
+              f"{res['sample']['files']}: the figures below are on the SAMPLE, not the portfolio (exposure, claims, "
+              "match rates and loss ratios are not representative)")
     print(f"DECISIONS cells={len(dec)} " + " ".join(f"{k.replace(' ', '_')}={v}" for k, v in sorted(by.items())))
     print("HEADLINE by UW year (aggregates; from Merit_Headline.xlsx):" if table else "HEADLINE not written")
     for r in table[:14]:
@@ -553,4 +677,7 @@ def main(a):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    try:
+        main(sys.argv[1:])
+    except BrokenPipeError:                                  # the output was piped into something that stopped reading
+        sys.exit(0)
