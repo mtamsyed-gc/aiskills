@@ -31,7 +31,7 @@ If the user types `compare` after an earlier run, go straight to Phase 6.
 ## 3. Rules
 ```text
 R1  PowerShell tool only, one command at a time, the py launcher (python is not on PATH). No .ps1, .bat or .cmd
-    files. Never install anything. Replace CLIENT, OUT, TOOLS, RAW by the full paths in every command.
+    files. Never install anything. Replace CLIENT, OUT, TOOLS, RAW, SCRIPTS by full paths in every command.
 R2  Read-only everywhere except OUT. Never change, rename, move, convert or delete anything in RAW. Never write
     Merit_MAPPING.xlsx, intake_profile.json, 05_Checks or TOOLS\specs. Never run a Merit launcher or the command
     line of an intake step (profile, values, apply) or of mapping_assist / endo_assist.
