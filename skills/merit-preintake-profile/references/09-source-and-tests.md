@@ -3,7 +3,7 @@
 ## Source
 | Item | Value |
 | --- | --- |
-| Skill version | 0.3.0 (15 Nov 2026), prompt version PP-0.3 |
+| Skill version | 0.3.1 (15 Nov 2026), prompt version PP-0.3 |
 | Purpose | An independent reference for the user, kept beside the Mapping workbook. Not an input to Merit: no Merit step reads its outputs, and none is planned |
 | Written from | The Merit user manual, admin guide, mapping-assist run card and browser-page specification (pack versions up to v9.1). Not checked against the Merit v10.x code: the skill makes the model read the pack's own code first, and the pack wins where they differ (NOTE lines in the Run Digest record every difference) |
 | Pasted-prompt twin | `LENAI_PREINTAKE_PROFILE.md` PP-0.1 (same rules and phases, scripts embedded in the prompt): fallback only |
@@ -35,6 +35,8 @@
 | T8 | After Step 1, type `compare` | Only differences are listed; `Merit_MAPPING.xlsx` is unchanged (guard) |
 
 ## Change log
+- 0.3.1 (15 Nov 2026): sample 10,000 data rows per sheet (was 50,000), for speed (owner). Whole-sheet reads stay
+  allowed for a named question only.
 - 0.3.0 / PP-0.3 (15 Nov 2026): reframed as an independent reference (owner, 15 Nov 2026). The model now forms its
   own view from the data first (Phase 3 A to H) and only then cross-checks against what Merit's profile would
   propose (part I); the report states it is not read by Merit. Scripts unchanged apart from the version string.
