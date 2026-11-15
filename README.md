@@ -5,8 +5,8 @@ Skills deployed to GC's LenAI / LenWork (Customize > Skills), kept here as the s
 | Skill | Version | Coverage | LenAI status |
 |---|---|---|---|
 | `skills/insurance-capital-ifrs17` | 1.0.1 (6 Nov 2026) | Solvency regulation + IFRS 17 for insurers; UAE (CBUAE onshore) layer | Live, Private; triggers automatically (confirmed 9 Nov 2026) |
-| `skills/merit-preintake-profile` | 0.3.0 (15 Nov 2026) | Independent pre-intake reference (not an input to Merit): a profile of a client's raw premium and claims files before Merit's intake profile: recommendations for the Mapping workbook's Files, Columns, Fields, Date rules and Payer tabs. Runs native Python through LenAI's PowerShell tool; carries its own scripts | Built, not yet uploaded or run in LenAI |
-| `skills/merit-draft-run` | 0.1.0 (15 Nov 2026) | Unattended DRAFT run of Merit in a copy of a client folder: intake profile, values, apply and the workflows without review, the Mapping workbook filled by the model, every judgement logged. Inputs (constants, run dates) given at the start. Carries its own script | Built, not yet uploaded or run in LenAI |
+| `skills/merit-preintake-profile` | 0.3.1 (15 Nov 2026) | Independent pre-intake reference (not an input to Merit): a profile of a client's raw premium and claims files before Merit's intake profile: recommendations for the Mapping workbook's Files, Columns, Fields, Date rules and Payer tabs. Runs native Python through LenAI's PowerShell tool; carries its own scripts | Built, not yet uploaded or run in LenAI |
+| `skills/merit-draft-run` | 0.2.0 (15 Nov 2026) | Unattended DRAFT run (10,000 rows per sheet by default) of Merit in a copy of a client folder: intake profile, values, apply and the workflows without review, the Mapping workbook filled by the model, every judgement logged. Inputs (constants, run dates) given at the start. Carries its own script | Built, not yet uploaded or run in LenAI |
 
 ## Layout
 - `skills/<name>/` – what gets uploaded: `SKILL.md` plus `references/`.

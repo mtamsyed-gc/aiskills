@@ -1,7 +1,7 @@
 ---
 name: merit-preintake-profile
 description: Use only when the user asks for a Merit pre-intake profile (pre-intake review) of a client folder - a look at the raw premium and claims files in 01_Info_Supplied BEFORE Merit's intake profile step runs, giving recommendations for the Merit_MAPPING workbook's Files, Columns, Fields, Date rules and Payer tabs. Needs the client folder path and the payer code. Not for mapping after profile has run (mapping assist), not for questions about Merit outputs or results.
-version: 0.3.0 (15 Nov 2026) - PP-0.3, independent-reference build (own view first, Merit cross-check after); not yet run in LenAI
+version: 0.3.1 (15 Nov 2026) - PP-0.3, independent-reference build, 10,000-row sample; not yet run in LenAI
 ---
 
 # Merit pre-intake profile (PP-0.3)
@@ -52,7 +52,7 @@ R5  Print budget: at most ~40 lines per command, never a row of data as it stand
     person or a policy (member, policy, claim, card, national ID numbers, names, dates of birth, phones, emails) is
     shown only as a shape (letters -> A, digits -> 9). Category values with counts, min / max of dates, and
     aggregates of amounts are fine.
-R6  Time: sample first (the first 50,000 data rows of a sheet). Read a whole large sheet only for a named question
+R6  Time: sample first (the first 10,000 data rows of a sheet). Read a whole large sheet only for a named question
     (latest date, key overlap, row-limit check), only the columns needed, one file at a time. Keep a command under
     ~5 minutes; say so before one you expect to take over ~2 minutes.
 R7  Evidence, not guesses. Never invent a constant, a date, a class or a business rule. Where the code is silent,
@@ -109,7 +109,7 @@ and their columns, anything missing.
 PHASE 2 - Inventory and structure
 2.1 Files:  Get-ChildItem -Recurse -File "RAW" | Select-Object FullName, Length, LastWriteTime | Format-Table -AutoSize -Wrap
 2.2 Row counts, if the pack has it (documented as writing nothing):  py -B "TOOLS\count_rows.py" "RAW"
-2.3 Structure. For every file x sheet, on a 50,000-row sample: header row, columns, and per column its kind,
+2.3 Structure. For every file x sheet, on a 10,000-row sample: header row, columns, and per column its kind,
     non-empty % and values shown (categories with counts, shapes for identifiers). Merit's readers and its
     header / kind / mask / date-order detectors may do this work (R3). Do NOT call its field proposer or its
     layout match against the library yet. Print one line per sheet.
