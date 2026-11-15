@@ -1,4 +1,4 @@
-# PP-0.2 probe pNN_<what>: <the one question this probe answers>
+# PP-0.3 probe pNN_<what>: <the one question this probe answers>
 import sys, os
 CLIENT = sys.argv[1]
 sys.path.insert(0, os.path.join(CLIENT, "03_Workflows", "_Build_tools"))   # Merit's own modules, for reuse

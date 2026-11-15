@@ -1,7 +1,7 @@
-# PP-0.2 p90_export: checks preintake_recommendations.json (+ preintake_columns_<Gnn>.json parts), writes the two CSVs
+# PP-0.3 p90_export: checks preintake_recommendations.json (+ preintake_columns_<Gnn>.json parts), writes the two CSVs
 import sys, os, json, csv, glob
 import hashlib
-print("PP-0.2 p90_export h" + hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:4])
+print("PP-0.3 p90_export h" + hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:4])
 out = os.path.join(sys.argv[1], "02_Inputs", "Preintake")
 try:
     d = json.load(open(os.path.join(out, "preintake_recommendations.json"), encoding="utf-8-sig"))

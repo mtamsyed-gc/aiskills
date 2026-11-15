@@ -1,7 +1,7 @@
-# PP-0.2 p00_guard: proves the pre-intake profile changed nothing outside 02_Inputs\Preintake
+# PP-0.3 p00_guard: proves the pre-intake profile changed nothing outside 02_Inputs\Preintake
 import sys, os, json
 import hashlib
-print("PP-0.2 p00_guard h" + hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:4])
+print("PP-0.3 p00_guard h" + hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:4])
 client, mode = sys.argv[1], sys.argv[2]
 out = os.path.join(client, "02_Inputs", "Preintake")
 snap_path = os.path.join(out, "guard_snapshot.json")
