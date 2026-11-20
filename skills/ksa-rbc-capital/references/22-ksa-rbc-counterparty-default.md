@@ -2,7 +2,7 @@
 
 Type 1 (reinsurers, banks), Type 2 (brokers, agents, TPAs, policyholders), the catastrophe risk-mitigating effect and the aggregation. The reinsurer charge on any treaty starts here.
 
-Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version SCA.04 (issued 2026-02-25), workbook `20260226_Solvency_and_Capital_Template_2026_vSCA.04.xlsx`, run "Risk Based Capital 5th Dry Run (2025YE)", as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
+Source: Insurance Authority (IA) "Solvency and Capital Template 2026", built from version SCA.04 (issued 2026-02-25, run "Risk Based Capital 5th Dry Run (2025YE)") as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026), **updated to SCA.07** (issued 2026-11-16, valuation 30 Sep 2026, `Solvency_and_Capital_Template_2026Q3_vSCA.07.xlsx`; every factor and matrix re-read from the SCA.07 workbook on 20 Nov 2026, changes in file 29). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
 
 ---
 
@@ -37,10 +37,12 @@ Charge_Type1 = Type1_net                                                  [C11]
 ```
 
 Rules:
+- **Statutory deposits** are a Type 1 exposure (bank deposit at the holding bank's rating) (SCA.06). Accrued interest on term and statutory deposits is part of the exposure.
+- **Ratings:** two agency ratings → the lower; three or more → the lower of the best two (SCA.06). A 1.5% / 5% / 50% cliff applies, so the rating rule can move a reinsurer from 5% to 50%.
 - Payables may be entered only if (i) the company has a legal right of offset against the receivables, and (ii) the receivables from the counterparty fall due before the payables.
 - Ceded technical provisions are net of RA: on a reinsurer default the company bears ceded claim reserves and unearned ceded premium only, and RA/CSM already receive credit in available capital.
 - `RME` per reinsurer = (reinsurer's % share of total assumed recoveries in the CAT scenarios) × (diversified risk-mitigating effect from all CAT scenarios, `TotalRME`).
-- `TotalRME` [C8] = sqrt( Σ_s Rec_s² ), where `Rec_s` is the total reinsurance recovery assumed in scenario s, for s ∈ {health pandemic (health + life), flood (KSA + outside), earthquake (KSA + outside), hail (KSA + outside), sandstorm, man-made property (property + health + P&S), energy, motor, marine, aviation, credit & suretyship}.
+- `TotalRME` [C8] = sqrt( Σ_s Rec_s² ), where `Rec_s` is the total reinsurance recovery assumed in scenario s, for s ∈ {health pandemic (health + life), flood (KSA + outside), earthquake (KSA + outside), hail (KSA + outside), sandstorm, **windstorm (outside KSA; included since SCA.05)**, man-made property (property + health + P&S), energy, motor, marine, aviation, credit & suretyship}.
 - Check: Σ RME over reinsurers must be within 1% of TotalRME.
 
 ### 5.2 Type 2 — other counterparties

@@ -1,7 +1,7 @@
 ---
 name: ksa-rbc-capital
-description: Use for any question on Saudi Arabia (KSA) insurance capital - the Insurance Authority risk-based capital (RBC) framework in template SCA.04 (YE2025 5th dry run, mandatory from 2027) with every risk module, factor, correlation matrix, catastrophe scenario, operational risk, the RBC solvency ratio, template behaviours and validations; the current solvency margin rules to 31 Dec 2026; KSA reinsurance rules (finite ban, retention, rating); and how each reinsurance structure is credited for a Saudi insurer or cooperative.
-version: 1.0.0 (13 Nov 2026) - built from the IA Solvency and Capital Template 2026 SCA.04 (issued 25 Feb 2026) as restated in the owner's KSA_RBC_Rules_vSCA04.md, plus the KSA rows of the owner's GCC Solvency Master File (12 Nov 2026). Replaces the condensed KSA content formerly in insurance-capital-ifrs17 file 02
+description: Use for any question on Saudi Arabia (KSA) insurance capital - the Insurance Authority risk-based capital (RBC) framework in the Solvency and Capital Template SCA.07 (quarterly dry runs, valuation 30 Sep 2026, mandatory from 2027) with every risk module, factor, correlation matrix, catastrophe scenario, operational risk, the Reinsurance Impact sheet, template behaviours and validations; the Own Funds and Solvency Assessment Template (eligible own funds, tiers, adjustments, MCR, RBC solvency ratio); the current solvency margin rules to 31 Dec 2026; KSA reinsurance rules (finite ban, retention, rating); and how each reinsurance structure is credited for a Saudi insurer or cooperative.
+version: 1.1.0 (20 Nov 2026) - updated to SCA.07 (issued 16 Nov 2026) and the IA RBC Own Funds and Solvency Assessment Template (Q3 2026, new file 30). 1.0.0 (13 Nov 2026) was built from SCA.04 (issued 25 Feb 2026) as restated in the owner's KSA_RBC_Rules_vSCA04.md, plus the KSA rows of the owner's GCC Solvency Master File (12 Nov 2026)
 ---
 
 # KSA risk-based capital skill
@@ -9,7 +9,8 @@ version: 1.0.0 (13 Nov 2026) - built from the IA Solvency and Capital Template 2
 ## 1. What this skill is for
 You are supporting a life & health reinsurance broker / pricing actuary (FIA) who advises Saudi insurers (all cooperative). Typical questions:
 - "What is this Saudi insurer's RBC, which module drives it, and what is its RBC solvency ratio?"
-- "What factor, shock or correlation does SCA.04 use for X?"
+- "What factor, shock or correlation does the template (SCA.07) use for X?"
+- "What are this insurer's eligible own funds, which tier limit binds, and what is its MCR?"
 - "What does a 50% medical QS, a group life QS, a cat XoL or an LPT do to RBC, and to the current solvency margin?"
 - "Why does the template show this number?" (blank cells, lookups that return no charge, items left out of a formula)
 - "Which reinsurer ratings, retention and cession rules apply to this placement?"
@@ -29,19 +30,20 @@ Load only what the question needs. Section numbers are those of the owner's spec
 | `references/26-ksa-rbc-correlations-and-regions.md` | Appendices A, B | Any aggregation: all 17 matrices; KSA regions, earthquake locations, 7 premium regions, 18 outside-KSA catastrophe regions |
 | `references/27-ksa-rbc-template-mechanics.md` | Sections 12-16 | Reproducing or reviewing a filled template: legacy solvency sheet, SOFP/SOI, summary of results, validations, governance, the 21 template behaviours |
 | `references/28-ksa-rules-outside-template-and-structure-credit.md` | K1-K6 | Current rules to 31 Dec 2026; finite ban, rating, retention, local cession, reporting, breach ladder; capital credit by structure today vs RBC; comparison with Solvency II |
-| `references/29-ksa-source-register.md` | Register | Sources, open points, template change history, worked examples (to check a calculation) and load tests |
+| `references/29-ksa-source-register.md` | Register | Sources, open points, template change history (SCA.02-SCA.07), worked examples (to check a calculation) and load tests |
+| `references/30-ksa-own-funds-template.md` | Own Funds and Solvency Assessment Template | Available capital: tiers and limits, ancillary own funds, adjustments (net RA, CSM, goodwill, intangibles, deferred tax, dividends, own shares), MCR and floor checks, ratio, template behaviours, worked example |
 
 Routing: this skill covers insurers licensed by the Saudi Insurance Authority. For UAE or Qatar QFC, for IFRS 17 measurement, rating-agency capital, the structures atlas or risk-transfer tests, use `insurance-capital-ifrs17`. For withholding tax, the 30% local first refusal or pricing a layer, use `reinsurance-pricing-knowledge`. Ask the user to load either with its slash command unless it is already loaded.
 
 ## 3. How to answer (always)
-1. **Treat files 20-27 as the authoritative description of SCA.04.** Do not substitute Solvency II parameters or earlier IA dry-run parameters unless the files say they are identical. If a parameter is not in the files, say it is not defined in the template rather than estimating it.
-2. **Tag every value.** **[DRY RUN]** for SCA.04 values (they can change before the final 2027 regulation); **[TEMPLATE]** for how the workbook implements a rule; **[RULE]** for law or regulation (file 28, with the article); **[INTERP]** for interpretation. Never present [INTERP] as [RULE].
+1. **Treat files 20-27 as the authoritative description of the Solvency and Capital Template (SCA.07), and file 30 of the Own Funds template.** Do not substitute Solvency II parameters or earlier IA dry-run parameters unless the files say they are identical. If a parameter is not in the files, say it is not defined in the template rather than estimating it.
+2. **Tag every value.** **[DRY RUN]** for template values (they can change before the final 2027 regulation); **[TEMPLATE]** for how the workbook implements a rule; **[RULE]** for law or regulation (file 28, with the article); **[INTERP]** for interpretation. Never present [INTERP] as [RULE].
 3. **Keep three kinds of quantity apart:** prescribed parameters (factors, correlations, thresholds); company inputs (exposures, stressed values from the company's own models, reinsurance recoveries); calculated results.
 4. **Say which inputs are needed** where a component is not formula-driven: life underwriting stressed values, top-down interest-rate stressed values, reinsurance recoveries, reinstatement premiums, sliding-scale commission, business interruption and several man-made catastrophe cost items.
 5. **Sign convention.** Module sheets and the summary of results show change in NAV (loss negative); the RBC sheet shows charges positive. In these files `Charge_x` = -ΔNAV unless stated.
-6. **Use exposures on the right basis:** discounted technical provisions excluding RA and CSM wherever provisions are an exposure; amounts in SAR thousands; valuation date 31 Dec 2025; exposures for scenarios relate to calendar 2026.
+6. **Use exposures on the right basis:** discounted technical provisions excluding RA and CSM wherever provisions are an exposure; amounts in SAR thousands; valuation date = the quarter-end of the submission (SCA.07: 30 Sep 2026); premium and operational risk on last-12 and next-12-month earned premium; CAT volume exposures for the next 12 months; available capital = eligible own funds (file 30), which already include net RA and net CSM.
 7. **Apply the template's actual behaviour** (file 27, section 16) when reproducing template numbers, and tell the user when one of those behaviours affects the answer.
-8. **Do not invent what the template does not define:** minimum RBC ratio, intervention ladder, own-funds tiering and minimum capital are not in SCA.04.
+8. **Do not invent what the templates do not define:** minimum RBC ratio, intervention ladder and tier classification criteria are in neither template. The MCR (RBC / 3) and the tier limits are in the Own Funds template (file 30).
 9. **Show the arithmetic:** formula, inputs (label assumptions), result, and the matrix used for each aggregation. Check a calculation against the worked examples in file 29 where possible.
 10. **For any reinsurance action give both regimes** in 2026 (current rules and RBC, file 28 K5), the counterparty cost (file 22), the legality screen (file 28 K3) and, where relevant, the IFRS 17 effect (`insurance-capital-ifrs17`).
 11. **Close with** what drives RBC, the best 1-3 levers and why, what each cannot do, data needed, and items to pre-clear with the IA, compliance or the auditor.
@@ -54,5 +56,5 @@ Routing: this skill covers insurers licensed by the Saudi Insurance Authority. F
 
 ## 5. Output patterns
 - **Quick answer:** 3-6 lines: value, tag, file and section, one caveat.
-- **RBC read of an insurer:** position table (RBC by module, diversification, available capital, ratio) → largest drivers → template behaviours that affect the figures → levers ranked → limits → data asks.
+- **RBC read of an insurer:** position table (RBC by module, diversification, eligible own funds by tier and adjustments, ratio, MCR) → largest drivers → template behaviours that affect the figures → levers ranked → limits → data asks.
 - **Structure assessment for a Saudi cedant:** mechanism → legality screen (K3) → current-rules effect → RBC effect by module, with counterparty cost → IFRS 17 pointer → verdict.

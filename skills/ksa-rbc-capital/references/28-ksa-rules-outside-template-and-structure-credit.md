@@ -1,6 +1,6 @@
 # KSA: current solvency rules, reinsurance rules, capital credit by structure, and comparison with Solvency II
 
-Load for anything about a Saudi insurer that is NOT a calculation inside the SCA.04 template: the solvency margin rules in force until 31 Dec 2026, the reinsurance and legal rules that screen a structure, how each reinsurance structure is credited under today's rules and under RBC, breach and reporting rules, and how the framework compares with Solvency II.
+Load for anything about a Saudi insurer that is NOT a calculation inside the Solvency and Capital Template (SCA.07) or the Own Funds template: the solvency margin rules in force until 31 Dec 2026, the reinsurance and legal rules that screen a structure, how each reinsurance structure is credited under today's rules and under RBC, breach and reporting rules, and how the framework compares with Solvency II.
 
 Sources and tags:
 - Sections K1-K5 come from the owner's working file "GCC Solvency Master File: KSA, Qatar (QFC) and UAE" (12 Nov 2026), not from the SCA.04 template. Tags: **[RULE]** law or regulation (Implementing Regulations of the Cooperative Insurance Companies Control Law, 2010 Reinsurance Regulation, IA circulars); **[INTERP]** interpretation or market practice; **VERIFY** = check the primary text before a client relies on it.
@@ -11,15 +11,15 @@ Sources and tags:
 ## K1. The two regimes and the switch-over
 | | Current rules ("KSA-now") | Risk-based capital ("KSA-RBC") |
 |---|---|---|
-| Instrument | Implementing Regulations Arts 63-68 **[RULE]**; in force to 31 Dec 2026 | IA Solvency and Capital Template SCA.04 (files 20-27); mandatory from 1 Jan 2027 (VERIFY the final regulation) |
+| Instrument | Implementing Regulations Arts 63-68 **[RULE]**; in force to 31 Dec 2026 | IA Solvency and Capital Template (SCA.07, files 20-27) and Own Funds and Solvency Assessment Template (file 30); quarterly dry runs in 2026; mandatory from 1 Jan 2027 (VERIFY the final regulation) |
 | Type | Solvency I volume margin | Modular, 17 correlation matrices, stresses and scenarios, 99.5% one-year |
-| Floor | Minimum capital SAR 100m / SAR 200m (VERIFY which applies to which licence); SAR 300m in practice | Planned; amount not published |
-| Test | Required margin = max(minimum capital, premium-method or claims-method margin) | RBC solvency ratio = (Own Funds + net RA + net CSM) / RBC; no minimum ratio or ladder in SCA.04 |
+| Floor | Minimum capital SAR 100m / SAR 200m (VERIFY which applies to which licence); SAR 300m in practice | MCR = RBC / 3 with absolute floor checks SR 20m insurer / 40m reinsurer or composite / 10m captive insurer / 20m captive reinsurer **[TEMPLATE] [DRY RUN]** (file 30); paid-up minimum capital under the Implementing Regulations unaffected (VERIFY) |
+| Test | Required margin = max(minimum capital, premium-method or claims-method margin) | RBC solvency ratio = eligible own funds / RBC; MCR tier tests (T1 ≥ 80% MCR, T2 ≤ 20% MCR); no minimum ratio or intervention ladder in either template |
 | Liability basis | Statutory forms | IFRS 17, with RA and CSM taken out of exposures and added to available capital |
 | Reinsurance credit | Net, floored at 50% of gross | Net, no floor; offset by the counterparty charge (file 22) |
-| Capital resources | Net admissible assets by fund (policyholders G&H, policyholders P&S, shareholders); Table 2 admission limits | Own Funds from the separate IA Own Funds assessment and reporting template (which carries the tiering) + net RA + net CSM; admissibility has no effect on RBC |
+| Capital resources | Net admissible assets by fund (policyholders G&H, policyholders P&S, shareholders); Table 2 admission limits | Eligible own funds (file 30): Tier 1 in full, Tier 3 ≤ 15% of RBC, Tier 2 + Tier 3 ≤ 50% of RBC, Tier 1 ≥ 50% of RBC; then + net RA + net CSM − own shares − goodwill − foreseeable dividends − intangibles − deferred tax. Basic and ancillary (T2, T3) own funds. Tiering criteria not published. Admissibility has no effect |
 
-The template's "Regulatory Solvency" sheet reports the current-rules position alongside RBC for 2024-2026 (file 27, section 12): it only adds up inputs and does not hold the premium or claims method formulas.
+The template's "Regulatory Solvency" sheet reports the current-rules position alongside RBC for 2025, the current quarter and 2026 (file 27, section 12): it only adds up inputs and does not hold the premium or claims method formulas.
 
 On 1 Jan 2027, retire section K2 and replace every [DRY RUN] value with the final regulation.
 
@@ -45,7 +45,7 @@ On 1 Jan 2027, retire section K2 and replace every [DRY RUN] value with the fina
 - **Reporting of terms (Art 18):** profit and loss sharing, loss-ratio caps, swing rates and reinstatements are reported; annual reinsurance strategy filed by 30 April.
 - **Reporting cycle:** monthly returns within 15 working days; the RBC template carries 4-year projections (business plan, plus alternative projections where the Appointed Actuary's assumptions differ materially).
 - **Cooperative model:** all Saudi insurers are cooperative; the surplus split to policyholders is in Implementing Regulations Art 70 (VERIFY the current split).
-- **Subordinated debt:** expected to be eligible as own funds under RBC (IA statement, Apr 2026; VERIFY in the Own Funds template).
+- **Subordinated debt:** expected to be eligible as own funds under RBC (IA statement, Apr 2026). The Own Funds template (file 30) has Tier 2 and Tier 3 rows and the Solvency II-style limits, but no classification criteria: a subordinated loan would most likely be Tier 2, capped with Tier 3 at 50% of RBC and at 20% of MCR **[INTERP]**, VERIFY with the IA.
 
 ## K4. What binds and sector context [INTERP]
 - Under the current rules a medical writer is bound by the claims method once its net loss ratio exceeds about 67%; reinsurance credit stops at 50% ceded.
@@ -54,7 +54,7 @@ On 1 Jan 2027, retire section K2 and replace every [DRY RUN] value with the fina
 - For a life and health book, the catastrophe charge is not only pandemic: the man-made property fire scenario takes 25% injured and 5% deaths among insured lives at the largest single property risk, and sandstorm adds emergency treatment (file 25).
 
 ## K5. Capital credit by structure: current rules vs RBC
-| Structure | Current rules | RBC (SCA.04) |
+| Structure | Current rules | RBC (SCA.07; unchanged from SCA.04 for every row) |
 |---|---|---|
 | Medical / general QS | Premium margin falls to the 50% floor; the claims margin lags (3-year average) | Full credit through lower net premium exposure and net reserves (file 24); counterparty charge on ceded reserves + pipeline claims + commission at 1.5 / 5 / 50% by rating (file 22) |
 | Group life QS | Credit up to 50% of capital at risk | Full credit on the 43% / 24% factors (LOB11-12) and on the pandemic life loss |
@@ -66,8 +66,10 @@ On 1 Jan 2027, retire section K2 and replace every [DRY RUN] value with the fina
 | Long-term coinsurance | Credit capped at 50% | Net BEL falls in every life stress (file 23) |
 | Fronting | As if 50% retained; can breach the 30% retention rule | Near nil underwriting charge, full counterparty charge on the fronted reserves; operational risk stays on gross premium |
 | Collateral / funds withheld | n/a | Deducted from the counterparty loss, floored at zero per counterparty (not from the exposure) |
-| Letter of credit | Not capital | Not addressed in SCA.04 (Own Funds template) |
+| Letter of credit | Not capital | Possibly ancillary own funds (Tier 2 / Tier 3 rows exist in the Own Funds template, file 30); no criteria or approval process published **[INTERP]**, VERIFY |
 | Reinsurer rating | No charge | Cliff between BBB (5%) and BB or unrated (50%) |
+
+Since SCA.07 the company also reports each treaty set's effect as gross minus net RBC by module on the `Reinsurance Impact` sheet (file 27 section 12A), so the IA sees the relief directly. A capital action that lowers RBC also lowers the room for Tier 2 and Tier 3 own funds (file 30) **[INTERP]**.
 
 Reading the counterparty cost [INTERP]: the 5% for an A or BBB reinsurer applies to ceded technical provisions net of RA, pipeline claims and commission (less ECL), not to ceded premium. On a short-tail medical QS, ceded reserves are a fraction of ceded premium, so the charge per 100 of ceded premium is well below 5 before diversification (counterparties 0.25 correlated; Type 1 with Type 2 at 0.75; counterparty with non-life at 0.5 in Basic RBC).
 
@@ -98,4 +100,4 @@ Screening order [INTERP]:
 | Premium risk | Applied to net loss ratio; local calibration blended with SII | Volume × 3σ |
 | Nat CAT outside KSA | Factor × past-12-month earned premium | Based on next-12-month premium / sums insured by zone |
 | Operational risk | 3% / 4% premium, 3% / 0.45% provisions, 30% BSCR cap, 25% UL expenses, cyber score adjustment | Same structure, no cyber adjustment, includes premium growth term |
-| Available capital | Own Funds + Net RA + Net CSM | Own funds (risk margin is a liability) |
+| Available capital | Eligible own funds incl. net RA and net CSM, after deductions; tier limits as Solvency II (file 30) | Own funds (risk margin is a liability); same tier limits |

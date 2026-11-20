@@ -2,7 +2,7 @@
 
 Factors by line, premium and reserve exposure, geographical diversification, reinstatement and sliding-scale effects, and the non-life aggregation. Medical (LOB9) and one-year group life / credit life (LOB11-13) are here.
 
-Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version SCA.04 (issued 2026-02-25), workbook `20260226_Solvency_and_Capital_Template_2026_vSCA.04.xlsx`, run "Risk Based Capital 5th Dry Run (2025YE)", as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
+Source: Insurance Authority (IA) "Solvency and Capital Template 2026", built from version SCA.04 (issued 2026-02-25, run "Risk Based Capital 5th Dry Run (2025YE)") as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026), **updated to SCA.07** (issued 2026-11-16, valuation 30 Sep 2026, `Solvency_and_Capital_Template_2026Q3_vSCA.07.xlsx`; every factor and matrix re-read from the SCA.07 workbook on 20 Nov 2026, changes in file 29). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
 
 ---
 
@@ -30,7 +30,7 @@ Premium risk = increase in the **net** loss ratio. Reserve risk = inadequacy of 
 
 ### 7.2 Premium risk
 
-Inputs per LOB (all net of reinsurance): `NEP_prev` net earned premium in the past calendar year; `NEP_next` expected net earned premium in the current/next calendar year; `LC` loss component net of loss recovery component at the valuation date; `FP_exist` future net premium on long-term contracts written in the last calendar year or earlier, to be earned after the current calendar year (discounted if GMM); `FP_future` the same for contracts written/to be written in the current calendar year; `NP_exp` exposure value for non-proportional inwards reinsurance; `Reinst` impact of reinstatement premium; `Slide` impact of sliding-scale commission; and the premium exposure split over 7 regions (KSA; Asia excluding KSA; Europe; Africa; South America; North America; Australia) — by **location of risk**, not of policyholder.
+Inputs per LOB (all net of reinsurance): `NEP_prev` net earned premium in the last 12 months to the valuation date; `NEP_next` expected net earned premium in the next 12 months (SCA.05 quarterly basis; SCA.04 used calendar years); `LC` loss component net of loss recovery component at the valuation date; `FP_exist` future net premium on long-term contracts written in the last 12 months or earlier, to be earned after the current calendar year (discounted if GMM); `FP_future` the same for contracts written/to be written in the current calendar year; `NP_exp` exposure value for non-proportional inwards reinsurance; `Reinst` impact of reinstatement premium; `Slide` impact of sliding-scale commission; and the premium exposure split over 7 regions (KSA; Asia excluding KSA; Europe; Africa; South America; North America; Australia) — by **location of risk**, not of policyholder.
 
 ```
 Exposure_DP  = max( NEP_prev , NEP_next + LC ) + FP_exist + FP_future
@@ -49,7 +49,7 @@ GeoDiv ranges from 1.0 (single region) down to a floor of 0.75 + 0.25/7 ≈ 0.78
 
 ### 7.3 Reserve risk
 
-Inputs per LOB: best estimate of OCR + IBNR + ULAE, **net of reinsurance and discounted**, at last year end, split into direct & proportional inwards `Res_DP` and non-proportional inwards `Res_NP`; reserve exposure by the same 7 regions.
+Inputs per LOB: best estimate of OCR + IBNR + ULAE, **net of reinsurance and discounted**, at the valuation date, split into direct & proportional inwards `Res_DP` and non-proportional inwards `Res_NP`; reserve exposure by the same 7 regions.
 
 ```
 Loss_res      = Res_DP × f_res_DP(LOB) + Res_NP × f_res_NP(LOB)       (NP = 60%)

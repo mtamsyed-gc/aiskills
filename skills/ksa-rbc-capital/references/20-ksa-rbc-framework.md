@@ -2,7 +2,7 @@
 
 Load for any KSA RBC question: how the modules fit together, the aggregation rule, rating buckets and lines of business, operational risk, available capital and the ratio, LOB allocation, KPIs and the calculation order.
 
-Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version SCA.04 (issued 2026-02-25), workbook `20260226_Solvency_and_Capital_Template_2026_vSCA.04.xlsx`, run "Risk Based Capital 5th Dry Run (2025YE)", as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
+Source: Insurance Authority (IA) "Solvency and Capital Template 2026", built from version SCA.04 (issued 2026-02-25, run "Risk Based Capital 5th Dry Run (2025YE)") as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026), **updated to version SCA.07** (issued 2026-11-16, valuation date 30 Sep 2026, workbook `Solvency_and_Capital_Template_2026Q3_vSCA.07.xlsx`; changes SCA.05-SCA.07 in file 29). Available capital follows the separate Own Funds template (file 30). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
 
 ---
 
@@ -11,12 +11,12 @@ Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version S
 | Item | Rule |
 |---|---|
 | Regulator | Insurance Authority, Kingdom of Saudi Arabia (contact in template: Actuarial@ia.gov.sa) |
-| Valuation date | 31 December 2025 (YE2025). The YE2025 solvency ratio is the "Base". |
+| Valuation date | Quarterly since SCA.05 (Jul 2026): the quarter-end of the submission. SCA.07 = 30 Sep 2026 (2026Q3). Comparatives: 2025YE actual. (SCA.04 was a YE2025 run.) |
 | Units | All amounts in SAR thousands (SR '000). |
 | Accounting basis | IFRS 17 / IFRS 9 balance sheet (SOFP) values. |
 | Calibration | All calibrations are at the 99.5th percentile. Premium and reserve risk factors for direct and proportional business are on a one-year view (emergence-pattern approach: 95% for Motor and Health, 90% for other LOBs applied to ultimate-view factors). |
-| Asset/liability values in stresses | As at YE2025. |
-| Exposure data for scenarios | Relate to calendar year 2026 (e.g. largest exposures may be written in 2025 and partly earned in 2026, or written in 2026 and expiring in 2027). |
+| Asset/liability values in stresses | As at the valuation date. Accrued interest is included in the value of the underlying asset under its module (bonds under market risk, term deposits under counterparty default) (SCA.06). |
+| Exposure periods | Premium risk and operational risk: earned premium for the previous 12 and next 12 months. CAT volume exposures (earned premium, insureds, sums insured): expected to be earned in the **next 12 months** (in-force, renewals, new business); past-12-month actuals allowed only with documented reasons and adjustments for expected changes (exits, expansion, M&A). CAT point-in-time exposures (largest concentration or risk): at the valuation date (SCA.05). |
 | Risk mitigation | Where allowed, based on **existing** risk mitigation arrangements only. |
 | Sign of inputs | Use a negative sign for a reduction in NAV. Liabilities are input as positive values. |
 | Empty cells | Cells must not be left empty; enter 0 when not applicable. |
@@ -24,6 +24,8 @@ Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version S
 | Technical provisions used as exposure | Discounted and **excluding Risk Adjustment (RA) and CSM** wherever technical provisions are an exposure measure (LOB allocation, non-life UW, operational risk, life UW, counterparty default Type 1). |
 | Admissibility | Admissibility rules have no effect on RBC calculations (removed in SCA.03). |
 | Inapplicable stresses | If a stress/scenario is considered not applicable, the company must list tab, stress name and reason in the Instructions tab. |
+| Assumptions | Every assumption and expert judgement, with rationale, goes in the `Comments & Assumptions` tab (prompts by area since SCA.07). |
+| Multiple agency ratings | Two ratings: use the lower. Three or more: the lower of the best two (SCA.06). Applies to every rating input (bonds, concentration, Type 1 counterparties). |
 
 ### 1.1 Workbook map
 
@@ -31,12 +33,13 @@ Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version S
 |---|---|
 | Instructions | General rules, rating mapping, region definitions |
 | Version | Change log |
-| Sign-off Record, Comments, AF contribution | Governance |
+| Sign-off Record, Comments & Assumptions, AF contribution | Governance |
 | Validations | Completeness, reconciliation and sense checks |
-| SOFP, SOI | IFRS balance sheet and income statement, actual 2023–2025 and projections 2026–2029 |
+| SOFP, SOI | IFRS balance sheet and income statement: actuals to 2025, the current quarter (2026Q3) and projections |
 | Regulatory Solvency | Current (legacy) solvency margin basis — separate from RBC |
 | RBC | Aggregation of all modules to the Risk-Based Capital; KPIs |
-| Projected RBC | Own Funds, Net RA, Net CSM, RBC and RBC solvency ratio, actual and projected |
+| Projected RBC | RBC, eligible own funds (from the Own Funds template, file 30) and the RBC solvency ratio: 2025YE and 2026Q3 actual, 2026YE-2029YE business plan and optional alternative projections |
+| Reinsurance Impact | Gross vs net standard-formula results by module and overall RBC (SCA.07; file 27 section 12A) |
 | LOB-wise Allocation | Allocation of RBC to 16 lines of business |
 | Market, Counterparty Default, Non-Life & Short Term P&S UW, Life UW, Op risk | Stress-test modules |
 | Scenarios | Catastrophe scenarios (health pandemic, 5 natural CAT, 6 man-made CAT) |
@@ -169,7 +172,7 @@ Scenario narrative: ransomware attack during peak renewal period, systems down f
 | Long-term life (individual & group) | 4% | 0.45% |
 | Unit-linked long-term life | 25% of expenses incurred in the last year | — |
 
-Inputs (all excluding unit-linked business): gross earned premium last year `GEP_prev` and projected for the current year `GEP_next`, per segment; discounted gross technical provisions excluding RA and CSM `TP`, per segment (must reconcile to the YE reserve reporting template); unit-linked expenses incurred during the last year `Exp_UL`; Cybersecurity Framework Compliance Score at YE2025 `Score` (0–1).
+Inputs (all excluding unit-linked business): gross earned premium in the last 12 months `GEP_prev` and the next 12 months `GEP_next`, per segment; discounted gross technical provisions excluding RA and CSM `TP` at the valuation date, per segment (must reconcile to the Reserve Reporting Template (RRT) at the valuation date); unit-linked expenses incurred during the last 12 months `Exp_UL`; Cybersecurity Framework Compliance Score at the latest evaluation `Score` (0–1).
 
 ```
 Op_premium   = 3% × max(GEP_prev, GEP_next)_nonlife  +  4% × max(GEP_prev, GEP_next)_longterm
@@ -191,20 +194,22 @@ BasicRBC here is the diversified Basic RBC of section 2.2. The 30% cap applies o
 
 ```
 RBC = BasicRBC + Charge_Op                                           [RBC!S65 → Projected RBC!D8]
-Available Capital = Own Funds + Net RA + Net CSM
-RBC Solvency Ratio = Available Capital / RBC                         (0 if RBC is 0 or missing)   [Projected RBC row 12]
+Available capital = Eligible Own Funds Available to Meet RBC         [Projected RBC row 9 = Own Funds template B26, file 30]
+                  = T1 + eligible T2 + eligible T3 + (Net CSM + Net RA − own shares − goodwill − foreseeable dividends − intangibles − deferred tax)
+RBC Solvency Ratio = Eligible Own Funds / RBC                        (0 if RBC is 0 or missing)   [Projected RBC row 10]
 ```
 
-- **Own Funds**: input, must be consistent with the separate IA Own Funds assessment and reporting template (since SCA.04 it is no longer derived from SOFP net assets).
-- **Net RA** (risk adjustment net of reinsurance) and **Net CSM** are added to available capital. CSM is relevant for insurers using GMM or VFA under IFRS 17.
-- Columns: actual 2024YE and 2025YE; business-plan projections 2026YE–2029YE; optional **alternative projections** 2026YE–2029YE, required where the Appointed Actuary's assumptions (loss ratio, expense ratio, etc.) differ materially from management's.
-- Only the 2025YE RBC is calculated by the template. RBC for other years and all capital items are inputs.
-- Narrative inputs: drivers of the 2025YE vs 2024YE ratio change apart from calibration changes; drivers of projected ratio changes (2029YE vs 2025YE); drivers of alternative vs business-plan differences — in numerical terms (loss ratios, expense ratios, volumes) separately for each year.
-- The template does not prescribe a minimum RBC ratio or supervisory ladder.
+- **Eligible own funds** are an input taken from the IA Own Funds and Solvency Assessment Template (file 30): tiered items within the limits (T3 ≤ 15% of RBC, T2 + T3 ≤ 50% of RBC, T1 ≥ 50% of RBC) plus the regulatory adjustments.
+- **Net RA and net CSM are inside eligible own funds** (SCA.05 removed the separate fields). Do not add them again. (SCA.04 showed Available Capital = Own Funds + Net RA + Net CSM; the content is the same, now with the deductions and tier limits.)
+- **MCR** = RBC / 3, with absolute floor checks (insurer SR 20m, reinsurer SR 40m, captives SR 10m / 20m) and its own tier limits (T1 ≥ 80% of MCR, T2 ≤ 20% of MCR, T3 not eligible): Own Funds template, file 30. The Solvency and Capital Template itself has no MCR.
+- Columns: actual 2025YE and the current quarter (2026Q3 in SCA.07); business-plan projections 2026YE–2029YE; optional **alternative projections** 2026YE–2029YE, required where the Appointed Actuary's assumptions (loss ratio, expense ratio, etc.) differ materially from management's. Q2 and Q4 projections need a full forecasting exercise; Q1 and Q3 may be best efforts.
+- Only the current-quarter RBC is calculated by the template. RBC for other dates and all capital items are inputs.
+- Narrative inputs: drivers of the current-quarter vs 2025YE ratio change apart from calibration changes; drivers of projected ratio changes (2029YE vs current quarter); drivers of alternative vs business-plan differences — in numerical terms (loss ratios, expense ratios, volumes) separately for each year.
+- Neither template prescribes a minimum RBC ratio or a supervisory ladder.
 
 ### 11.1 LOB-wise allocation of RBC [LOB-wise Allocation sheet]
 
-For LOB1–LOB16 and each year 2025 (actual) and 2026–2029 (projected): inputs NEP and Net TP (discounted net technical provisions excluding RA and CSM).
+For LOB1–LOB16: actual = **past 12 months** to the valuation date (replaced 2025YE actuals in SCA.05), projected = 2026–2029: inputs NEP and Net TP (discounted net technical provisions excluding RA and CSM).
 
 ```
 Alloc_NEP(l)      = NEP_l / Σ NEP × RBC_year
@@ -212,7 +217,7 @@ Alloc_NEP+TP(l)   = (NEP_l + NetTP_l) / Σ (NEP + NetTP) × RBC_year
 Alloc_AA(l)       = Appointed Actuary's own allocation (input)
 ```
 
-RBC_year comes from the Projected RBC sheet (business-plan basis). Checks: 2025 NEP per LOB1–13 must equal `NEP_prev` in the premium risk module, and 2026 NEP must equal `NEP_next`.
+RBC_year comes from the Projected RBC sheet (business-plan basis). Checks: past-12-month NEP per LOB1–13 must equal `NEP_prev` in the premium risk module; the projected-NEP check against `NEP_next` is greyed out for quarterly submissions (SCA.05).
 
 ### 11.2 Key ratios reported on the RBC sheet
 
@@ -236,7 +241,7 @@ Diversification ratios: within Market (benefit/undiversified), Premium, Reserve;
 
 ## 17. Calculation order (algorithm)
 
-1. Populate SOFP (YE2025 totals) → AssetBase, total assets, total liabilities.
+1. Populate SOFP (valuation-date totals) → AssetBase, total assets, total liabilities.
 2. Market: compute IR (4.1), Equity (4.2), Property (4.3), Spread (4.4), Concentration (4.5), Currency (4.6), Intangibles (4.7) → Market (4.8).
 3. Scenarios: compute each CAT scenario gross and net (section 8); collect scenario recoveries → TotalRME (5.1).
 4. Counterparty default: allocate TotalRME to reinsurers; compute Type 1, Type 2 → CD (section 5).
@@ -244,5 +249,5 @@ Diversification ratios: within Market (benefit/undiversified), Premium, Reserve;
 6. Non-life: premium and reserve losses per LOB with geographical diversification → Premium, Reserve (section 7); CAT (8.14) → NonLifeUW (section 9).
 7. BasicRBC = aggregate([Market, CD, LifeUW, NonLifeUW], M5).
 8. Operational risk (section 10), using BasicRBC for the cap.
-9. RBC = BasicRBC + Op. Ratio = (Own Funds + Net RA + Net CSM) / RBC.
+9. RBC = BasicRBC + Op. Eligible own funds and MCR from the Own Funds template (file 30). Ratio = Eligible Own Funds / RBC.
 10. LOB allocation and KPIs (section 11). Run validations (section 15).
