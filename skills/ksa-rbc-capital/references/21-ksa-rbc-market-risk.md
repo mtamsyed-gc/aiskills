@@ -2,7 +2,7 @@
 
 Interest rate, equity, property, spread, concentration, currency, intangibles and the market aggregation. Correlation matrices are in file 26.
 
-Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version SCA.04 (issued 2026-02-25), workbook `20260226_Solvency_and_Capital_Template_2026_vSCA.04.xlsx`, run "Risk Based Capital 5th Dry Run (2025YE)", as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
+Source: Insurance Authority (IA) "Solvency and Capital Template 2026", built from version SCA.04 (issued 2026-02-25, run "Risk Based Capital 5th Dry Run (2025YE)") as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026), **updated to SCA.07** (issued 2026-11-16, valuation 30 Sep 2026, `Solvency_and_Capital_Template_2026Q3_vSCA.07.xlsx`; every factor and matrix re-read from the SCA.07 workbook on 20 Nov 2026, changes in file 29). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
 
 ---
 
@@ -12,7 +12,11 @@ General scoping rules:
 
 - **Mutual / investment funds — look-through.** Apply the stress matching the nature of each underlying investment (e.g. equity part under Equity and Concentration; bond part under Interest rate, Spread and Concentration). If actual holdings are unavailable, use the investment mandate (e.g. 40% equity / 60% sukuk). If the mandate is not reliable, treat the whole amount as **Other equity** (highest stress factors) and **exclude it from concentration risk**. The company records per fund: name, basis (actual/mandate), asset class, issuer, value, issuer rating, modified duration (bonds).
 - **Held-to-maturity fixed-interest investments** (other than fixed-term deposits) are in scope of interest rate risk exactly like fair-valued fixed-interest assets.
-- **Term deposits** are excluded from interest rate risk and included in Counterparty Default Type 1.
+- **Term deposits** are excluded from interest rate risk and included in Counterparty Default Type 1. **Statutory deposits** also go to Counterparty Default (SCA.06).
+- **Accrued interest** is part of the value of the underlying asset in its module (SCA.06).
+- **REITs** are classified as Property and stressed under property (and concentration); another treatment needs a documented rationale (SCA.06).
+- **Non-traditional assets or funds** (money market funds, financing and leasing investments): stress under the most relevant module (market or counterparty default) by the nature of the underlying and the SOFP classification, rationale documented (SCA.06).
+- **Fund table** (SCA.06): populate at underlying-asset level where available (issuer, asset type), with the treatment type and the risk module(s) used per fund.
 - **Participations and subsidiaries** are in scope of both Equity and Concentration; they may be treated as strategic equity if the strategic criteria are met.
   - *Participation* (provisional): ownership, directly or through control, of ≥20% of voting rights or capital; or <20% with demonstrated ability to exert strong influence through joint control with other owners.
   - *Strategic equity participation* (provisional) — all of: (i) value likely to be materially less volatile over the next 12 months than other equities, because of the nature of the investment and the influence exercised; (ii) a clear decisive strategy to keep holding for a long period; (iii) consistency of that strategy with the main policies guiding or limiting the undertaking's actions; (iv) ability to continue holding the participation; (v) existence of a durable link.
@@ -72,7 +76,7 @@ NAV_base = ΣA − ΣL ; NAV_up = ΣA_up − ΣL_up ; NAV_down = ΣA_down − Σ
 Loss_up_BU = NAV_base − NAV_up ; Loss_down_BU = NAV_base − NAV_down
 ```
 
-The company also classifies SOFP assets and liabilities: assets excluded from the module; bonds (incl. bonds in funds); loans; RI ARC (excl. RA) if discounted; RI AIC (excl. RA) if discounted; other; and liabilities excluded; gross LIC (excl. RA) if discounted; gross LRC (excl. RA) if discounted; other. Sense checks: Σ discounted asset cash flows ≥ Σ in-scope classified assets; same for liabilities.
+The company also classifies SOFP assets and liabilities: assets excluded from the module; bonds (incl. bonds in funds); RI ARC (excl. RA) if discounted; RI AIC (excl. RA) if discounted; other; and liabilities excluded; gross LIC (excl. RA) if discounted; gross LRC (excl. RA) if discounted; loans; **EOSB** (end-of-service benefits, added to the scope in SCA.07 as a discounted liability: EOSB value and cash-flow projections needed); other. Sense checks: Σ discounted asset cash flows ≥ Σ in-scope classified assets; same for liabilities.
 
 **Charge:**
 
@@ -86,15 +90,15 @@ Charge_IR       = −ΔNAV_IR_net
 
 ### 4.2 Equity risk
 
-Stress factors (base + symmetric adjustment; symmetric adjustment updated on 2025 data — KSA from 2023–2025 TASI/Nomu data, outside KSA from EIOPA):
+Stress factors (base + symmetric adjustment). The symmetric adjustment is refreshed every quarter: SCA.07 uses 2026Q3 data (KSA: TASI and Nomu over 2023Q4–2026Q3; outside KSA: EIOPA). SCA.04 values in brackets:
 
 | Category | Base | Symmetric adj. | Applied factor |
 |---|---|---|---|
-| Within KSA — TASI listed | 36% | −9.00% | **27.00%** |
-| Within KSA — Nomu listed | 41% (TASI + 5pp) | −10.55% | **30.45%** |
+| Within KSA — TASI listed | 36% | −9.05% | **26.95%** (27.00%) |
+| Within KSA — Nomu listed | 41% (TASI + 5pp) | −13.62% | **27.38%** (30.45%) |
 | Within KSA — Other (incl. unlisted) | 46% (TASI + 10pp) | 0 | **46.00%** |
 | Within KSA — Strategic | 19% | 0 | **19.00%** |
-| Outside KSA — listed in OECD countries | 39% | +7.90% | **46.90%** |
+| Outside KSA — listed in OECD countries | 39% | +7.71% | **46.71%** (46.90%) |
 | Outside KSA — Other (incl. unlisted) | 49% | 0 | **49.00%** |
 | Outside KSA — Strategic | 22% | 0 | **22.00%** |
 
@@ -199,7 +203,7 @@ Worked values: AAA corporate KSA bond, D = 5 → 4.5%; BBB corporate KSA, D = 5 
 Scope: assets covered by equity, interest rate and property risk; excludes assets covered by counterparty default risk; excludes unit-linked investments. Exposure is aggregated **by issuer** (use exposure type "Equities and Bonds" where one issuer has both). Each single property is an exposure.
 
 ```
-AssetBase = SOFP "Investments (incl. accrued investment income)" + SOFP "Own Property and equipment, net"   (YE2025 totals)
+AssetBase = SOFP "Investments (incl. accrued investment income)" + SOFP "Own Property and equipment, net"   (valuation-date totals)
 For each exposure i (issuer or property) with value V_i, issuer type, rating:
    share_i   = V_i / AssetBase                      (0 if AssetBase ≤ 0)
    excess_i  = max( share_i − Threshold_i , 0 )
@@ -219,7 +223,7 @@ Undiversified        = Σ Loss_i                                                
 - PSE (with sovereign guarantee): rating forced to A → threshold 5%, factor 17.5% (Corporate Inside KSA row).
 - Property: threshold 10%, factor 12%.
 - KSA Government: factor 0 in every bucket, so no charge.
-- Check: Σ exposures listed must equal AssetBase.
+- Check: Σ exposures listed must equal AssetBase **excluding plant and equipment** (the non-property part of PPE is outside concentration risk; SCA.05). Validations also flag duplicate issuers and values outside the dropdown lists (SCA.05).
 
 ### 4.6 Currency risk
 

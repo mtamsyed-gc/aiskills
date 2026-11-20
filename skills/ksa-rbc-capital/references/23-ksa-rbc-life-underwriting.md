@@ -2,7 +2,7 @@
 
 Mortality, lapse, expense and morbidity stresses on long-term business. One-year group life and group credit life are NOT here: they are in file 24 (LOB11-13).
 
-Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version SCA.04 (issued 2026-02-25), workbook `20260226_Solvency_and_Capital_Template_2026_vSCA.04.xlsx`, run "Risk Based Capital 5th Dry Run (2025YE)", as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
+Source: Insurance Authority (IA) "Solvency and Capital Template 2026", built from version SCA.04 (issued 2026-02-25, run "Risk Based Capital 5th Dry Run (2025YE)") as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026), **updated to SCA.07** (issued 2026-11-16, valuation 30 Sep 2026, `Solvency_and_Capital_Template_2026Q3_vSCA.07.xlsx`; every factor and matrix re-read from the SCA.07 workbook on 20 Nov 2026, changes in file 29). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
 
 ---
 

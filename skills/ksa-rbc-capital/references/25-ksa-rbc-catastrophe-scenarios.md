@@ -2,13 +2,14 @@
 
 Health pandemic, natural catastrophe (flood, earthquake, hail, sandstorm, windstorm) and man-made catastrophe (property fire, energy, motor, marine, aviation, credit and suretyship). Note for life and health books: the property-fire scenario and the sandstorm scenario both carry health and life losses, not only pandemic.
 
-Source: Insurance Authority (IA) "Solvency and Capital Template 2026", version SCA.04 (issued 2026-02-25), workbook `20260226_Solvency_and_Capital_Template_2026_vSCA.04.xlsx`, run "Risk Based Capital 5th Dry Run (2025YE)", as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
+Source: Insurance Authority (IA) "Solvency and Capital Template 2026", built from version SCA.04 (issued 2026-02-25, run "Risk Based Capital 5th Dry Run (2025YE)") as restated in the owner's rules specification `KSA_RBC_Rules_vSCA04.md` (13 Nov 2026), **updated to SCA.07** (issued 2026-11-16, valuation 30 Sep 2026, `Solvency_and_Capital_Template_2026Q3_vSCA.07.xlsx`; every factor and matrix re-read from the SCA.07 workbook on 20 Nov 2026, changes in file 29). Every value is **[DRY RUN]**: it can change before the final 2027 regulation. Section numbers (1-17, Appendices A-E) are the specification's; SKILL.md section 2 says which file holds each one. Cell references such as `[RBC!S65]` trace to the workbook.
 
 ---
 
 ## 8. Catastrophe scenarios [Scenarios sheet]
 
 General rules:
+- **Exposure period (SCA.05):** volume-based exposures (earned premium, number of insureds, sums insured) are those expected to be earned in the next 12 months, including renewals and new business; point-in-time exposures (largest risk or concentration) at the valuation date.
 - A scenario may hit several lines; the company reflects every relevant impact (e.g. a life-only insurer exposed to the man-made property fire scenario considers deaths at its largest concentration of insured lives under a group policy).
 - Exposure measure is **sum insured** (not PML), "unless a lower sub-limit applies for this CAT event".
 - Reinsurance recoveries, reinstatement premiums and sliding-scale commission refundable are company inputs based on existing reinsurance.
@@ -47,7 +48,7 @@ Charge_Pandemic = NetLoss_health + NetLoss_life            (simple sum)
 
 Within KSA: `Loss = RegionWeight × BaseFactor × SumInsured` per LOB and region; regional losses (summed over LOBs) are aggregated with the peril's regional correlation matrix.
 
-Outside KSA: `Loss_region = PremiumFactor × EarnedPremium_region` where EarnedPremium is the **premium earned during 2025** (past 12 months) for risks in that region; 18 regions (Appendix B); regional multiplier = 1 for every region. Diversification:
+Outside KSA: `Loss_region = PremiumFactor × EarnedPremium_region` where EarnedPremium is the premium for risks in that region **expected to be earned in the next 12 months** (SCA.05 instructions for volume-based CAT exposures; past-12-month actuals allowed with documented reasons; SCA.04 used premium earned during 2025); 18 regions (Appendix B); regional multiplier = 1 for every region. Diversification:
 
 ```
 Outside_div = (Σ_r L_r) × ( 0.5 + 0.5 × Σ_r L_r² / (Σ_r L_r)² )          (0 if Σ = 0)
